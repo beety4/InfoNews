@@ -10,16 +10,18 @@
     <h1>뉴스 모아보기</h1>
     <hr>
     <a>테스트 메세지입니다.</a><br>
-    <input type="text" name="value1" id="value1">
-    <input type="button" name="btnvalue1" id="btnvalue1" value="submit"><br>
+    <input type="text" name="value1" id="value1" placeholder="검색어 입력">
+    <input type="button" id="btnvalue1" value="submit"><br>
 
+    <!--
     <input type="text" name="value2" id="value2">
-    <input type="button" name="btnvalue2" id="btnvalue2" value="submit"><br>
+    <input type="button" id="btnvalue2" value="submit"><br>
 
     <input type="text" name="value3" id="value3">
-    <input type="button" name="btnvalue3" id="btnvalue3" value="submit"><br>
-
+    <input type="button" id="btnvalue3" value="submit"><br>
+    -->
 
     <script type="text/javascript" src="{{ url_for('static', filename='funcjs.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery-3.7.1.min.js') }}"></script>
 </body>
 </html>
