@@ -31,8 +31,8 @@ def access_API(param):
     body_dict = {}
     body_dict['startDate'] = startDate
     body_dict['endDate'] = endDate
-    body_dict['timeUnit'] = timeUnit
-    body_dict['keywordGroups'] = keywordGroups
+    body_dict['timeUnit'] = "date"
+    body_dict['keywordGroups'] = "[{\"groupName\":\"한글\",\"keywords\":[\"한글\",\"korean\"]}, {\"groupName\":\"영어\",\"keywords\":[\"영어\",\"english\"]}]"
 
     body = str(body_dict).replace("'", '"')
 
