@@ -3,6 +3,7 @@
 import os
 import sys
 import urllib.request
+from datetime import datetime
 from dotenv import load_dotenv
 
 
@@ -25,8 +26,15 @@ def load_key():
 # API 요청
 def access_API(param):
     client_id, client_secret = load_key()
-    url = "https://openapi.naver.com/v1/datalab/search";
-    body = "{\"startDate\":\"2017-10-01\",\"endDate\":\"2024-04-30\",\"timeUnit\":\"month\",\"keywordGroups\":[{\"groupName\":\"한글\",\"keywords\":[\"한글\",\"korean\"]},{\"groupName\":\"영어\",\"keywords\":[\"영어\",\"english\"]}],\"device\":\"pc\",\"ages\":[\"1\",\"2\"],\"gender\":\"f\"}";
+    url = "https://openapi.naver.com/v1/datalab/search?";
+
+    body_dict = {}
+    body_dict['startDate'] = startDate
+    body_dict['endDate'] = endDate
+    body_dict['timeUnit'] = timeUnit
+    body_dict['keywordGroups'] = keywordGroups
+
+    body = str(body_dict).replace("'", '"')
 
     request = urllib.request.Request(url)
     request.add_header("X-Naver-Client-Id", client_id)
@@ -45,6 +53,23 @@ def access_API(param):
 # 데이터 가공 처리
 def refresh_item(data):
     pass
+
+
+
+a = "{\
+         \"startDate\":\"2022-10-01\",\
+         \"endDate\":\"2022-10-04\",\
+         \"timeUnit\":\"date\",\
+         \"keywordGroups\":[{\"groupName\":\"한글\",\"keywords\":[\"한글\",\"korean\"]},\
+                             {\"groupName\":\"영어\",\"keywords\":[\"영어\",\"english\"]}\
+                            ],\
+         \"device\":\"pc\",\
+         \"ages\":[\"1\",\"2\"],\
+         \"gender\":\"f\"\
+         }"
+
+print(a)
+
 
 
 

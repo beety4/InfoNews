@@ -13,6 +13,7 @@ document.getElementById("btnvalue1").addEventListener("click", function() {
     $.ajax({
     	url:"/queryItem",
         type:"post",
+        dataType:"text",
         data:{"value1" : value1.value},
         success: function(data){
 			writeItem(data);
@@ -32,6 +33,7 @@ document.getElementById("btnvalue1").addEventListener("click", function() {
 
 function writeItem(data) {
     console.log(data);
+    document.getElementById("wc-img").src = "static/wc-img/" + data;
     $(data).each(function() {
     })
 }
