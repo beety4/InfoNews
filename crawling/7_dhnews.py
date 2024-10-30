@@ -26,3 +26,6 @@ if response.status_code == 200:
         print(f"날짜: {date}")
         print(f"링크: {link}")
         print("-"*100)
+
+else:
+    print(f"Failed to fetch the page, status code: {response.status_code}")
