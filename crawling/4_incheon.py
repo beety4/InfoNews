@@ -1,6 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-import re
 
 # 웹사이트 URL 설정
 url = "https://www.incheon.go.kr/IC010205"
