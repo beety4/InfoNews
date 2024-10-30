@@ -15,6 +15,7 @@ if response.status_code == 200:
         title_tag = news.select_one('h4 a')
         title = title_tag.text.strip()
 
+        # <em>사회</em><em>박병수 편집국장</em><em>2024.10.30 04:16</em>
         date = None
         for em in news.find_all('em'):
             match = re.match(r'(\d{4}\.\d{2}\.\d{2}) \d{2}:\d{2}', em.text)
