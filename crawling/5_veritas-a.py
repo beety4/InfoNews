@@ -28,7 +28,6 @@ if response.status_code == 200:
             date_em = write_info.select('em')[2]
             date = date_em.text.strip()
 
-            # 날짜 형식 변환
             date = date.split(' ')[0]
 
         # 출력
