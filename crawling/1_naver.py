@@ -44,7 +44,7 @@ if response.status_code == 200:
             news_time = now - timedelta(days=days_ago)
             formatted_date = news_time.strftime("%Y.%m.%d")
         elif "주 전" in date_text:
-            weeks_ago = int(re.search(r'\d+', date_text).group())  # 숫자 부분 추출
+            weeks_ago = int(re.search(r'\d+', date_text).group())
             news_time = now - timedelta(weeks=weeks_ago)
             formatted_date = news_time.strftime("%Y.%m.%d")
         else:
