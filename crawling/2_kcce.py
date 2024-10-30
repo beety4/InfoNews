@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 
-
 def title_from_link(link):
     # 링크로 이동 후 제목 가져오는 함수
     response = requests.get(link)
