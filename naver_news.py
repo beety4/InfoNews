@@ -1,11 +1,24 @@
 from datetime import datetime
 import requests
+import os
+from dotenv import load_dotenv
 
-client_id = ""
-client_secret = ""
+def load_key():
+    try:
+        load_dotenv('env/data.env')
+    except Exception as e:
+        print("Error : Naver-API 키 데이터를 불러오지 못햇습니다.")
+        print(e)
+        exit()
+
+    client_id = str(os.getenv('client_id'))
+    client_secret = str(os.getenv('client_secret'))
+    return client_id, client_secret
+
 
 # 검색
 def search_news(search, display=15, start=1, sort="date"):
+    client_id, client_secret = load_key()
     url = "https://openapi.naver.com/v1/search/news.json"
     headers = {
         "X-Naver-Client-Id": client_id,

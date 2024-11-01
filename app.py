@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 from datetime import datetime
 import naver_api as na
-import word_cloud as wc
+import data_process as wc
 
 app = Flask(__name__)
 

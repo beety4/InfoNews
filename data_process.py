@@ -2,11 +2,6 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 
 
-# 데이터 전처리 함수
-def data_for_dict(data):
-    pass
-
-
 # wordcloud 이미지 생성 및 저장
 def create_img(dict_data, file_name):
     wordcloud = WordCloud(

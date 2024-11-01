@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import os
-import sys
-import urllib.request
-from datetime import datetime
+import requests, json, urllib.request
+from datetime import date, timedelta
 from dotenv import load_dotenv
+
+import pandas as pd
+
 
 
 # Naver 통합검색어 트랜드 API 사용
@@ -26,50 +28,63 @@ def load_key():
 # API 요청
 def access_API(param):
     client_id, client_secret = load_key()
-    url = "https://openapi.naver.com/v1/datalab/search?";
+    url = "https://openapi.naver.com/v1/datalab/search"
 
-    body_dict = {}
-    body_dict['startDate'] = startDate
-    body_dict['endDate'] = endDate
-    body_dict['timeUnit'] = "date"
-    body_dict['keywordGroups'] = "[{\"groupName\":\"한글\",\"keywords\":[\"한글\",\"korean\"]}, {\"groupName\":\"영어\",\"keywords\":[\"영어\",\"english\"]}]"
-
-    body = str(body_dict).replace("'", '"')
+    body = {
+        #"startDate": "2024-10-2",
+        "startDate": str(date.today() - timedelta(days=2)),
+        "endDate": str(date.today()),
+        "timeUnit": "date",
+        "keywordGroups": [
+            {"groupName": "인하공업전문대학", "keywords": ["인하공업전문대학"]},
+            {"groupName": "서울대학교", "keywords": ["서울대학교"]},
+            {"groupName": "서울대학교", "keywords": ["서울대학교"]},
+            {"groupName": "서울대학교", "keywords": ["서울대학교"]},
+            {"groupName": "서울대학교", "keywords": ["서울대학교"]}
+        ]
+    }
+    body = json.dumps(body)
 
     request = urllib.request.Request(url)
     request.add_header("X-Naver-Client-Id", client_id)
     request.add_header("X-Naver-Client-Secret", client_secret)
     request.add_header("Content-Type", "application/json")
+
     response = urllib.request.urlopen(request, data=body.encode("utf-8"))
     rescode = response.getcode()
-    if (rescode == 200):
-        response_body = response.read()
-        print(response_body.decode('utf-8'))
 
+    if rescode == 200:
+        response_body = response.read()
+        result = response_body.decode('utf-8')
+        print(result)
+        refresh_item(json.loads(response_body))
     else:
-        print("Error Code:" + rescode)
+        print("Error : API 요청에 실패하였습니다.")
+
+# https://yenpa.tistory.com/15
+# https://wooiljeong.github.io/python/naver_datalab_open_api/
 
 
 # 데이터 가공 처리
 def refresh_item(data):
-    pass
+    rows = []
+    title = data["results"][0]["title"]
+    for entry in data["results"][0]["data"]:
+        period = entry["period"]
+        ratio = entry["ratio"]
+        for university in data["results"][0]["keywords"]:
+            rows.append({"title": university, "period": period, "ratio": ratio})
+
+    # DataFrame 생성 및 인덱스 설정
+    df = pd.DataFrame(rows, columns=["title", "period", "ratio"])
+    df.set_index("title", inplace=True)
+
+    print(df)
 
 
 
-a = "{\
-         \"startDate\":\"2022-10-01\",\
-         \"endDate\":\"2022-10-04\",\
-         \"timeUnit\":\"date\",\
-         \"keywordGroups\":[{\"groupName\":\"한글\",\"keywords\":[\"한글\",\"korean\"]},\
-                             {\"groupName\":\"영어\",\"keywords\":[\"영어\",\"english\"]}\
-                            ],\
-         \"device\":\"pc\",\
-         \"ages\":[\"1\",\"2\"],\
-         \"gender\":\"f\"\
-         }"
-
-print(a)
 
 
+access_API("a")
 
 
