@@ -1,1 +1,25 @@
 env/*
+
+frontend-vue/.DS_Store
+frontend-vue/node_modules
+frontend-vue//dist
+
+
+# local env files
+frontend-vue/.env.local
+frontend-vue/.env.*.local
+
+# Log files
+frontend-vue/npm-debug.log*
+frontend-vue/yarn-debug.log*
+frontend-vue/yarn-error.log*
+frontend-vue/pnpm-debug.log*
+
+# Editor directories and files
+frontend-vue/.idea
+frontend-vue/.vscode
+frontend-vue/*.suo
+frontend-vue/*.ntvs*
+frontend-vue/*.njsproj
+frontend-vue/*.sln
+frontend-vue/*.sw?
