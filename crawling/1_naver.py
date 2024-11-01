@@ -1,60 +1,47 @@
+from datetime import datetime
 import requests
-from bs4 import BeautifulSoup
-from datetime import datetime, timedelta
-import re
 
-search = "마그네틱"
+client_id = ""
+client_secret = ""
 
-# 웹사이트 URL 설정
-url = "https://search.naver.com/search.naver?ssc=tab.news.all&where=news&sm=tab_jum&query=" + search + "&sort=date"
-# 웹페이지 요청
-response = requests.get(url)
+# 검색
+def search_news(search, display=15, start=1, sort="date"):
+    url = "https://openapi.naver.com/v1/search/news.json"
+    headers = {
+        "X-Naver-Client-Id": client_id,
+        "X-Naver-Client-Secret": client_secret
+    }
+    params = {
+        "query": search,
+        "display": display,
+        "start": start,
+        "sort": sort
+    }
+    response = requests.get(url, headers=headers, params=params)
 
-# 요청 성공 여부 확인
-if response.status_code == 200:
-    # HTML 파싱
-    soup = BeautifulSoup(response.text, 'html.parser')
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print(f"Failed to fetch the page, status code: {response.status_code}")
+        return None
 
-    # 뉴스 데이터 div 선택
-    news_list = soup.select('#main_pack > section > div.api_subject_bx > div.group_news > ul > li')
 
-    # 현재 시간
-    now = datetime.now()
+if __name__ == "__main__":
+    search = "입시"
+    result = search_news(search)
 
-    for news in news_list:
-        # 제목과 링크
-        title_tag = news.select_one('div.news_wrap.api_ani_send > div > div.news_contents > a.news_tit')
-        title = title_tag['title']
-        link = title_tag['href']
+    if result:
+        for item in result['items']:
+            title = item['title']
+            link = item['link']
+            date_str = item['pubDate']
+            if "&quot;" in title or "&amp;" in title:
+                title = title.replace("&quot;", '"').replace("&amp;", '&')
+            date_obj = datetime.strptime(date_str, '%a, %d %b %Y %H:%M:%S %z')
+            date = date_obj.strftime('%Y.%m.%#d')
 
-        # 날짜 전처리
-        date_text = news.select_one(
-            'div.news_wrap.api_ani_send > div > div.news_info > div.info_group > span').text.strip()
-
-        if "시간 전" in date_text:
-            hours_ago = int(re.search(r'\d+', date_text).group())
-            news_time = now - timedelta(hours=hours_ago)
-            formatted_date = news_time.strftime("%Y.%m.%d")
-        elif "분 전" in date_text:
-            minutes_ago = int(re.search(r'\d+', date_text).group())
-            news_time = now - timedelta(minutes=minutes_ago)
-            formatted_date = news_time.strftime("%Y.%m.%d")
-        elif "일 전" in date_text:
-            days_ago = int(re.search(r'\d+', date_text).group())
-            news_time = now - timedelta(days=days_ago)
-            formatted_date = news_time.strftime("%Y.%m.%d")
-        elif "주 전" in date_text:
-            weeks_ago = int(re.search(r'\d+', date_text).group())
-            news_time = now - timedelta(weeks=weeks_ago)
-            formatted_date = news_time.strftime("%Y.%m.%d")
-        else:
-            # "YYYY.MM.DD" 형식
-            formatted_date = date_text
-
-        # 출력
-        print(f"제목: {title}")
-        print(f"링크: {link}")
-        print(f"날짜: {formatted_date}")
-        print("-" * 100)
-else:
-    print(f"Failed to fetch the page, status code: {response.status_code}")
+            # 출력
+            print(f"제목: {title}")
+            print(f"링크: {link}")
+            print(f"날짜: {date}")
+            print("-" * 100)
