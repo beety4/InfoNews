@@ -4,27 +4,38 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>뉴스 모아보기</title>
+    <title>모죽 - 통합뉴스</title>
 </head>
 <body>
-    <h1>뉴스 모아보기</h1>
+    <h1>[모죽] 검색 빈도 수 확인</h1>
     <hr>
-    <a>테스트 메세지입니다.</a><br>
-    <input type="text" name="value1" id="value1" placeholder="검색어 입력">
-    <input type="button" id="btnvalue1" value="submit"><br>
+    <a>검색 빈도 수 비교를 위한 키워드를 입력해주세요.</a><br>
+    <a>비교를 위해 최소 2개 이상의 검색어가 입력되어야 합니다.</a><br>
+    <div id="main-area">
+        <div class="keyword-area">
+            <input type="text" tabIndex="1" placeholder="검색어 입력">
+        </div>
+        <div class="keyword-area">
+            <input type="text" tabIndex="2" placeholder="검색어 입력">
+        </div>
+    </div>
 
-    <img src="" alt="wc-img" id="wc-img">
+    <button id="add">검색어 추가</button><br>
+    <br>
 
-    <!--
-    <input type="text" name="value2" id="value2">
-    <input type="button" id="btnvalue2" value="submit"><br>
+    <input type="date" id="startDate" name="startDate"> ~ <input type="date" id="endDate" name="endDate">
+    <input type="radio" name="timeUnit" value="month" checked> 월간
+    <input type="radio" name="timeUnit" value="date"> 일간
 
-    <input type="text" name="value3" id="value3">
-    <input type="button" id="btnvalue3" value="submit"><br>
-    -->
+    <br><br>
+    <input type="button" id="search" value="검색" style="float:right;"><br>
+    <hr>
+    <img src="{{ url_for('static', filename='blank.png') }}" alt="wc-img" id="wc-img">
+    <img src="{{ url_for('static', filename='blank.png') }}" alt="chart-img" id="chart-img">
+
 
     <script type="text/javascript" src="{{ url_for('static', filename='funcjs.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='jquery-3.7.1.min.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </body>
 </html>
