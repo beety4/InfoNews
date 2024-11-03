@@ -10,7 +10,6 @@ def create_wc_img(dict_data, file_name):
         width=800,
         height=400,
         max_font_size=100,
-        colormap="Blues",
         background_color="white",
     ).generate_from_frequencies(dict_data)
 

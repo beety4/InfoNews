@@ -28,13 +28,19 @@
     <input type="radio" name="timeUnit" value="date"> 일간
 
     <br><br>
-    <input type="button" id="search" value="검색" style="float:right;"><br>
+    <button id="search" style="float:right;">검색</button><br>
+
     <hr>
+    <div id="urlzone">
+        <input type="text" id="link_value" value="" style="display:none;">
+    </div>
+
     <img src="{{ url_for('static', filename='blank.png') }}" alt="wc-img" id="wc-img">
     <img src="{{ url_for('static', filename='blank.png') }}" alt="chart-img" id="chart-img">
 
 
-    <script type="text/javascript" src="{{ url_for('static', filename='funcjs.js') }}"></script>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </body>
