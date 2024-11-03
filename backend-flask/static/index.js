@@ -170,27 +170,3 @@ function getAllItem() {
     return inputValues;
 }
 
-
-
-
-
-const chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-// URL을 정수 해시로 변환 후 Base62로 인코딩
-function base62Encode(num) {
-    let encoded = '';
-    while (num > 0) {
-        encoded = chars[num % 62] + encoded;
-        num = Math.floor(num / 62);
-    }
-    return encoded;
-}
-
-// URL을 정수 해시로 변환 (간단한 해시 방법)
-function hashURL(url) {
-    let hash = 0;
-    for (let i = 0; i < url.length; i++) {
-        hash = (hash * 31 + url.charCodeAt(i)) % 1000000007;  // 해시 충돌 줄이기
-    }
-    return hash;
-}

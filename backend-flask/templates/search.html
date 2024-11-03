@@ -7,9 +7,23 @@
     <title>모죽 - 통합뉴스</title>
 </head>
 <body>
+    <h1>키워드 기반 뉴스 통합검색</h1>
+    <hr>
+    <a>검색하고 싶은 뉴스의 키워드를 입력해주세요!</a><br>
+    <input type="text" id="search" name="search" onkeyup="enterkey();">
+    <button id="searchItem">검색</button>
 
+    <br><br><hr>
+    <div id="main-area">
+        <table border="1" id="news_table" style="display:none;">
+            <tr>
+                <th>날짜</th>
+                <th>제목</th>
+            </tr>
 
+        </table>
 
+    </div>
 
     <script type="text/javascript" src="{{ url_for('static', filename='search.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
