@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request
 from datetime import datetime
 import naver_search_trend as nst
-import naver_news as nn
+import naver_search as ns
+import news
 import ast
 
 app = Flask(__name__)
@@ -34,13 +35,14 @@ def search_item():
     search = request.form["search"]
 
     # 네이버 API 요청
-    result = nn.search_news(search)
+    result = ns.search_news(search)
     return result
 
 
 
 @app.route('/news')
 def news():
+
     return render_template('news.html')
 
 

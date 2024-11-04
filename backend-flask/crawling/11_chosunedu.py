@@ -1,29 +1,42 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 
-# 웹드라이버 설정 (크롬 드라이버)
-driver = webdriver.Chrome()
-driver.get('https://edu.chosun.com/svc/edu_list.html?catid=14')
+def getdata():
+    # 웹드라이버 설정 (크롬 드라이버)
+    options = Options()
+    options.add_argument('headless')
+    driver = webdriver.Chrome(options=options)
 
-# 페이지 로드 후 HTML 가져오기
-html = driver.page_source
-soup = BeautifulSoup(html, 'html.parser')
+    driver.get('https://edu.chosun.com/svc/edu_list.html?catid=14')
+    driver.implicitly_wait(3)
 
-news_list = soup.select('#contentList02 article.ui-item')
+    # 페이지 로드 후 HTML 가져오기
+    html = driver.page_source
+    soup = BeautifulSoup(html, 'html.parser')
 
-for news in news_list:
-    title_tag = news.select_one('div.ui-subject a')
-    title = title_tag.text.strip()
+    news_list = soup.select('#contentList02 article.ui-item')
 
-    # 2024.10.30(수)
-    date_text = news.select_one('span.date').text.strip()
-    date = date_text.split(' ')[0]
+    result = []
+    for news in news_list:
+        title_tag = news.select_one('div.ui-subject a')
+        title = title_tag.text.strip()
 
-    link = "https:" + title_tag.attrs['href'].strip()
+        # 2024.10.30(수)
+        date_text = news.select_one('span.date').text.strip()
+        date = date_text.split(' ')[0]
 
-    print(f"제목: {title}")
-    print(f"날짜: {date}")
-    print(f"링크: {link}")
-    print("-" * 100)
+        link = "https:" + title_tag.attrs['href'].strip()
 
-driver.quit()
+        #print(f"제목: {title}")
+        #print(f"날짜: {date}")
+        #print(f"링크: {link}")
+        #print("-" * 100)
+        dict_data = {"title": title, "link": link, "date": date}
+        result.append(dict_data)
+
+    driver.quit()
+    return result
+
+
+getdata()
