@@ -2,7 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 
-def getdata():
+
+def get_data():
     url = 'https://www.yna.co.kr/news?site=navi_latest_depth01'
     response = requests.get(url)
 

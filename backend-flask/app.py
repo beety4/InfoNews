@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 from datetime import datetime
 import naver_search_trend as nst
 import naver_search as ns
-import news
+import news as n
 import ast
 
 app = Flask(__name__)
@@ -30,7 +30,7 @@ def query_item():
 def search():
     return render_template('search.html')
 
-@app.route('/searcItem', methods=['POST'])
+@app.route('/searchItem', methods=['POST'])
 def search_item():
     search = request.form["search"]
 
@@ -42,10 +42,14 @@ def search_item():
 
 @app.route('/news')
 def news():
-    # 크롤링 진행
-    result = news.news_data_crawling()
-
     return render_template('news.html')
+
+@app.route('/newsItem', methods=['POST'])
+def news_item():
+    # 크롤링 진행
+    result = n.news_data_crawling()
+    return result
+
 
 
 if __name__ == '__main__':

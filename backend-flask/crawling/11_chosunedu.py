@@ -2,7 +2,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 
-def getdata():
+
+def get_data():
     # 웹드라이버 설정 (크롬 드라이버)
     options = Options()
     options.add_argument('headless')
@@ -38,5 +39,3 @@ def getdata():
     driver.quit()
     return result
 
-
-getdata()

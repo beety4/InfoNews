@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def getdata():
+def get_data():
     # 웹사이트 URL 설정
     url = "https://www.incheon.go.kr/IC010205"
     # 웹페이지 요청
@@ -35,10 +35,11 @@ def getdata():
                 date = date.replace('-', '.')
 
             # 출력
-            print(f"제목: {title}")
-            print(f"링크: {link}")
-            print(f"날짜: {date}")
-            print("-" * 100)
+            #print(f"제목: {title}")
+            #print(f"링크: {link}")
+            #print(f"날짜: {date}")
+            #print("-" * 100)
+
             dict_data = {"title": title, "link": link, "date": date}
             result.append(dict_data)
         return result

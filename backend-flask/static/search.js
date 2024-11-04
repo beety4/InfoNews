@@ -9,7 +9,7 @@ document.getElementById("searchItem").addEventListener("click", function() {
     }
 
     $.ajax({
-    	url:"/searcItem",
+    	url:"/searchItem",
         type:"post",
         dataType:"json",
         data:{"search" : search.value},

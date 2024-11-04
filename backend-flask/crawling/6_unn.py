@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
-def getdata():
+def get_data():
     # 웹사이트 URL 설정
     url = "https://news.unn.net/news/articleList.html?view_type=sm"
     # 웹페이지 요청

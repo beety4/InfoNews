@@ -15,12 +15,18 @@
 
     <br><br>
 
-
-
+    <div id="msg">
+        데이터를 가져오는 중입니다...
+    </div>
+    <div id="main-area">
+    </div>
 
 
     <script type="text/javascript" src="{{ url_for('static', filename='news.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        ajax_get_data();
+    </script>
 </body>
 </html>

@@ -2,7 +2,7 @@ import requests
 import re
 from bs4 import BeautifulSoup
 
-def getdata():
+def get_data():
     url = 'http://www.unipress.co.kr/news/articleList.html?view_type=sm'
 
     response = requests.get(url)

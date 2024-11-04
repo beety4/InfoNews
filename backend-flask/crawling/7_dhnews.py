@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
-def getdata():
+def get_data():
     # 가져올 웹사이트 주소
     url = "https://dhnews.co.kr/news/cate/"
 

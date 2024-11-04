@@ -2,7 +2,7 @@ import requests
 import re
 from bs4 import BeautifulSoup
 
-def getdata():
+def get_data():
     url = 'https://www.usline.kr/news/articleList.html?view_type=sm'
 
     response = requests.get(url)
