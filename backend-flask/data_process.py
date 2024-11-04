@@ -35,7 +35,7 @@ def create_chart_img(df, file_name):
 
     # title 별로 선 그래프를 그림
     for title, group in df.groupby('title'):
-        plt.plot(group['period'], group['min_max'], marker='o', label=title)
+        plt.plot(group['period'], group['normalize_ratio'], marker='o', label=title)
 
     plt.title("키워드 별 검색 빈도 수 추이")
     plt.xlabel("날짜")

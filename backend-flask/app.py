@@ -42,6 +42,8 @@ def search_item():
 
 @app.route('/news')
 def news():
+    # 크롤링 진행
+    result = news.news_data_crawling()
 
     return render_template('news.html')
 

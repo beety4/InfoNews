@@ -55,6 +55,7 @@ if(url.length >= 30) {
 function copylinkbtn() {
     const container = document.getElementById("urlzone");
     let btn = document.createElement("button");
+    btn.setAttribute("class", "copybtn")
     btn.innerText = "현재 결과 링크 복사";
     container.appendChild(btn);
 
@@ -142,6 +143,10 @@ document.getElementById("search").addEventListener("click", function() {
 
             // 현재 정보로 copy 링크 작성 및 버튼 생성
             writecopylink(JSON.stringify(keywordList), startDate, endDate, timeUnit, data);
+            document.querySelectorAll('.copybtn').forEach(element => {
+                element.remove();
+            });
+
             copylinkbtn();
 
             // 이미지 띄우기

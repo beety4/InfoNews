@@ -29,7 +29,7 @@ def news_data_crawling():
             if result is not None:
                 all_data.append(result)
 
-        #print(all_data)
+        print(all_data)
         return all_data
 
 

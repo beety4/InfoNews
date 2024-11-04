@@ -3,28 +3,31 @@ import pandas as pd
 from scipy.stats import zscore
 import data_process as dp
 
-# 입력받은 키워드를 적절히 나누기 위해 2~5 사이의 원소를 가진 2차원 배열로 변환
-def keyword_split(keyword_list, max_size=5, min_size=2):
-    if len(keyword_list) <= 5:
-        return [keyword_list]
 
+# 입력받은 키워드 리스트를, 'compare'가 포함된 5개 이하의 2차원 배열로 변환
+def keyword_split(keyword_list):
     result = []
-    temp = []
 
-    for item in keyword_list:
-        temp.append(item)
+    for i in range(0, len(keyword_list), 4):
+        group = ['compare'] + keyword_list[i:i + 4]
+        result.append(group)
 
-        if len(temp) == max_size or (
-                len(keyword_list) - len(result) * max_size - len(temp) <= min_size and len(temp) >= min_size):
-            result.append(temp)
-            temp = []
-
-    if len(temp) >= min_size:
-        result.append(temp)
-
+    print(result)
     return result
 
 
+# API 결과 json 을 dataframe으로 생성
+def create_df(data):
+    rows = []
+    for item in data['results']:
+        title = item['title']
+        for entry in item['data']:
+            rows.append({'title': title, 'period': entry['period'], 'ratio': entry['ratio']})
+
+    df = pd.DataFrame(rows)
+    df = df.sort_values('period')
+
+    return df
 
 
 # 데이터 입력받은 뒤, naver_api를 사용하여 요청
@@ -36,7 +39,16 @@ def get_each_data(keyword_list, startDate, endDate, timeUnit, nowdate):
         df_list = []
         for kl in each_keyword_list:
             result = api.access_keyword(kl, startDate, endDate, timeUnit)
-            df_list.append(refresh_item(result))
+            result_df = create_df(result)
+
+            # 첫번째 compare의 ratio값을 가져온뒤 임의값 100으로 비율 게산
+            first_compare_ratio = result_df[result_df['title'] == 'compare'].iloc[0]['ratio']
+            point_per_ratio = 100 / first_compare_ratio
+
+            # 새로 계산한 ratio 값 추가 후, compare은 삭제
+            result_df['point_ratio'] = result_df['ratio'] * point_per_ratio
+            result_df = result_df[result_df['title'] != 'compare']
+            df_list.append(result_df)
     except:
         return "1"
 
@@ -45,20 +57,17 @@ def get_each_data(keyword_list, startDate, endDate, timeUnit, nowdate):
     if len(df_list) == 0:
         return "1"
 
-    # z-score 정규화
+    # 가져온 리스트 전부 합치기
     merge_df = pd.concat(df_list, ignore_index=True)
-    merge_df['z_score'] = zscore(merge_df['ratio'])
-    #print(merge_df)
 
-    # z-score 점수를 0~100 사이로 min-max 스케일링 적용
-    z_min = merge_df['z_score'].min()
-    z_max = merge_df['z_score'].max()
-    merge_df['min_max'] = 100 * (merge_df['z_score'] - z_min) / (z_max - z_min)
+    # 병합한 df들의 point_ratio 값을 Min-Max 정규화로 0~100 설정
+    min_point = merge_df['point_ratio'].min()
+    max_point = merge_df['point_ratio'].max()
+    merge_df['normalize_ratio'] = (merge_df['point_ratio'] - min_point) / (max_point - min_point) * 100
     print(merge_df)
 
-
     # 완성된 DataFrame을 딕셔너리 형태로 변환 후 wordcloud 생성
-    wc_dict = merge_df.groupby('title')['min_max'].sum().to_dict()
+    wc_dict = merge_df.groupby('title')['normalize_ratio'].sum().to_dict()
     dp.create_wc_img(wc_dict, nowdate)
 
     # 차트 생성
@@ -68,22 +77,7 @@ def get_each_data(keyword_list, startDate, endDate, timeUnit, nowdate):
 
 
 
-# 데이터 가공 처리
-def refresh_item(data):
-    data_rows = []
-    for result in data["results"]:
-        title = result["title"]
-        for item in result["data"]:
-            data_rows.append({"title": title, "period": item["period"], "ratio": item["ratio"]})
-
-    # DataFrame 생성
-    df = pd.DataFrame(data_rows)
-    df = df.sort_values('period')
-    #print(df)
-    return df
-
-
-
-#test_keyword = ["서울대", "고려대", "연세대"]
+#test_keyword = ["서울대","고려대","연세대"]
 #df1 = get_each_data(test_keyword, "2023-11-03", "2024-11-01", "month", "e")
+
 
