@@ -2,7 +2,7 @@ from datetime import datetime
 from naver_api import NaverAPI
 
 
-def search_news(search):
+def search_item(search):
     api = NaverAPI()
     result = api.search_news(search)
 
