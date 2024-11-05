@@ -35,7 +35,7 @@ def search_item():
     search = request.form["search"]
 
     # 네이버 API 요청
-    result = ns.search_news(search)
+    result = ns.search_item(search)
     return result
 
 

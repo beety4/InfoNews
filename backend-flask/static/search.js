@@ -1,3 +1,4 @@
+document.getElementById("searchItem").focus();
 // 검색 버튼 클릭 이벤트 리스너
 document.getElementById("searchItem").addEventListener("click", function() {
     let search = document.getElementById("search")
