@@ -21,6 +21,7 @@ class NaverAPI:
 
         client_id = str(os.getenv('client_id'))
         client_secret = str(os.getenv('client_secret'))
+
         return client_id, client_secret
 
 
@@ -61,7 +62,7 @@ class NaverAPI:
 
 
     # 네이버 뉴스 키워드 검색 API 요청
-    def search_news(self, keyword, display=15, start=1, sort="date"):
+    def search_news(self, keyword, display=100, start=1, sort="sim"):
         url = "https://openapi.naver.com/v1/search/news.json"
 
         headers = {
