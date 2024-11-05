@@ -21,6 +21,10 @@ document.getElementById("searchItem").addEventListener("click", function() {
 			    return;
 			}
 
+            // 이전 데이터 초기화
+            document.getElementById("news_table").textContent = "";
+
+            // 데이터 가져와서 출력
 			$(data).each(function() {
 			    let date = this.date;
 			    let link = this.link;

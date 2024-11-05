@@ -27,6 +27,7 @@ def news_data_crawling():
         # 결과 수집
         for future in as_completed(future_to_file):
             try:
+                print(f"test : {future.result()[0]}")
                 data_list.append(future.result())  # get_data() 반환 결과를 리스트에 추가
             except Exception as e:
                 print(f"Error processing file {future_to_file[future]}: {e}")
