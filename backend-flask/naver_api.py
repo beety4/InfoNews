@@ -62,7 +62,7 @@ class NaverAPI:
 
 
     # 네이버 뉴스 키워드 검색 API 요청
-    def search_news(self, keyword, display=100, start=1, sort="sim"):
+    def search_news(self, keyword, display=100, start=1, sort="date"):
         url = "https://openapi.naver.com/v1/search/news.json"
 
         headers = {

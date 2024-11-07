@@ -81,4 +81,10 @@ print(f"키워드 간의 비율 결과 : {df1_score / df2_score}")
 print(f"실제 요청 결과 : {df3.loc[0]['ratio'] / df3.loc[1]['ratio']}")
 
 
+print()
+print("=" * 70)
+print()
+
+url = "https://cloudsearch.apigw.ntruss.com/CloudSearch/real/v1/domain/{name}/document/search/autocomplete"
+
 

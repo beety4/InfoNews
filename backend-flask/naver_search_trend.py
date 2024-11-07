@@ -12,7 +12,7 @@ def keyword_split(keyword_list):
         group = ['compare'] + keyword_list[i:i + 4]
         result.append(group)
 
-    print(result)
+    #print(result)
     return result
 
 
@@ -54,6 +54,7 @@ def get_each_data(keyword_list, startDate, endDate, timeUnit, nowdate):
 
 
     # 가져와졌는지 확인
+    print(f"dfList Size : {len(df_list)}")
     if len(df_list) == 0:
         return "1"
 

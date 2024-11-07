@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 # wordcloud 이미지 생성 및 저장
 def create_wc_img(dict_data, file_name):
     wordcloud = WordCloud(
+        #font_path="./malgun.ttf",
         font_path="malgun",
         width=800,
         height=400,
@@ -27,11 +28,11 @@ def create_wc_img(dict_data, file_name):
 def create_chart_img(df, file_name):
     matplotlib.use('Agg')
 
-    plt.rcParams['font.family'] = 'Malgun Gothic'
+    plt.rcParams['font.family'] = 'NanumGothic'
     plt.rcParams['axes.unicode_minus'] = False
 
     # 차트 생성
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(10, 7))
 
     # title 별로 선 그래프를 그림
     for title, group in df.groupby('title'):

@@ -44,10 +44,13 @@ def search_item():
 def news():
     return render_template('news.html')
 
+
 @app.route('/newsItem', methods=['POST'])
 def news_item():
+    #indexnum = request.form["indexnum"]
     # 크롤링 진행
-    result = n.news_data_crawling()
+    #result = n.news_data_crawling()
+    result = n.module_exec()
     return result
 
 
