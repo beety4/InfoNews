@@ -1938,8 +1938,7 @@ textarea {
   padding: 0 1em;
   margin-bottom: 1%;
   text-decoration: none;
-  font-size:1.3em;
-  /* width: 100%;  */
+  font-size:1.2em;
 }
 
 input[type="text"]:invalid,
