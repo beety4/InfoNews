@@ -307,7 +307,7 @@ h6 a {
 
 h1 {
   font-size: 4em;
-  margin: 0 0 0.5em 0;
+  /* margin: 0 0 0.5em 0; */
   line-height: 1.3;
 }
 
@@ -332,13 +332,13 @@ h6 {
 
 @media screen and (max-width: 1680px) {
   h1 {
-    font-size: 2.5em;
+    font-size: 1.8em;
   }
 }
 
 @media screen and (max-width: 980px) {
   h1 {
-    font-size: 3.25em;
+    font-size: 1.8em;
   }
 }
 
@@ -2022,7 +2022,7 @@ input[type="radio"]+label {
   color: #7f888f;
   cursor: pointer;
   display: inline-block;
-  font-size: 1.3em;
+  font-size: 1.2em;
   font-weight: 400;
   padding-left: 2.4em;
   padding-right: 0.75em;
@@ -2579,8 +2579,7 @@ button,
   color: #f56a6a !important;
   cursor: pointer;
   display: inline-block;
-  /* font-family: "Roboto Slab", serif; */
-  font-size: 1.3em;
+  font-size: 1em;
   font-weight: 700;
   height: 3.5em;
   letter-spacing: 0.075em;
@@ -3103,7 +3102,7 @@ button:disabled,
 }
 
 #main>.inner>section {
-  padding: 6em 0 4em 0;
+  padding: 2em 0 4em 0;
   border-top: solid 2px rgba(210, 215, 217, 0.75);
 }
 
@@ -3117,7 +3116,7 @@ button:disabled,
   }
 
   #main>.inner>section {
-    padding: 5em 0 3em 0;
+    padding: 2em 0 2em 0;
   }
 }
 
@@ -3127,7 +3126,7 @@ button:disabled,
   }
 
   #main>.inner>section {
-    padding: 4em 0 2em 0;
+    padding: 2em 0 2em 0;
   }
 }
 
@@ -3417,7 +3416,7 @@ button:disabled,
   border-bottom: 0;
   color: inherit;
   /* font-family: "Roboto Slab", serif; */
-  font-size: 1.5em;
+  font-size: 1.3em;
 }
 
 #header .icons {
