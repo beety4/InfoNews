@@ -1,0 +1,284 @@
+<!DOCTYPE HTML>
+<!--
+	Editorial by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+	<title>InfoNews</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<scrpt>
+		<script>
+			// 라디오 버튼 선택에 따라 표시되는 내용을 제어하는 함수
+			function toggleSelection(type) {
+				if (type === 'checkbox') {
+					document.getElementById('checkbox-section').style.display = 'block'; // 체크박스 표시
+					document.getElementById('input-section').style.display = 'none'; // 검색어 입력 숨김
+				} else if (type === 'input') {
+					document.getElementById('checkbox-section').style.display = 'none'; // 체크박스 숨김
+					document.getElementById('input-section').style.display = 'block'; // 검색어 입력 표시
+				}
+			}
+		</script>
+	</scrpt>
+</head>
+
+<body class="is-preload">
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Main -->
+		<div id="main">
+			<div class="inner">
+
+				<!-- Header -->
+				<header id="header">
+					<a href="index.html" class="logo selectedTap">검색 빈도 수 확인</a>
+					<a href="search.html" class="logo">키워드 기반 뉴스 통합 검색</a>
+					<a href="news.html" class="logo">언론사별 뉴스 모아보기</a>
+				</header>
+
+				<!-- Banner -->
+				<section id="banner">
+					<div class="content">
+						<header>
+							<h1>검색 빈도 수 확인</h1>
+						</header>
+						<div class="row">
+							<div class="col-6 col-12-big">
+								<input type="radio" id="radio-1" name="radio-group" checked onclick="toggleSelection('checkbox')">
+								<label for="radio-1">대학교 선택</label>
+							</div>
+							<div class="col-6 col-12-big">
+								<input type="radio" id="radio-2" name="radio-group" onclick="toggleSelection('input')">
+								<label for="radio-2">검색어 입력</label>
+							</div>
+						</div>
+
+						<!-- 대학교 선택지 -->
+						<div id="checkbox-section" class="row">
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-1" name="demo-human" checked>
+								<label for="demo-human-1">동양미래대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">명지전문대학</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">배화여자대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">삼육보건대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">서울여자간호대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">서일대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">숭의여자대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">인덕대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">한양여자대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">경인여자대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">인하공업전문대학</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">인천재능대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">경기과학기술대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">경민대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">경복대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">계원예술대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">국제대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">김포대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">농협대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">대경대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">대림대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">동남보건대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">동서울대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">동아방송예술대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">동원대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">두원공과대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">부천대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">서영대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">서울예술대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">서정대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">수원과학대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">수원여자대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">신구대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">신안산대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">안산대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">여주대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">연성대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">오산대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">용인송담대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">웅지세무대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">유한대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">장안대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">청강문화산업대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<input type="checkbox" id="demo-human-2" name="demo-human" checked>
+								<label for="demo-human-2">한국관광대학교</label>
+							</div>
+							<div class="col-4 col-12-big">
+								<button class="button big">검색</button>
+							</div>
+						</div>
+
+						<!-- 검색어 입력 -->
+						<div id="input-section" class="row" style="display:none;">
+							<header class="header">
+							<p>비교를 위해 최소 2개 이상의 검색어가 입력되어야 합니다.</p>
+							</header>
+							<input type="text" class="off-1" tabindex="1" placeholder="검색어 입력(필수)">
+							<input type="text" class="off-1" tabindex="2" placeholder="검색어 입력(필수)">
+							<div class="col-4 col-12-big">
+								<button class="button big">검색어 추가</button><button class="button big btnRight">검색</button>
+							</div>
+
+						</div>
+					</div>
+				</section>
+
+				<!-- image -->
+				<section>
+					<img src="#" alt="wordCloud">
+					<img src="#" alt="chart">
+				</section>
+
+
+			</div>
+		</div>
+
+
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
