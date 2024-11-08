@@ -1,0 +1,212 @@
+*{
+  font-family: 'Work Sans', sans-serif;
+}
+html, body{
+  height: 100%;
+  color: #1a1b1c;
+}
+
+label, a{
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  display: inline-block;
+  color: inherit;
+  transition: border 0.2s;
+  border-bottom: 5px solid rgba(#8e44ad, 0.2);
+  padding: 3px 2px;
+  &:hover{
+    border-bottom-color: #9b59b6;
+  }
+}
+
+.layout{
+  display: grid;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  grid-template-rows: 50px 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+input[type="radio"]{
+  display: none;
+}
+
+label.nav{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-bottom: 2px solid #0049cf;
+  background: #ecf0f1;
+  user-select: none;
+  transition: background 0.4s, padding-left 0.2s;
+  padding-left: 0;
+  input[type="radio"]:checked + .page + &{
+    background: #0049cf;
+    opacity : 0.8;
+    color: #ffffff;
+
+    span{
+
+    }
+    svg{
+      opacity: 1;
+    }
+  }
+  span{
+    padding-left: 0px;
+    position: relative;
+  }
+  svg{
+    left: 0;
+    top: -3px;
+    position: absolute;
+    width: 15px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+}
+
+.page{
+  grid-column-start: 1;
+  grid-row-start: 2;
+  grid-column-end: span 3;
+  padding: 0px 20px;
+  display: flex;
+  width: 100%;
+  margin: auto;
+}
+
+.page-contents > *{
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.2s, transform 0.2s;
+  @for $c from 1 through 20{
+    &:nth-child(#{$c}){
+      transition-delay: 0.2s + ($c * 0.2s);
+    }
+  }
+}
+
+input[type="radio"] + .page{
+  transition: transform 0.2s;
+  transform: translateX(100%);
+}
+
+input[type="radio"]:checked + .page{
+  transform: translateX(0%);
+  .page-contents > *{
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+.page-contents{
+  max-width: 100%;
+  min-height: 500px;
+  width: 70%;
+  margin: 0 auto;
+}
+
+
+/* 모바일 CSS */
+@media (max-width: 768px) {
+    .page-contents {
+        width: 100%;
+    }
+
+    .mobile-font {
+        font-size: 10px;
+    }
+
+    .search button {
+	    display: none;
+    }
+}
+
+
+
+
+
+
+
+
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+
+
+
+
+.search {
+	position: relative;
+	box-shadow: 0 0 40px rgba(51, 51, 51, .1);
+	width: 85%;
+	margin: auto;
+}
+
+.search input {
+	height: 60px;
+	text-indent: 25px;
+	border: 2px solid #d6d4d4;
+}
+
+.search input:focus {
+	box-shadow: none;
+	border: 2px solid blue;
+}
+
+.search .fa-search {
+	position: absolute;
+	top: 20px;
+	left: 16px;
+}
+
+.search button {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	height: 50px;
+}
+
+
+
+
+
+
+
+
+
+ /* 배경을 하얀 회색으로 설정 */
+.checkbox-area {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    max-width: 400px;
+    margin: auto;
+}
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+}
+.checkbox-container label {
+    margin-left: 5px;
+}
+.actions {
+    margin-bottom: 10px;
+}
+.input-container {
+    margin-top: 15px;
+}
+

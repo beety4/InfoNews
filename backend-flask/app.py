@@ -9,8 +9,13 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def home():
+def index():
     return render_template('index.html')
+
+
+@app.route('/trend')
+def home():
+    return render_template('trend.html')
 
 
 @app.route('/queryItem', methods=['POST'])

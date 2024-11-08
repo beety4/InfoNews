@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>모죽 - 통합뉴스</title>
+</head>
+<body>
+    <h1>[모죽] 검색 빈도 수 확인</h1>
+    <a href="/search">키워드 기반 뉴스 통합검색</a> //
+    <a href="/news">언론사별 뉴스 모아보기</a>
+    <hr>
+    <a>검색 빈도 수 비교를 위한 키워드를 입력해주세요.</a><br>
+    <a>비교를 위해 최소 2개 이상의 검색어가 입력되어야 합니다.</a><br>
+    <div id="main-area">
+        <div class="keyword-area">
+            <input type="text" tabIndex="1" placeholder="검색어 입력">
+        </div>
+        <div class="keyword-area">
+            <input type="text" tabIndex="2" placeholder="검색어 입력">
+        </div>
+    </div>
+
+    <button id="add">검색어 추가</button><br>
+    <br>
+
+    <input type="date" id="startDate" name="startDate"> ~ <input type="date" id="endDate" name="endDate">
+    <input type="radio" name="timeUnit" value="month" checked> 월간
+    <input type="radio" name="timeUnit" value="date"> 일간
+
+    <br><br>
+    <button id="search" style="float:right;">검색</button><br>
+
+    <hr>
+    <div id="urlzone">
+        <input type="text" id="link_value" value="" style="display:none;">
+    </div>
+
+    <img src="{{ url_for('static', filename='blank.png') }}" alt="wc-img" id="wc-img">
+    <img src="{{ url_for('static', filename='blank.png') }}" alt="chart-img" id="chart-img">
+
+
+
+    <script type="text/javascript" src="{{ url_for('static', filename='trend.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</body>
+</html>

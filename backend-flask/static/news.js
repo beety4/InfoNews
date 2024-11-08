@@ -1,6 +1,6 @@
 function ajax_get_data() {
     // count view
-    count_value(10);
+    count_value(8);
 
     $.ajax({
     	url:"/newsItem",
@@ -17,7 +17,7 @@ function ajax_get_data() {
             document.getElementById("msg").remove();
 
             // 가져온 json 데이터 파싱 후 forEach문으로 table 출력
-            write_data(data);
+            write_news_data(data);
         },
         error: function(request, status, error) {
 			alert("비동기 요청 중 오류가 발생했습니다.");
@@ -30,23 +30,32 @@ function ajax_get_data() {
 
 
 // html에 작성
-function write_data(result) {
-    const container = document.getElementById("main-area");
+function write_news_data(result) {
+    const container = document.getElementById("news-list");
+
     result.forEach(function(company) {
-        let hr = document.createElement("hr");
-        container.appendChild(hr);
-
         company.forEach(function(news) {
-            let value =  `${news.date} : ${news.title}`
-            let a = document.createElement("a");
-            a.setAttribute("href", news.link);
-            a.setAttribute("target", "_blank");
-            a.textContent = value;
+            const html = `
+            <table id="table_1" class="table table-striped" style="width:40%;">
+            <thead>
+                <tr>
+                    <th scope="col" colspan="2">ㅇㅇ일보</th>
+                </tr>
+                <tr>
+                    <th scope="col">날짜</th>
+                    <th scope="col">뉴스 제목</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row" style="vertical-align: middle;">${news.date}</th>th>
+                    <td><a href="${news.link}" target="_blank">${news.title}</a></td>
+                </tr>
+            </tbody>
+            </table>
+        `;
 
-            container.appendChild(a);
-
-            let br = document.createElement("br");
-            container.appendChild(br);
+        container.insertAdjacentHTML('beforeend', html);
         });
     });
 }

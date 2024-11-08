@@ -1,4 +1,4 @@
-document.getElementById("searchItem").focus();
+
 // 검색 버튼 클릭 이벤트 리스너
 document.getElementById("searchItem").addEventListener("click", function() {
     let search = document.getElementById("search")
@@ -22,7 +22,10 @@ document.getElementById("searchItem").addEventListener("click", function() {
 			}
 
             // 이전 데이터 초기화
-            document.getElementById("news_table").textContent = "";
+            document.querySelector("#news_table tbody").textContent = "";
+
+            let table = document.getElementById("news_table");
+            table.style.display = 'block';
 
             // 데이터 가져와서 출력
 			$(data).each(function() {
@@ -30,7 +33,7 @@ document.getElementById("searchItem").addEventListener("click", function() {
 			    let link = this.link;
 			    let title = this.title;
 
-			    writePage(date, link, title);
+			    writeTablePage(date, link, title);
 			});
 
         },
@@ -53,15 +56,14 @@ function enterkey() {
 
 
 // 가져온 데이터 HTML 출력
-function writePage(date, link, title) {
-    let table = document.getElementById("news_table");
-    table.style.display = 'block';
-
+function writeTablePage(date, link, title) {
     const html = `
         <tr>
-            <td>${date}</td>
+            <th scope="row" style="vertical-align: middle;">${date}</th>
             <td><a href="${link}" target="_blank">${title}</a></td>
         </tr>
     `;
-    table.insertAdjacentHTML('beforeend', html);
+
+    let tbodywhere = document.querySelector("#news_table tbody");
+    tbodywhere.insertAdjacentHTML('beforeend', html);
 }

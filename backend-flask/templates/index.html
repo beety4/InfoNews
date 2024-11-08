@@ -1,49 +1,157 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<!--
+	Escape Velocity by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>모죽 - 통합뉴스</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/main.css') }}"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,600,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='mycss.css') }}"/>
 </head>
-<body>
-    <h1>[모죽] 검색 빈도 수 확인</h1>
-    <a href="/search">키워드 기반 뉴스 통합검색</a> //
-    <a href="/news">언론사별 뉴스 모아보기</a>
-    <hr>
-    <a>검색 빈도 수 비교를 위한 키워드를 입력해주세요.</a><br>
-    <a>비교를 위해 최소 2개 이상의 검색어가 입력되어야 합니다.</a><br>
-    <div id="main-area">
-        <div class="keyword-area">
-            <input type="text" tabIndex="1" placeholder="검색어 입력">
+<body class="no-sidebar is-preload">
+<div id="page-wrapper">
+
+    <!-- Header -->
+    <section id="header" class="wrapper">
+        <div id="logo">
+            <h1><a href="/">모죽 - 통합뉴스</a></h1>
+            <p>You can Search News and get trend</p>
         </div>
-        <div class="keyword-area">
-            <input type="text" tabIndex="2" placeholder="검색어 입력">
+    </section>
+
+
+    <!-- Main -->
+    <div class="layout">
+        <!-- 검색 빈도 수 -->
+        <input name="nav" type="radio" class="nav home-radio" id="home"/>
+        <div class="page home-page">
+            <div class="page-contents">
+                <br>
+                <h1>검색 빈도 수 조회</h1>
+                <p>검색 빈도 수 비교를 위해 최소 2개 이상의 키워드를 입력해주세요.</p>
+
+
+                <div class="checkbox-area">
+                    <!-- 전체 선택 / 전체 해제 버튼 -->
+                    <div class="actions">
+                        <button onclick="selectAll()">전체 선택</button>
+                        <button onclick="deselectAll()">전체 해제</button>
+                    </div>
+
+                    <!-- 체크박스 목록 -->
+                    <div class="checkbox-container">
+                        <input type="checkbox" class="item-checkbox" value="item1" onchange="toggleInput(this)">
+                        <label>Option 1</label>
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" class="item-checkbox" value="item2" onchange="toggleInput(this)">
+                        <label>Option 2</label>
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" class="item-checkbox" value="item3" onchange="toggleInput(this)">
+                        <label>Option 3</label>
+                    </div>
+                    <!-- 추가된 입력 필드 영역 -->
+                    <div class="input-container" id="inputContainer"></div>
+                </div>
+
+
+
+
+
+
+            </div>
         </div>
+        <label class="nav" for="home">
+            <span>
+            <span class="mobile-font">검색 빈도 수</span>
+            </span>
+        </label>
+
+        <!-- 뉴스 통합 검색 -->
+        <input name="nav" type="radio" class="about-radio" id="about" checked="checked"/>
+        <div class="page about-page">
+            <div class="page-contents">
+                <br><br>
+                <h1>뉴스 통합 검색</h1>
+                <p>검색하고 싶은 뉴스의 키워드를 입력해주세요.</p>
+                <br>
+
+                <div class="search">
+					<i class="fa fa-search"></i>
+					<input type="text" id="search" name="search" class="form-control" placeholder="EX) 인하공전" onkeyup="enterkey();">
+					<button type="button" id="searchItem" class="btn btn-dark btn-search">검색</button>
+				</div>
+                <hr><br>
+
+                <table id="news_table" class="table table-striped" style="display:none;">
+                    <thead>
+                    <tr>
+                        <th scope="col">날짜</th>
+                        <th scope="col">뉴스 제목</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <br><br><br>
+            </div>
+        </div>
+        <label class="nav" for="about">
+            <span>
+            <span class="mobile-font">뉴스 통합 겁색</span>
+            </span>
+        </label>
+
+
+        <!-- 얼론사별 최신 뉴스 -->
+        <input name="nav" type="radio" class="contact-radio" id="contact"/>
+        <div class="page contact-page">
+            <div class="page-contents">
+                <br>
+                <h1>언론사별 최신 뉴스</h1>
+                <p>언론사별 뉴스 최신순 정렬 입니다.</p>
+
+                <div id="msg">데이터를 가져오는 중입니다...9초</div>
+                <div id="news-list"></div>
+            </div>
+        </div>
+        <label class="nav" for="contact">
+            <span>
+            <span class="mobile-font">언론사별 최신 뉴스</span>
+            </span>
+        </label>
     </div>
 
-    <button id="add">검색어 추가</button><br>
-    <br>
 
-    <input type="date" id="startDate" name="startDate"> ~ <input type="date" id="endDate" name="endDate">
-    <input type="radio" name="timeUnit" value="month" checked> 월간
-    <input type="radio" name="timeUnit" value="date"> 일간
-
-    <br><br>
-    <button id="search" style="float:right;">검색</button><br>
-
-    <hr>
-    <div id="urlzone">
-        <input type="text" id="link_value" value="" style="display:none;">
-    </div>
-
-    <img src="{{ url_for('static', filename='blank.png') }}" alt="wc-img" id="wc-img">
-    <img src="{{ url_for('static', filename='blank.png') }}" alt="chart-img" id="chart-img">
+    <!-- Footer -->
+    <footer>
+        <section id="footer" class="wrapper footer-resize">
+            <center>
+                &copy; Mojuk - KMH, GYR, KSY &nbsp;&nbsp;&nbsp;
+                Design: <a href="http://html5up.net">HTML5 UP</a>
+            </center>
+        </section>
+    </footer>
+</div>
 
 
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="{{ url_for('static', filename='assets/js/breakpoints.min.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/util.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='search.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='news.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
 
-    <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
 </body>
 </html>
