@@ -32,34 +32,15 @@
         <input name="nav" type="radio" class="nav home-radio" id="home"/>
         <div class="page home-page">
             <div class="page-contents">
-                <br>
-                <h1>검색 빈도 수 조회</h1>
-                <p>검색 빈도 수 비교를 위해 최소 2개 이상의 키워드를 입력해주세요.</p>
-
-
-                <div class="checkbox-area">
-                    <!-- 전체 선택 / 전체 해제 버튼 -->
-                    <div class="actions">
-                        <button onclick="selectAll()">전체 선택</button>
-                        <button onclick="deselectAll()">전체 해제</button>
-                    </div>
-
-                    <!-- 체크박스 목록 -->
-                    <div class="checkbox-container">
-                        <input type="checkbox" class="item-checkbox" value="item1" onchange="toggleInput(this)">
-                        <label>Option 1</label>
-                    </div>
-                    <div class="checkbox-container">
-                        <input type="checkbox" class="item-checkbox" value="item2" onchange="toggleInput(this)">
-                        <label>Option 2</label>
-                    </div>
-                    <div class="checkbox-container">
-                        <input type="checkbox" class="item-checkbox" value="item3" onchange="toggleInput(this)">
-                        <label>Option 3</label>
-                    </div>
-                    <!-- 추가된 입력 필드 영역 -->
-                    <div class="input-container" id="inputContainer"></div>
+                <br><br>
+                <div style="text-align: center;">
+                    <h1>검색 빈도 수 조회</h1>
+                    <p>검색 빈도 수 비교를 위해 최소 2개 이상의 키워드를 입력해주세요.</p>
                 </div>
+
+
+
+
 
 
 
@@ -75,12 +56,15 @@
         </label>
 
         <!-- 뉴스 통합 검색 -->
-        <input name="nav" type="radio" class="about-radio" id="about" checked="checked"/>
+        <input name="nav" type="radio" class="about-radio" id="about"/>
         <div class="page about-page">
             <div class="page-contents">
                 <br><br>
-                <h1>뉴스 통합 검색</h1>
-                <p>검색하고 싶은 뉴스의 키워드를 입력해주세요.</p>
+                <div style="text-align: center;">
+                    <h1>뉴스 통합 검색</h1>
+                    <p>검색하고 싶은 뉴스의 키워드를 입력해주세요.</p>
+                </div>
+
                 <br>
 
                 <div class="search">
@@ -111,14 +95,69 @@
 
 
         <!-- 얼론사별 최신 뉴스 -->
-        <input name="nav" type="radio" class="contact-radio" id="contact"/>
+        <input name="nav" type="radio" class="contact-radio" id="contact" checked="checked"/>
         <div class="page contact-page">
             <div class="page-contents">
-                <br>
-                <h1>언론사별 최신 뉴스</h1>
-                <p>언론사별 뉴스 최신순 정렬 입니다.</p>
+                <br><br>
+                <div style="text-align: center;">
+                    <h1>언론사별 최신 뉴스</h1>
+                    <div id="msg">데이터를 가져오는 중입니다... 10초</div>
+                </div>
 
-                <div id="msg">데이터를 가져오는 중입니다...9초</div>
+
+                <div id="news-checkbox" class="news-checkbox">
+                    <br>
+                    <div class="check-items">
+                        <input type="checkbox" class="form-check-input" value="대학지성IN&OUT" onchange="toggleCheck(this)" checked="checked">
+                        <label>대학지성IN&OUT</label>
+                    </div>
+                    <div class="check-items">
+                        <input type="checkbox" class="form-check-input" value="한국대학신문(UNN)" onchange="toggleCheck(this)" checked="checked">
+                        <label>한국대학신문(UNN)</label>
+                    </div>
+                    <div class="check-items">
+                        <input type="checkbox" class="form-check-input" value="유스라인(Usline)" onchange="toggleCheck(this)" checked="checked">
+                        <label>유스라인(Usline)</label>
+                    </div>
+                    <div class="check-items">
+                        <input type="checkbox" class="form-check-input" value="대학저널" onchange="toggleCheck(this)" checked="checked">
+                        <label>대학저널</label>
+                    </div>
+                    <div class="check-items">
+                        <input type="checkbox" class="form-check-input" value="베리타스알파" onchange="toggleCheck(this)" checked="checked">
+                        <label>베리타스알파</label>
+                    </div>
+                    <div class="check-items">
+                        <input type="checkbox" class="form-check-input" value="연합뉴스" onchange="toggleCheck(this)" checked="checked">
+                        <label>연합뉴스</label>
+                    </div>
+                    <br>
+                    <div class="check-items">
+                        <input type="checkbox" class="form-check-input" value="교육부보도자료" onchange="toggleCheck(this)" checked="checked">
+                        <label>교육부보도자료</label>
+                    </div>
+                    <div class="check-items">
+                        <input type="checkbox" class="form-check-input" value="인천광역시보도자료" onchange="toggleCheck(this)" checked="checked">
+                        <label>인천광역시보도자료</label>
+                    </div>
+                    <div class="check-items">
+                        <input type="checkbox" class="form-check-input" value="교수신문" onchange="toggleCheck(this)" checked="checked">
+                        <label>교수신문</label>
+                    </div>
+                    <div class="check-items">
+                        <input type="checkbox" class="form-check-input" value="한국전문대학교육협의회" onchange="toggleCheck(this)" checked="checked">
+                        <label>한국전문대학교육협의회</label>
+                    </div>
+                    <div class="check-items">
+                        <input type="checkbox" class="form-check-input" value="조선에듀" onchange="toggleCheck(this)" checked="checked">
+                        <label>조선에듀</label>
+                    </div>
+                    <br><br>
+                </div>
+
+                <button id="refresh_news" class="btn btn-secondary" style="display:none;">새로고침</button>
+
+                <hr><br>
                 <div id="news-list"></div>
             </div>
         </div>

@@ -11,6 +11,7 @@ $(document).ready(function () {
 // ============================================
 // 사이트 처음로딩과 동시에 뉴스 데이터 비동기 요청
 // 전체 선택
+/*
     function selectAll() {
         document.querySelectorAll('.item-checkbox').forEach(checkbox => {
             checkbox.checked = true;
@@ -47,5 +48,6 @@ $(document).ready(function () {
             }
         }
     }
+*/
 
 

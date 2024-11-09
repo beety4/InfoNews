@@ -27,6 +27,7 @@ label, a{
   overflow: hidden;
   grid-template-rows: 50px 1fr;
   grid-template-columns: 1fr 1fr 1fr;
+  position: relative;
 }
 
 input[type="radio"]{
@@ -70,17 +71,23 @@ label.nav{
 }
 
 .page{
+  position: absolute;
   grid-column-start: 1;
   grid-row-start: 2;
   grid-column-end: span 3;
   padding: 0px 20px;
-  display: flex;
   width: 100%;
   margin: auto;
+  overflow: visible;
+  transition: max-height 0.3s ease;
+  display: none;
+  height: auto;
 }
 
 .page-contents > *{
   opacity: 0;
+  overflow: visible;
+  height: auto;
   transform: translateY(20px);
   transition: opacity 0.2s, transform 0.2s;
   @for $c from 1 through 20{
@@ -96,6 +103,13 @@ input[type="radio"] + .page{
 }
 
 input[type="radio"]:checked + .page{
+  max-height: 100vh;
+  overflow: auto;
+  display: block;
+  height: 100%;
+  display: block;
+  position: relative;
+  overflow-y: auto;
   transform: translateX(0%);
   .page-contents > *{
     opacity: 1;
@@ -210,3 +224,20 @@ footer {
     margin-top: 15px;
 }
 
+
+
+
+.news-checkbox {
+    display: none;
+    background-color: #E0E0E0;
+    border: 1px solid black;
+    width: 70%;
+    margin: auto;
+}
+
+.check-items {
+    display: inline;
+    float: center;
+    margin: auto;
+        margin-left: 10px;
+}
