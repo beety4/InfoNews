@@ -25,7 +25,7 @@ document.getElementById("searchItem").addEventListener("click", function() {
             document.querySelector("#news_table tbody").textContent = "";
 
             let table = document.getElementById("news_table");
-            table.style.display = 'block';
+            table.style.display = 'table';
 
             // 데이터 가져와서 출력
 			$(data).each(function() {

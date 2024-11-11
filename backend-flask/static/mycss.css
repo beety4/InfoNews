@@ -103,11 +103,9 @@ input[type="radio"] + .page{
 }
 
 input[type="radio"]:checked + .page{
-  max-height: 100vh;
   overflow: auto;
   display: block;
   height: 100%;
-  display: block;
   position: relative;
   overflow-y: auto;
   transform: translateX(0%);
@@ -120,7 +118,7 @@ input[type="radio"]:checked + .page{
 .page-contents{
   max-width: 100%;
   min-height: 500px;
-  width: 70%;
+  width: 80%;
   margin: 0 auto;
 }
 
@@ -140,13 +138,6 @@ input[type="radio"]:checked + .page{
     }
 }
 
-
-
-
-
-
-
-
 footer {
     background-color: #333;
     color: #fff;
@@ -156,10 +147,6 @@ footer {
     bottom: 0;
     width: 100%;
 }
-
-
-
-
 
 .search {
 	position: relative;
@@ -192,15 +179,87 @@ footer {
 	height: 50px;
 }
 
+/*dropdown*/
+.dropdown-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    padding: 2% 0 2% 0;
+}
 
+.dropdown {
+    position: relative;
+    display: inline-block;
+    margin-right: 10px;
+}
 
+.dropdown-button {
+    padding: 8px 16px;
+    background-color: rgb(236, 240, 241);
+    color: black;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    width: 140px;
+    transition: background-color 0.3s ease;
+}
 
+.dropdown-button:hover {
+    background-color: rgb(51, 109, 217);
+    color: white;
+}
 
+.dropdown-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 800px;
+    max-width: none;
+    background-color: #f1f1f1;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    z-index: 1;
+    display: none;
 
+}
 
+.dropdown:hover .dropdown-content {
+    display: block;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
 
+.check-items {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    align-items: center;
+    justify-content: flex-start;
+    width: 23%;
+}
 
- /* 배경을 하얀 회색으로 설정 */
+.check-items:hover {
+    background-color: #e0e0e0;
+}
+
+.check-items label {
+    margin-left: 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
 .checkbox-area {
     background-color: #f9f9f9;
     padding: 20px;
@@ -209,6 +268,7 @@ footer {
     max-width: 400px;
     margin: auto;
 }
+
 .checkbox-container {
     display: flex;
     align-items: center;
@@ -217,27 +277,52 @@ footer {
 .checkbox-container label {
     margin-left: 5px;
 }
+
 .actions {
     margin-bottom: 10px;
 }
+
 .input-container {
     margin-top: 15px;
 }
 
-
-
+#news_table {
+    display:none;
+    width:85%;
+    margin-left: auto;
+    margin-right: auto;
+}
 
 .news-checkbox {
     display: none;
-    background-color: #E0E0E0;
-    border: 1px solid black;
-    width: 70%;
-    margin: auto;
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    padding: 2% 0 2% 5%;
+}
+.button-container {
+    text-align: center;
+    width: 100%;
+    padding-top: 10px;
+}
+.news-checkbox .check-items {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 20px;
+    margin-bottom: 10px;
+    width:30%;
 }
 
-.check-items {
-    display: inline;
-    float: center;
-    margin: auto;
-        margin-left: 10px;
+.news-checkbox .check-items label {
+    margin-left: 10px;
+    font-size: 16px;
+    color: #333;
+}
+
+.news-checkbox .check-items input[type="checkbox"] {
+    transform: scale(1.2);
+    margin-right: 10px;
 }

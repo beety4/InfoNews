@@ -10,7 +10,8 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/main.css') }}"/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,600,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='mycss.css') }}"/>
 </head>
@@ -38,14 +39,747 @@
                     <p>검색 빈도 수 비교를 위해 최소 2개 이상의 키워드를 입력해주세요.</p>
                 </div>
 
+                <div class="dropdown-container">
+                    <!-- 가 드롭다운 -->
+                    <div class="dropdown">
+                        <button class="dropdown-button">가</button>
+                        <div class="dropdown-content">
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="CatholicSangji" value="가톨릭상지대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="CatholicSangji">가톨릭상지대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="Gangdong" value="강동대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="Gangdong">강동대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="GangneungYeongdong" value="강릉영동대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="GangneungYeongdong">강릉영동대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="GangwonProvincial" value="강원도립대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="GangwonProvincial">강원도립대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="Geoje" value="거제대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="Geoje">거제대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="GyeonggiScienceTechnology"
+                                       value="경기과학기술대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="GyeonggiScienceTechnology">경기과학기술대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="GyeongnamDoLifeGocheong"
+                                       value="경남도립거창대학"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="GyeongnamDoLifeGocheong">경남도립거창대학</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="GyeongnamDoLifeNamhae"
+                                       value="경남도립남해대학"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="GyeongnamDoLifeNamhae">경남도립남해대학</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="GyeongnamInfo" value="경남정보대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="GyeongnamInfo">경남정보대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="Gyeongmin" value="경민대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="Gyeongmin">경민대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="Gyeongbok" value="경복대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="Gyeongbok">경복대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="GyeongbukScience" value="경북과학대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="GyeongbukScience">경북과학대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="GyeongbukProvincial" value="경북도립대학"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="GyeongbukProvincial">경북도립대학</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="GyeongbukHealth" value="경북보건대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="GyeongbukHealth">경북보건대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="GyeongbukTech" value="경북전문대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="GyeongbukTech">경북전문대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="Gyeongin" value="경인여자대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="Gyeongin">경인여자대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="Gyeongmeong" value="계명문화대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="Gyeongmeong">계명문화대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="Gyeowon" value="계원예술대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="Gyeowon">계원예술대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="Koguryo" value="고구려대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="Koguryo">고구려대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="GwangyangHealth" value="광양보건대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="GwangyangHealth">광양보건대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="GwangjuHealth" value="광주보건대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="GwangjuHealth">광주보건대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="Gumi" value="구미대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="Gumi">구미대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="Gukje" value="국제대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="Gukje">국제대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="GunsanNursing" value="군산간호대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="GunsanNursing">군산간호대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="Gunjang" value="군장대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="Gunjang">군장대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="Gido" value="기독간호대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="Gido">기독간호대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="Gimpo" value="김포대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="Gimpo">김포대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="Gimhae" value="김해대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="Gimhae">김해대학교</label>
+                            </div>
 
+                        </div>
+                    </div>
 
+                    <!-- 나 드롭다운 -->
+                    <div class="dropdown">
+                        <button class="dropdown-button">나</button>
+                        <div class="dropdown-content">
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="NongHyupUniversity" value="농협대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="NongHyupUniversity">농협대학교</label>
+                            </div>
 
+                        </div>
+                    </div>
 
+                    <!-- 다 드롭다운 -->
+                    <div class="dropdown">
+                        <button class="dropdown-button">다</button>
+                        <div class="dropdown-content">
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="DaekyungUniversity" value="대경대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="DaekyungUniversity">대경대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="DaeguTechUniversity" value="대구공업대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="DaeguTechUniversity">대구공업대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="DaeguScienceUniversity"
+                                       value="대구과학대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="DaeguScienceUniversity">대구과학대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="DaeguHealthUniversity"
+                                       value="대구보건대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="DaeguHealthUniversity">대구보건대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="DaedeokUniversity" value="대덕대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="DaedeokUniversity">대덕대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="DaedongUniversity" value="대동대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="DaedongUniversity">대동대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="DaerimUniversity" value="대림대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="DaerimUniversity">대림대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="DaewonUniversity" value="대원대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="DaewonUniversity">대원대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="DaejeonScienceUniversity"
+                                       value="대전과학기술대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="DaejeonScienceUniversity">대전과학기술대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="DaejeonHealthUniversity"
+                                       value="대전보건대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="DaejeonHealthUniversity">대전보건대학교</label>
+                            </div>
 
+                        </div>
+                    </div>
 
+                    <!-- 마 드롭다운 -->
+                    <div class="dropdown">
+                        <button class="dropdown-button">마</button>
+                        <div class="dropdown-content">
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="MasangUniversity" value="마산대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="MasangUniversity">마산대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="MyeongjiUniversity" value="명지전문대학"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="MyeongjiUniversity">명지전문대학</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="MokpoScienceUniversity"
+                                       value="목포과학대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="MokpoScienceUniversity">목포과학대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="MungyeongUniversity" value="문경대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="MungyeongUniversity">문경대학교</label>
+                            </div>
 
+                        </div>
+                    </div>
 
+                    <!-- 바 드롭다운 -->
+                    <div class="dropdown">
+                        <button class="dropdown-button">바</button>
+                        <div class="dropdown-content">
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="BaehwaUniversity" value="배화여자대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="BaehwaUniversity">배화여자대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="BaeksukUniversity" value="백석문화대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="BaeksukUniversity">백석문화대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="BaekjeArtsUniversity"
+                                       value="백제예술대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="BaekjeArtsUniversity">백제예술대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="BusanGyeongsangUniversity"
+                                       value="부산경상대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="BusanGyeongsangUniversity">부산경상대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="BusanScienceTechnologyUniversity"
+                                       value="부산과학기술대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="BusanScienceTechnologyUniversity">부산과학기술대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="BusanHealthUniversity"
+                                       value="부산보건대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="BusanHealthUniversity">부산보건대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="BusanWomenUniversity"
+                                       value="부산여자대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="BusanWomenUniversity">부산여자대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="BusanArtsUniversity" value="부산예술대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="BusanArtsUniversity">부산예술대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="BucheonUniversity" value="부천대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="BucheonUniversity">부천대학교</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- 사 드롭다운 -->
+                    <div class="dropdown">
+                        <button class="dropdown-button">사</button>
+                        <div class="dropdown-content">
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="SamyukHealthUniversity"
+                                       value="삼육보건대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="SamyukHealthUniversity">삼육보건대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="SeoyoungUniversity" value="서영대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="SeoyoungUniversity">서영대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="SeoulWomenNursingCollege"
+                                       value="서울여자간호대학"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="SeoulWomenNursingCollege">서울여자간호대학</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="SeoulArtsUniversity" value="서울예술대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="SeoulArtsUniversity">서울예술대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="SeoilUniversity" value="서일대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="SeoilUniversity">서일대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="SeojeongUniversity" value="서정대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="SeojeongUniversity">서정대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="SeonrinUniversity" value="선린대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="SeonrinUniversity">선린대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="SeongdeokUniversity" value="성덕대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="SeongdeokUniversity">성덕대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="SekyeongUniversity" value="세경대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="SekyeongUniversity">세경대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="SonggokUniversity" value="송곡대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="SonggokUniversity">송곡대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="SonghoUniversity" value="송호대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="SonghoUniversity">송호대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="SuseongUniversity" value="수성대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="SuseongUniversity">수성대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="SuwonScienceUniversity"
+                                       value="수원과학대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="SuwonScienceUniversity">수원과학대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="SuwonWomenUniversity"
+                                       value="수원여자대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="SuwonWomenUniversity">수원여자대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="SuncheonJeilUniversity"
+                                       value="순천제일대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="SuncheonJeilUniversity">순천제일대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="SunguiWomenUniversity"
+                                       value="숭의여자대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="SunguiWomenUniversity">숭의여자대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="ShinguUniversity" value="신구대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="ShinguUniversity">신구대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="ShinseongUniversity" value="신성대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="ShinseongUniversity">신성대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="ShinAnsanUniversity" value="신안산대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="ShinAnsanUniversity">신안산대학교</label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- 아 드롭다운 -->
+                    <div class="dropdown">
+                        <button class="dropdown-button">아</button>
+                        <div class="dropdown-content">
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="AjouAutomobileUniversity"
+                                       value="아주자동차대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="AjouAutomobileUniversity">아주자동차대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="AndongScienceUniversity"
+                                       value="안동과학대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="AndongScienceUniversity">안동과학대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="AnsanUniversity" value="안산대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="AnsanUniversity">안산대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="YeojuUniversity" value="여주대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="YeojuUniversity">여주대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="YeonsungUniversity" value="연성대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="YeonsungUniversity">연성대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="YeonamUniversity" value="연암공과대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="YeonamUniversity">연암공과대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="YeonamUniversity2" value="연암대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="YeonamUniversity2">연암대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="YeongnamForeignLanguageUniversity"
+                                       value="영남외국어대학"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="YeongnamForeignLanguageUniversity">영남외국어대학</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="YeongnamUniversityOfScience"
+                                       value="영남이공대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="YeongnamUniversityOfScience">영남이공대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="YeongjinUniversity" value="영진전문대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="YeongjinUniversity">영진전문대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="OsanUniversity" value="오산대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="OsanUniversity">오산대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="YonginArtsScienceUniversity"
+                                       value="용인예술과학대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="YonginArtsScienceUniversity">용인예술과학대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="WoosongInformationUniversity"
+                                       value="우송정보대학"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="WoosongInformationUniversity">우송정보대학</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="UlsanScienceUniversity"
+                                       value="울산과학대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="UlsanScienceUniversity">울산과학대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="WungjiTaxUniversity" value="웅지세무대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="WungjiTaxUniversity">웅지세무대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="WonkwangHealthUniversity"
+                                       value="원광보건대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="WonkwangHealthUniversity">원광보건대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="YuhanUniversity" value="유한대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="YuhanUniversity">유한대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="IndukUniversity" value="인덕대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="IndukUniversity">인덕대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="InhaIndustrialUniversity"
+                                       value="인하공업전문대학"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="InhaIndustrialUniversity">인하공업전문대학</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- 자 드롭다운 -->
+                    <div class="dropdown">
+                        <button class="dropdown-button">자</button>
+                        <div class="dropdown-content">
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="JanganUniversity" value="장안대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="JanganUniversity">장안대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="JaenungUniversity" value="재능대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="JaenungUniversity">재능대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="JeonnamScienceUniversity"
+                                       value="전남과학대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="JeonnamScienceUniversity">전남과학대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="JeonnamProvincialUniversity"
+                                       value="전남도립대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="JeonnamProvincialUniversity">전남도립대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="JeonbukScienceUniversity"
+                                       value="전북과학대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="JeonbukScienceUniversity">전북과학대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="JeonjuKijeonUniversity"
+                                       value="전주기전대학"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="JeonjuKijeonUniversity">전주기전대학</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="JeonjuVisionUniversity"
+                                       value="전주비전대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="JeonjuVisionUniversity">전주비전대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="JejuTourismUniversity"
+                                       value="제주관광대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="JejuTourismUniversity">제주관광대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="JejuHallaUniversity" value="제주한라대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="JejuHallaUniversity">제주한라대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="ChosunNursingUniversity"
+                                       value="조선간호대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="ChosunNursingUniversity">조선간호대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="ChosunIgongUniversity"
+                                       value="조선이공대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="ChosunIgongUniversity">조선이공대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="JinjuHealthUniversity"
+                                       value="진주보건대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="JinjuHealthUniversity">진주보건대학교</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- 차 드롭다운 -->
+                    <div class="dropdown">
+                        <button class="dropdown-button">차</button>
+                        <div class="dropdown-content">
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="ChangwonMunsungUniversity"
+                                       value="창원문성대학"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="ChangwonMunsungUniversity">창원문성대학</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="CheongangCulturalIndustryUniversity"
+                                       value="청강문화산업대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="CheongangCulturalIndustryUniversity">청강문화산업대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="CheongamUniversity" value="청암대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="CheongamUniversity">청암대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="ChunhaeHealthUniversity"
+                                       value="춘해보건대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="ChunhaeHealthUniversity">춘해보건대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="ChungnamProvincialUniversity"
+                                       value="충남도립대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="ChungnamProvincialUniversity">충남도립대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="ChungbukProvincialUniversity"
+                                       value="충북도립대학"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="ChungbukProvincialUniversity">충북도립대학</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="ChungbukHealthScienceUniversity"
+                                       value="충북보건과학대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="ChungbukHealthScienceUniversity">충북보건과학대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="ChungcheongUniversity" value="충청대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="ChungcheongUniversity">충청대학교</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- 파 드롭다운 -->
+                    <div class="dropdown">
+                        <button class="dropdown-button">파</button>
+                        <div class="dropdown-content">
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="PohangUniversity" value="포항대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="PohangUniversity">포항대학교</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- 하 드롭다운 -->
+                    <div class="dropdown">
+                        <button class="dropdown-button">하</button>
+                        <div class="dropdown-content">
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="KoreaGolfUniversity" value="한국골프대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="KoreaGolfUniversity">한국골프대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="KoreaTourismUniversity"
+                                       value="한국관광대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="KoreaTourismUniversity">한국관광대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="KoreaAgricultureUniversity"
+                                       value="한국농수산대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="KoreaAgricultureUniversity">한국농수산대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="KoreaElevatorUniversity"
+                                       value="한국승강기대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="KoreaElevatorUniversity">한국승강기대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="KoreaFilmUniversity" value="한국영상대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="KoreaFilmUniversity">한국영상대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="HanlimUniversity" value="한림성심대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="HanlimUniversity">한림성심대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="HanyangWomenUniversity"
+                                       value="한양여자대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="HanyangWomenUniversity">한양여자대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="HanyeongUniversity" value="한영대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="HanyeongUniversity">한영대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="HyejeonUniversity" value="혜전대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="HyejeonUniversity">혜전대학교</label>
+                            </div>
+                            <div class="check-items">
+                                <input type="checkbox" class="form-check-input" id="HosanUniversity" value="호산대학교"
+                                       onchange="toggleCheck(this)" checked="checked">
+                                <label for="HosanUniversity">호산대학교</label>
+                            </div>
+                        </div>
+                    </div>
+
+                <button class="btn btn-secondary">검색</button>
+                </div>
 
             </div>
         </div>
@@ -64,15 +798,15 @@
                     <h1>뉴스 통합 검색</h1>
                     <p>검색하고 싶은 뉴스의 키워드를 입력해주세요.</p>
                 </div>
-
                 <br>
-
                 <div class="search">
-					<i class="fa fa-search"></i>
-					<input type="text" id="search" name="search" class="form-control" placeholder="EX) 인하공전" onkeyup="enterkey();">
-					<button type="button" id="searchItem" class="btn btn-dark btn-search">검색</button>
-				</div>
-                <hr><br>
+                    <i class="fa fa-search"></i>
+                    <input type="text" id="search" name="search" class="form-control" placeholder="EX) 인하공전"
+                           onkeyup="enterkey();">
+                    <button type="button" id="searchItem" class="btn btn-dark btn-search">검색</button>
+                </div>
+                <hr>
+                <br>
 
                 <table id="news_table" class="table table-striped" style="display:none;">
                     <thead>
@@ -93,7 +827,6 @@
             </span>
         </label>
 
-
         <!-- 얼론사별 최신 뉴스 -->
         <input name="nav" type="radio" class="contact-radio" id="contact" checked="checked"/>
         <div class="page contact-page">
@@ -104,60 +837,70 @@
                     <div id="msg">데이터를 가져오는 중입니다... 10초</div>
                 </div>
 
-
                 <div id="news-checkbox" class="news-checkbox">
                     <br>
                     <div class="check-items">
-                        <input type="checkbox" class="form-check-input" value="대학지성IN&OUT" onchange="toggleCheck(this)" checked="checked">
-                        <label>대학지성IN&OUT</label>
+                        <input type="checkbox" id="checkbox1" class="form-check-input" value="대학지성IN&OUT"
+                               onchange="toggleCheck(this)" checked="checked">
+                        <label for="checkbox1">대학지성IN&OUT</label>
                     </div>
                     <div class="check-items">
-                        <input type="checkbox" class="form-check-input" value="한국대학신문(UNN)" onchange="toggleCheck(this)" checked="checked">
-                        <label>한국대학신문(UNN)</label>
+                        <input type="checkbox" id="checkbox2" class="form-check-input" value="한국대학신문(UNN)"
+                               onchange="toggleCheck(this)" checked="checked">
+                        <label for="checkbox2">한국대학신문(UNN)</label>
                     </div>
                     <div class="check-items">
-                        <input type="checkbox" class="form-check-input" value="유스라인(Usline)" onchange="toggleCheck(this)" checked="checked">
-                        <label>유스라인(Usline)</label>
+                        <input type="checkbox" id="checkbox3" class="form-check-input" value="유스라인(Usline)"
+                               onchange="toggleCheck(this)" checked="checked">
+                        <label for="checkbox3">유스라인(Usline)</label>
                     </div>
                     <div class="check-items">
-                        <input type="checkbox" class="form-check-input" value="대학저널" onchange="toggleCheck(this)" checked="checked">
-                        <label>대학저널</label>
+                        <input type="checkbox" id="checkbox4" class="form-check-input" value="대학저널"
+                               onchange="toggleCheck(this)" checked="checked">
+                        <label for="checkbox4">대학저널</label>
                     </div>
                     <div class="check-items">
-                        <input type="checkbox" class="form-check-input" value="베리타스알파" onchange="toggleCheck(this)" checked="checked">
-                        <label>베리타스알파</label>
+                        <input type="checkbox" id="checkbox5" class="form-check-input" value="베리타스알파"
+                               onchange="toggleCheck(this)" checked="checked">
+                        <label for="checkbox5">베리타스알파</label>
                     </div>
                     <div class="check-items">
-                        <input type="checkbox" class="form-check-input" value="연합뉴스" onchange="toggleCheck(this)" checked="checked">
-                        <label>연합뉴스</label>
+                        <input type="checkbox" id="checkbox6" class="form-check-input" value="연합뉴스"
+                               onchange="toggleCheck(this)" checked="checked">
+                        <label for="checkbox6">연합뉴스</label>
+                    </div>
+                    <div class="check-items">
+                        <input type="checkbox" id="checkbox7" class="form-check-input" value="교육부보도자료"
+                               onchange="toggleCheck(this)" checked="checked">
+                        <label for="checkbox7">교육부보도자료</label>
+                    </div>
+                    <div class="check-items">
+                        <input type="checkbox" id="checkbox8" class="form-check-input" value="인천광역시보도자료"
+                               onchange="toggleCheck(this)" checked="checked">
+                        <label for="checkbox8">인천광역시보도자료</label>
+                    </div>
+                    <div class="check-items">
+                        <input type="checkbox" id="checkbox9" class="form-check-input" value="교수신문"
+                               onchange="toggleCheck(this)" checked="checked">
+                        <label for="checkbox9">교수신문</label>
+                    </div>
+                    <div class="check-items">
+                        <input type="checkbox" id="checkbox10" class="form-check-input" value="한국전문대학교육협의회"
+                               onchange="toggleCheck(this)" checked="checked">
+                        <label for="checkbox10">한국전문대학교육협의회</label>
+                    </div>
+                    <div class="check-items">
+                        <input type="checkbox" id="checkbox11" class="form-check-input" value="조선에듀"
+                               onchange="toggleCheck(this)" checked="checked">
+                        <label for="checkbox11">조선에듀</label>
                     </div>
                     <br>
-                    <div class="check-items">
-                        <input type="checkbox" class="form-check-input" value="교육부보도자료" onchange="toggleCheck(this)" checked="checked">
-                        <label>교육부보도자료</label>
+                    <div class="button-container">
+                        <button id="refresh_news" class="btn btn-secondary" style="display:none;">새로고침</button>
                     </div>
-                    <div class="check-items">
-                        <input type="checkbox" class="form-check-input" value="인천광역시보도자료" onchange="toggleCheck(this)" checked="checked">
-                        <label>인천광역시보도자료</label>
-                    </div>
-                    <div class="check-items">
-                        <input type="checkbox" class="form-check-input" value="교수신문" onchange="toggleCheck(this)" checked="checked">
-                        <label>교수신문</label>
-                    </div>
-                    <div class="check-items">
-                        <input type="checkbox" class="form-check-input" value="한국전문대학교육협의회" onchange="toggleCheck(this)" checked="checked">
-                        <label>한국전문대학교육협의회</label>
-                    </div>
-                    <div class="check-items">
-                        <input type="checkbox" class="form-check-input" value="조선에듀" onchange="toggleCheck(this)" checked="checked">
-                        <label>조선에듀</label>
-                    </div>
-                    <br><br>
                 </div>
-
-                <button id="refresh_news" class="btn btn-secondary" style="display:none;">새로고침</button>
-
-                <hr><br>
+                <hr>
+                <br>
                 <div id="news-list"></div>
             </div>
         </div>
@@ -186,7 +929,9 @@
 <script src="{{ url_for('static', filename='assets/js/breakpoints.min.js') }}"></script>
 <script src="{{ url_for('static', filename='assets/js/util.js') }}"></script>
 <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='search.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='news.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
