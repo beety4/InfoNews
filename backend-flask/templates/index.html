@@ -838,89 +838,70 @@
                     <div id="msg">데이터를 가져오는 중입니다... 10초</div>
                 </div>
 
-                <div id="news-tabs" class="news-tabs">
-                    <ul class="nav nav-tabs">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="tab1" data-bs-toggle="tab" href="#news1"
-                               role="tab">대학지성IN&OUT</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="tab2" data-bs-toggle="tab" href="#news2" role="tab">한국대학신문(UNN)</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="tab3" data-bs-toggle="tab" href="#news3" role="tab">유스라인(Usline)</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="tab4" data-bs-toggle="tab" href="#news4" role="tab">대학저널</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="tab5" data-bs-toggle="tab" href="#news5" role="tab">베리타스알파</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="tab6" data-bs-toggle="tab" href="#news6" role="tab">연합뉴스</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="tab7" data-bs-toggle="tab" href="#news7" role="tab">교육부보도자료</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="tab8" data-bs-toggle="tab" href="#news8" role="tab">인천광역시보도자료</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="tab9" data-bs-toggle="tab" href="#news9" role="tab">교수신문</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="tab10" data-bs-toggle="tab" href="#news10"
-                               role="tab">한국전문대학교육협의회</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="tab11" data-bs-toggle="tab" href="#news11" role="tab">조선에듀</a>
-                        </li>
-                    </ul>
+                <div id="news-checkbox" class="news-checkbox">
+                    <br>
+                    <div class="check-items">
+                        <input type="checkbox" id="checkbox1" class="form-check-input" value="대학지성IN&OUT"
+                               onchange="toggleCheck(this)" checked="checked">
+                        <label for="checkbox1">대학지성IN&OUT</label>
+                    </div>
+                    <div class="check-items">
+                        <input type="checkbox" id="checkbox2" class="form-check-input" value="한국대학신문(UNN)"
+                               onchange="toggleCheck(this)" checked="checked">
+                        <label for="checkbox2">한국대학신문(UNN)</label>
+                    </div>
+                    <div class="check-items">
+                        <input type="checkbox" id="checkbox3" class="form-check-input" value="유스라인(Usline)"
+                               onchange="toggleCheck(this)" checked="checked">
+                        <label for="checkbox3">유스라인(Usline)</label></div>
+                    <div class="check-items">
+                        <input type="checkbox" id="checkbox4" class="form-check-input" value="대학저널"
+                               onchange="toggleCheck(this)" checked="checked">
+                        <label for="checkbox4">대학저널</label>
+                    </div>
+                    <div class="check-items">
+                        <input type="checkbox" id="checkbox5" class="form-check-input" value="베리타스알파"
+                               onchange="toggleCheck(this)" checked="checked">
+                        <label for="checkbox5">베리타스알파</label>
+                    </div>
+                    <div class="check-items">
+                        <input type="checkbox" id="checkbox6" class="form-check-input" value="연합뉴스"
+                               onchange="toggleCheck(this)" checked="checked">
+                        <label for="checkbox6">연합뉴스</label>
+                    </div>
+                    <div class="check-items">
+                        <input type="checkbox" id="checkbox7" class="form-check-input" value="교육부보도자료"
+                               onchange="toggleCheck(this)" checked="checked">
+                        <label for="checkbox7">교육부보도자료</label>
+                    </div>
+                    <div class="check-items">
+                        <input type="checkbox" id="checkbox8" class="form-check-input" value="인천광역시보도자료"
+                               onchange="toggleCheck(this)" checked="checked">
+                        <label for="checkbox8">인천광역시보도자료</label>
+                    </div>
+                    <div class="check-items">
+                        <input type="checkbox" id="checkbox9" class="form-check-input" value="교수신문"
+                               onchange="toggleCheck(this)" checked="checked">
+                        <label for="checkbox9">교수신문</label>
+                    </div>
+                    <div class="check-items">
+                        <input type="checkbox" id="checkbox10" class="form-check-input" value="한국전문대학교육협의회"
+                               onchange="toggleCheck(this)" checked="checked">
+                        <label for="checkbox10">한국전문대학교육협의회</label>
+                    </div>
+                    <div class="check-items">
+                        <input type="checkbox" id="checkbox11" class="form-check-input" value="조선에듀"
+                               onchange="toggleCheck(this)" checked="checked">
+                        <label for="checkbox11">조선에듀</label>
+                    </div>
+                    <br>
+                    <div class="button-container">
+                        <button id="refresh_news" class="btn btn-secondary" style="display:none;">새로고침</button>
+                    </div>
                 </div>
-
-                <div class="button-container">
-                    <button id="refresh_news" class="btn btn-secondary" style="display:none; width:100%;">새로고침</button>
-                </div>
-
                 <hr>
                 <br>
-                <div id="news-list" class="tab-content">
-                    <div class="tab-pane fade show active" id="news1" role="tabpanel">
-                        <!-- 대학지성IN&OUT 뉴스 내용 -->
-                        a
-                    </div>
-                    <div class="tab-pane fade" id="news2" role="tabpanel">
-                        <!-- 한국대학신문(UNN) 뉴스 내용 -->
-                        b
-                    </div>
-                    <div class="tab-pane fade" id="news3" role="tabpanel">
-                        <!-- 유스라인(Usline) 뉴스 내용 -->c
-                    </div>
-                    <div class="tab-pane fade" id="news4" role="tabpanel">
-                        <!-- 대학저널 뉴스 내용 -->d
-                    </div>
-                    <div class="tab-pane fade" id="news5" role="tabpanel">
-                        <!-- 베리타스알파 뉴스 내용 -->e
-                    </div>
-                    <div class="tab-pane fade" id="news6" role="tabpanel">
-                        <!-- 연합뉴스 뉴스 내용 -->f
-                    </div>
-                    <div class="tab-pane fade" id="news7" role="tabpanel">
-                        <!-- 교육부보도자료 뉴스 내용 -->g
-                    </div>
-                    <div class="tab-pane fade" id="news8" role="tabpanel">
-                        h<!-- 인천광역시보도자료 뉴스 내용 -->
-                    </div>
-                    <div class="tab-pane fade" id="news9" role="tabpanel">
-                        <!-- 교수신문 뉴스 내용 -->i
-                    </div>
-                    <div class="tab-pane fade" id="news10" role="tabpanel">
-                        <!-- 한국전문대학교육협의회 뉴스 내용 -->j
-                    </div>
-                    <div class="tab-pane fade" id="news11" role="tabpanel">
-                        <!-- 조선에듀 뉴스 내용 -->k
-                    </div>
-                </div>
+                <div id="news-list"></div>
             </div>
         </div>
         <label class="nav" for="contact">
