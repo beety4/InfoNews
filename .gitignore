@@ -1,4 +1,4 @@
-env/*
+backend-flask/env/*
 
 backend-flask/.git
 backend-flask/.gitignore
