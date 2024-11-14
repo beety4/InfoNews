@@ -245,7 +245,7 @@ footer {
     gap: 10px;
 }
 
-.check-items {
+.dropdown .dropdown-content .check-items {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
@@ -257,8 +257,14 @@ footer {
     width: 23%;
 }
 
-.check-items:hover {
+.dropdown .dropdown-content .check-items:hover {
     background-color: #e0e0e0;
+}
+@media (max-width: 800px) {
+    .dropdown .dropdown-content .check-items {
+        width: 100%; /* 화면 너비가 800px 이하일 때 세로로 하나씩 표시 */
+        justify-content: center;
+    }
 }
 
 .check-items label {
@@ -285,6 +291,7 @@ footer {
     margin-left: 5px;
 }
 
+
 .actions {
     margin-bottom: 10px;
 }
@@ -293,11 +300,56 @@ footer {
     margin-top: 15px;
 }
 
+.news_table {
+    display:none;
+    width:80%;
+    margin-left: 10%;
+    margin-right: auto;
+    border-color: lightgray;
+    table-layout: fixed;
+}
+.news_table th {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.news_table td {
+    text-align: left;
+}
+
+.news_table th:nth-child(1), .news_table td:nth-child(1) {
+    width: 10%;
+}
+
+.news_table th:nth-child(2), .news_table td:nth-child(2) {
+    width: 20%;
+    text-align: center;
+}
+
+.news_table th:nth-child(3), .news_table td:nth-child(3) {
+    width: 70%;
+}
 #news_table {
     display:none;
     width:85%;
     margin-left: auto;
     margin-right: auto;
+    border-color: lightgray;
+}
+
+#news_table th {
+    text-align: center;
+    vertical-align: middle;
+}
+
+#news_table td {
+    text-align: left;
+}
+
+.button-container {
+    text-align: center;
+    width: 100%;
+    padding-top: 10px;
 }
 
 .news-checkbox {
@@ -310,11 +362,7 @@ footer {
     border-radius: 8px;
     padding: 2% 0 2% 5%;
 }
-.button-container {
-    text-align: center;
-    width: 100%;
-    padding-top: 10px;
-}
+
 .news-checkbox .check-items {
     display: inline-flex;
     align-items: center;
@@ -332,4 +380,24 @@ footer {
 .news-checkbox .check-items input[type="checkbox"] {
     transform: scale(1.2);
     margin-right: 10px;
+}
+
+@media (max-width: 1100px) {
+    .news-checkbox .check-items {
+        display: inline-flex;
+        align-items: center;
+        margin-right: 20px;
+        margin-bottom: 10px;
+        width:40%;
+    }
+}
+
+@media (max-width: 600px) {
+    .news-checkbox .check-items {
+        display: inline-flex;
+        align-items: center;
+        margin-right: 20px;
+        margin-bottom: 10px;
+        width:100%;
+    }
 }

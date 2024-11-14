@@ -46,12 +46,13 @@ function write_news_data(result) {
         // 각 result 별로 table 생성
         const tableId = `table_${i + 1}`;
         let html = `
-        <table id="${name}" class="table table-striped" style="width:40%; margin-bottom: 20px; display: inline-block; margin-left: 100px;">
+        <table id="${name}" class="table table-striped news_table" style="display: inline-block;">
         <thead>
             <tr>
-                <th scope="col" colspan="2"><h1>${name}</h1></th>
+                <th scope="col" colspan="3"><h1>${name}</h1></th>
             </tr>
             <tr>
+                <th>No</th>
                 <th scope="col">날짜</th>
                 <th scope="col">뉴스 제목</th>
             </tr>
@@ -63,7 +64,8 @@ function write_news_data(result) {
         company.forEach(function(news) {
             html += `
                 <tr>
-                <th scope="row" style="vertical-align: middle;">${news.date}</th>
+                <th>1</th>
+                <td scope="row" style="vertical-align: middle;">${news.date}</th>
                 <td><a href="${news.link}" target="_blank">${news.title}</a></td>
                 </tr>
             `;

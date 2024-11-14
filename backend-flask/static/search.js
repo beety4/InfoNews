@@ -59,6 +59,7 @@ function enterkey() {
 function writeTablePage(date, link, title) {
     const html = `
         <tr>
+            <th>1</th>
             <th scope="row" style="vertical-align: middle;">${date}</th>
             <td><a href="${link}" target="_blank">${title}</a></td>
         </tr>
