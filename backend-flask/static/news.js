@@ -137,7 +137,7 @@ function getnewsname(company) {
     } else if(company[0].link.includes("kcce.or.kr")) {
             return "한국전문대학교육협의회";
     } else if(company[0].link.includes("edu.chosun.com")) {
-            return "조션에듀";
+            return "조선에듀";
     } else {
             return "UNKNOWN";
     }

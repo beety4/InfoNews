@@ -30,13 +30,16 @@
     <!-- Main -->
     <div class="layout">
         <!-- 검색 빈도 수 -->
-        <input name="nav" type="radio" class="nav home-radio" id="home"/>
+        <input name="nav" type="radio" class="nav home-radio menu-radio" id="home" checked="checked"/>
         <div class="page home-page">
             <div class="page-contents">
                 <br><br>
-                <div style="text-align: center;">
+                <div style="text-align: center;" class="form-check">
                     <h1>검색 빈도 수 조회</h1>
-                    <p>검색 빈도 수 비교를 위해 최소 2개 이상의 키워드를 입력해주세요.</p>
+
+                    <input type="date" id="startDate" name="startDate"> ~ <input type="date" id="endDate" name="endDate">
+                    <input type="radio" name="timeUnit" class="form-check-input" value="month" checked="checked"> 월간
+                    <input type="radio" name="timeUnit" class="form-check-input" value="date"> 일간
                 </div>
 
                 <div class="dropdown-container">
@@ -778,8 +781,15 @@
                         </div>
                     </div>
 
-                <button class="btn btn-secondary">검색</button>
+                <button id="trend-search" class="btn btn-secondary">검색</button>
                 </div>
+
+
+                <div>
+                    <img src="{{ url_for('static', filename='blank.png') }}" alt="wc-img" id="wc-img">
+                    <img src="{{ url_for('static', filename='blank.png') }}" alt="chart-img" id="chart-img">
+                </div>
+
 
             </div>
         </div>
@@ -790,7 +800,7 @@
         </label>
 
         <!-- 뉴스 통합 검색 -->
-        <input name="nav" type="radio" class="about-radio" id="about"/>
+        <input name="nav" type="radio" class="about-radio menu-radio" id="about"/>
         <div class="page about-page">
             <div class="page-contents">
                 <br><br>
@@ -828,7 +838,7 @@
         </label>
 
         <!-- 얼론사별 최신 뉴스 -->
-        <input name="nav" type="radio" class="contact-radio" id="contact" checked="checked"/>
+        <input name="nav" type="radio" class="contact-radio menu-radio" id="contact"/>
         <div class="page contact-page">
             <div class="page-contents">
                 <br><br>
@@ -934,6 +944,7 @@
         crossorigin="anonymous"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='search.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='news.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='trend.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
 
 

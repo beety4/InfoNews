@@ -1,5 +1,7 @@
 env/*
 
+backend-flask/.git
+backend-flask/.gitignore
 backend-flask/static/wc-img/*
 backend-flask/static/chart-img/*
 
