@@ -35,6 +35,15 @@ function ajax_get_data() {
 	});
 }
 
+// 특정 단어를 파란색으로 변경
+function highlightText(text) {
+    const keywords = ['인하공전', '인하공업전문대학'];
+    keywords.forEach(keyword => {
+        const regex = new RegExp(keyword, 'g');
+        text = text.replace(regex, `<span style="color: #0049cf;">${keyword}</span>`);
+    });
+    return text;
+}
 
 // html에 작성
 function write_news_data(result) {
@@ -60,13 +69,12 @@ function write_news_data(result) {
         <tbody>
         `;
 
-
         company.forEach(function(news) {
             html += `
                 <tr>
                 <th>1</th>
-                <td scope="row" style="vertical-align: middle;">${news.date}</th>
-                <td><a href="${news.link}" target="_blank">${news.title}</a></td>
+                <td scope="row" style="vertical-align: middle;">${news.date}</td>
+                <td><a href="${news.link}" target="_blank">${highlightText(news.title)}</a></td>
                 </tr>
             `;
         });

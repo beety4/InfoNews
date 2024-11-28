@@ -57,11 +57,21 @@ function enterkey() {
 
 // 가져온 데이터 HTML 출력
 function writeTablePage(date, link, title) {
+    // 특정 단어를 파란색으로 변경
+    function highlightText(text) {
+        const keywords = ['인하공전', '인하공업전문대학'];
+        keywords.forEach(keyword => {
+            const regex = new RegExp(keyword, 'g');
+            text = text.replace(regex, `<span style="color: #0049cf;">${keyword}</span>`);
+        });
+        return text;
+    }
+
     const html = `
         <tr>
             <th>1</th>
             <th scope="row" style="vertical-align: middle;">${date}</th>
-            <td><a href="${link}" target="_blank">${title}</a></td>
+            <td><a href="${link}" target="_blank">${highlightText(title)}</a></td>
         </tr>
     `;
 
