@@ -28,12 +28,14 @@ document.getElementById("searchItem").addEventListener("click", function() {
             table.style.display = 'table';
 
             // 데이터 가져와서 출력
+            var count = 0;
 			$(data).each(function() {
+			    count += 1;
 			    let date = this.date;
 			    let link = this.link;
 			    let title = this.title;
 
-			    writeTablePage(date, link, title);
+			    writeTablePage(count, date, link, title);
 			});
 
         },
@@ -56,20 +58,20 @@ function enterkey() {
 
 
 // 가져온 데이터 HTML 출력
-function writeTablePage(date, link, title) {
+function writeTablePage(count, date, link, title) {
     // 특정 단어를 파란색으로 변경
     function highlightText(text) {
         const keywords = ['인하공전', '인하공업전문대학'];
         keywords.forEach(keyword => {
             const regex = new RegExp(keyword, 'g');
-            text = text.replace(regex, `<span style="color: #0049cf;">${keyword}</span>`);
+            text = text.replace(regex, `<b><span style="color: #0049cf;">${keyword}</span></b>`);
         });
         return text;
     }
 
     const html = `
         <tr>
-            <th>1</th>
+            <th>${count}</th>
             <th scope="row" style="vertical-align: middle;">${date}</th>
             <td><a href="${link}" target="_blank">${highlightText(title)}</a></td>
         </tr>

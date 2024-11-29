@@ -50,7 +50,7 @@ if(url.length >= 30) {
 }
 
 
-
+/*
 // 복사 버튼 생성
 function copylinkbtn() {
     const container = document.getElementById("urlzone");
@@ -163,7 +163,7 @@ document.getElementById("search").addEventListener("click", function() {
 
 });
 
-
+*/
 // 입력 키워드 전부 가져오기
 function getAllItem() {
     const keywordAreas = document.querySelectorAll('.keyword-area');
@@ -174,4 +174,62 @@ function getAllItem() {
     //console.log(inputValues);
     return inputValues;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 검색 버튼 클릭 함수
+document.getElementById("trend-search").addEventListener("click", function() {
+    let keywordList = getAllItem();
+    let startDate = document.getElementById("startDate").value;
+    let endDate = document.getElementById("endDate").value;
+    let timeUnit = document.querySelector('input[name="timeUnit"]:checked').value;
+
+
+    $.ajax({
+    	url:"/queryItem",
+        type:"post",
+        dataType:"text",
+        data:{"keywordList" : JSON.stringify(keywordList),
+              "startDate" : startDate,
+              "endDate" : endDate,
+              "timeUnit" : timeUnit
+            },
+        success: function(data){
+			// console.log(data);
+			if(data == 1 || data == "1") {
+			    alert("외부 API 연동에 실패하였습니다.");
+			    return;
+			}
+
+
+            // 이미지 띄우기
+			document.getElementById("wc-img").src = "static/wc-img/" + data;
+			document.getElementById("chart-img").src = "static/chart-img/" + data;
+        },
+        error: function(request, status, error) {
+			alert("비동기 요청 중 오류가 발생했습니다.");
+			console.log("code : " + request.status);
+			console.log("message : " + request.responseText);
+			console.log("error : " + error);
+		}
+	});
+
+});
+
 

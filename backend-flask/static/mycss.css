@@ -231,26 +231,19 @@ footer {
 /* image */
 image-container {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
-    align-items: center;
+    gap: 10px;
+    width: 100%;
 }
 
-.image {
-    width:50%;
-    max-width: 100%;
-    height:auto;
+.result-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
 }
 
-@media (max-width: 768px) {
-    image-container {
-        flex-direction: column;
-        align-items: center;
-    }
 
-    .image {
-        margin-bottom: 10px;
-    }
-}
 
 .actions {
     margin-bottom: 10px;

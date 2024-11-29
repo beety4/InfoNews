@@ -60,13 +60,33 @@
                             인하공전, 유한대, 부천대, 재능대, 경인여대, 김포대
                         </label>
                     </div>
+
+                    <div id="main-areass" style="display:none;">
+                        <div class="keyword-area">
+                            <input type="text" tabIndex="1" placeholder="검색어 입력" value="인하공전">
+                        </div>
+                        <div class="keyword-area">
+                            <input type="text" tabIndex="2" placeholder="검색어 입력" value="유한대">
+                        </div>
+                        <div class="keyword-area">
+                            <input type="text" tabIndex="2" placeholder="검색어 입력" value="부천대">
+                        </div>
+                        <div class="keyword-area">
+                            <input type="text" tabIndex="2" placeholder="검색어 입력" value="재능대">
+                        </div>
+                        <div class="keyword-area">
+                            <input type="text" tabIndex="2" placeholder="검색어 입력" value="경인여대">
+                        </div>
+                        <div class="keyword-area">
+                            <input type="text" tabIndex="2" placeholder="검색어 입력" value="김포대">
+                        </div>
+                    </div>
                     <button id="trend-search" class="btn btn-secondary">검색</button>
                 </div>
 
                 <div class="image-container">
-                    <img class="image" src="{{ url_for('static', filename='blank.png') }}" alt="wc-img" id="wc-img">
-                    <img class="image" src="{{ url_for('static', filename='blank.png') }}" alt="chart-img"
-                         id="chart-img">
+                    <img class="result-image" src="{{ url_for('static', filename='blank.png') }}" alt="wc-img" id="wc-img" width="auto">
+                    <img class="result-image" src="{{ url_for('static', filename='blank.png') }}" alt="chart-img"  id="chart-img" width="auto">
                 </div>
 
 
