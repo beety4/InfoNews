@@ -3,10 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2039cbdf-c808-48da-b29c-65f69210a62d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-flask/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-flask/static/mycss.css" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/static/mycss.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-flask/static/news.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/static/news.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-flask/static/search.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/static/search.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-flask/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/templates/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
