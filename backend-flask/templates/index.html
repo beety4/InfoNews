@@ -34,13 +34,23 @@
         <div class="page home-page">
             <div class="page-contents">
                 <br><br>
-                <div style="text-align: center;" class="form-check">
+                <div style="text-align: center;" class="form-check trend">
                     <h1>검색 빈도 수 조회</h1>
 
-                    <input type="date" id="startDate" name="startDate" class="date-input">
-                    ~
-                    <input type="date" id="endDate" name="endDate" class="date-input">
-                    <br>
+                    <!--                    <input type="date" id="startDate" name="startDate" class="form-control date-input">-->
+                    <!--                    ~-->
+                    <!--                    <input type="date" id="endDate" name="endDate" class="form-control date-input">-->
+                    <div class="d-flex justify-content-center align-items-center center-container">
+                        <form class="d-flex align-items-center gap-3 date-container">
+                            <div class="input-group">
+                                <input type="date" id="startDate" name="startDate" class="form-control date-input">
+                            </div>
+                            <span class="fw-bold">~</span>
+                            <div class="input-group">
+                                <input type="date" id="endDate" name="endDate" class="form-control date-input">
+                            </div>
+                        </form>
+                    </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="timeUnit" id="month" value="month"
                                checked="checked">
@@ -148,7 +158,6 @@
                 </div>
 
                 <div id="news-checkbox" class="news-checkbox">
-                    <br>
                     <div class="check-items">
                         <input type="checkbox" id="checkbox1" class="form-check-input" value="대학지성IN&OUT"
                                onchange="toggleCheck(this)" checked="checked">

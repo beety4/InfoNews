@@ -82,7 +82,7 @@ label.nav{
   grid-column-start: 1;
   grid-row-start: 2;
   grid-column-end: span 3;
-  padding: 0px 20px;
+  padding: 0px 3%;
   width: 100%;
   margin: auto;
   overflow: visible;
@@ -162,6 +162,12 @@ footer {
 	margin: auto;
 }
 
+@media (max-width: 768px) {
+    .search {
+        width: 100%;
+    }
+}
+
 .search input {
 	height: 60px;
 	text-indent: 25px;
@@ -202,6 +208,15 @@ footer {
     padding: 5% 5%;
 }
 
+@media (max-width: 768px) {
+    .trend {
+        padding-left:0;
+    }
+    .radio-container {
+        width:100%;
+
+    }
+}
 .check-items label {
     margin-left: 10px;
     font-size: 14px;
@@ -225,9 +240,20 @@ footer {
 .checkbox-container label {
     margin-left: 5px;
 }
+
 .date-input {
     margin-bottom: 1%;
+    max-width: 135px;
 }
+.date-container {
+    margin-bottom: 0;
+}
+@media (max-width: 768px) {
+    .gap-3 {
+        gap: 0.2em !important;
+    }
+}
+
 /* image */
 image-container {
     display: flex;
@@ -349,6 +375,12 @@ image-container {
         margin-right: 20px;
         margin-bottom: 10px;
         width:40%;
+    }
+}
+
+@media (max-width: 768px) {
+    .news-checkbox {
+        width:100%;
     }
 }
 
