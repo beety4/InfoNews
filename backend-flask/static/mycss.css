@@ -240,9 +240,20 @@ footer {
 .checkbox-container label {
     margin-left: 5px;
 }
+
 .date-input {
     margin-bottom: 1%;
+    max-width: 135px;
 }
+.date-container {
+    margin-bottom: 0;
+}
+@media (max-width: 768px) {
+    .gap-3 {
+        gap: 0.2em !important;
+    }
+}
+
 /* image */
 image-container {
     display: flex;
