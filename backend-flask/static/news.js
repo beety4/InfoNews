@@ -14,8 +14,6 @@ function ajax_get_data() {
 			    return;
 			}
 
-            // 메세지 출력
-            document.getElementById("msg").innerText = getdate();
 
             // 새로고침 버튼
             document.getElementById("refresh_news").style.display = 'inline-block';
@@ -49,6 +47,18 @@ function highlightText(text) {
 function write_news_data(result) {
     const container = document.getElementById("news-list");
 
+    const customOrder = ["한국전문대학교육협의회", "교육부보도자료",
+        "인천광역시보도자료", "베리타스알파", "한국대학신문(UNN)", "대학저널",
+        "유스라인(Usline)", "교수신문", "대학지성IN&OUT", "조선에듀", "연합뉴스"];
+
+    result.sort((a, b) => {
+        const nameA = getnewsname(a);
+        const nameB = getnewsname(b);
+        const indexA = customOrder.indexOf(nameA);
+        const indexB = customOrder.indexOf(nameB);
+        return indexA - indexB;
+    });
+
     result.forEach(function(company, i) {
         let name = getnewsname(company);
 
@@ -62,26 +72,27 @@ function write_news_data(result) {
             </tr>
             <tr>
                 <th>No</th>
-                <th scope="col">날짜</th>
                 <th scope="col">뉴스 제목</th>
+                <th scope="col">날짜</th>
             </tr>
         </thead>
         <tbody>
         `;
 
-        company.forEach(function(news) {
+        for (let i = 0; i < company.length && i < 10; i++) {
+            const news = company[i];
             html += `
                 <tr>
-                <th>1</th>
-                <td scope="row" style="vertical-align: middle;">${news.date}</td>
-                <td><a href="${news.link}" target="_blank">${highlightText(news.title)}</a></td>
+                <th>${i + 1}</th>
+                <td><a href="${news.link}" target="_blank" class="news-title">${highlightText(news.title)}</a></td>
+                <td scope="row" style="vertical-align: middle;">${(news.date).substr(5)}</td>
                 </tr>
             `;
-        });
+        }
 
         html += `
             </tbody>
-            </table>
+            </table><br>
         `;
 
         container.insertAdjacentHTML('beforeend', html);
@@ -100,7 +111,8 @@ function count_value(time) {
 
 			if(time<0) {
 				clearInterval(x);
-				what.innerHTML = "데이터를 가져오는 중입니다... 0초";
+				// 메세지 출력
+                document.getElementById("msg").innerText = getdate();
 			}
 		}, 1000);
 	} catch (error) {
@@ -169,3 +181,12 @@ $("#refresh_news").click(function() {
     document.getElementById("news-list").innerText = "";
     ajax_get_data();
 });
+
+
+
+function truncateString(str, maxLength) {
+    if (str.length > maxLength) {
+        return str.slice(0, maxLength) + "...";
+    }
+    return str;
+}
