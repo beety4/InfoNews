@@ -95,8 +95,10 @@
                 </div>
 
                 <div class="image-container">
-                    <img class="result-image" src="{{ url_for('static', filename='blank.png') }}" alt="wc-img" id="wc-img" width="auto">
-                    <img class="result-image" src="{{ url_for('static', filename='blank.png') }}" alt="chart-img"  id="chart-img" width="auto">
+                    <img class="result-image" src="{{ url_for('static', filename='blank.png') }}" alt="wc-img"
+                         id="wc-img" width="auto">
+                    <img class="result-image" src="{{ url_for('static', filename='blank.png') }}" alt="chart-img"
+                         id="chart-img" width="auto">
                 </div>
 
 
@@ -126,18 +128,19 @@
                 </div>
                 <hr>
                 <br>
-
-                <table id="news_table" class="table table-striped news_table" style="display:none;">
-                    <thead>
-                    <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">뉴스 제목</th>
-                        <th scope="col">날짜</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table id="news_table" class="table table-striped news_table" style="display:none;">
+                        <thead>
+                        <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">뉴스 제목</th>
+                            <th scope="col">날짜</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
                 <br><br><br>
             </div>
         </div>
@@ -220,7 +223,7 @@
                 </div>
                 <hr>
                 <br>
-                <div id="news-list"></div>
+                <div id="news-list" class="table-responsive"></div>
             </div>
         </div>
         <label class="nav" for="contact">

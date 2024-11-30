@@ -269,8 +269,6 @@ image-container {
     object-fit: cover;
 }
 
-
-
 .actions {
     margin-bottom: 10px;
 }
@@ -279,61 +277,53 @@ image-container {
     margin-top: 15px;
 }
 
-.news_table {
-    display:none;
-    width:100%;
+/* table */
+.table-responsive {
+    overflow-x: auto;
+    display: block;
+    width: 80%;
+    max-width: 100%;
     margin-left: 10%;
-    margin-right: auto;
-    border-color: darkgray;
-    table-layout: fixed;
-}
-@media (max-width: 768px) {
-    .news_table {
-        margin-left: 2%;
-        width:98%;
-    }
 }
 
-.news_table th {
+.news_table {
+    width: 100%;
+    table-layout: fixed; /* 고정된 테이블 레이아웃 */
+    border-collapse: collapse;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.news_table th, .news_table td {
     text-align: center;
     vertical-align: middle;
+    white-space: normal;
+    word-break: break-word;
+    padding: 8px;
+    box-sizing: border-box; /* padding과 border를 width에 포함 */
 }
-
-.news_table td {
-    text-align: left;
-}
-
-.news_table th:nth-child(1), .news_table td:nth-child(1) {
-    width: 5%;
-}
-
-.news_table th:nth-child(2), .news_table td:nth-child(2) {
-    width: 85%;
-}
-
-.news_table th:nth-child(3), .news_table td:nth-child(3) {
-    width: 10%;
-    text-align: center;
-}
-
 
 .news-title {
-    white-space: nowrap;         /* 한 줄로 제한 */
-    overflow: hidden;            /* 넘칠 경우 숨기기 */
-    text-overflow: ellipsis;     /* 넘치는 부분에 '...' 표시 */
-    max-width: 100%;             /* 부모 요소에 맞게 최대 너비 설정 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
 }
+
 @media (max-width: 768px) {
+    .table-responsive {
+        width: 98%;
+        margin-left: 1%;
+    }
+
+    .news_table th:nth-child(2), .news_table td:nth-child(2) {
+        width: auto;
+    }
+
     .news-title {
-        max-width: 270px;          /* 모바일 화면에서 뉴스 제목의 최대 너비를 설정 */
+        max-width: 200px;
     }
 }
-
-
-
-
-
-
 
 .button-container {
     text-align: center;
