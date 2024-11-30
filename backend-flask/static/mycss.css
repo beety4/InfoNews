@@ -287,11 +287,12 @@ image-container {
 }
 
 .news_table {
-    width: 100%;
-    table-layout: fixed; /* 고정된 테이블 레이아웃 */
+    width: 100%; /* 테이블의 전체 너비를 100%로 설정 */
+    table-layout: fixed; /* 테이블 레이아웃을 고정하여, 내용에 따라 자동 조정되지 않음 */
     border-collapse: collapse;
     word-wrap: break-word;
     overflow-wrap: break-word;
+    border-color: darkgray;
 }
 
 .news_table th, .news_table td {
@@ -300,7 +301,22 @@ image-container {
     white-space: normal;
     word-break: break-word;
     padding: 8px;
-    box-sizing: border-box; /* padding과 border를 width에 포함 */
+    box-sizing: border-box;  /* 패딩 및 테두리를 포함한 크기 계산 */
+}
+
+.news_table th:nth-child(1),
+.news_table td:nth-child(1) {
+    width: 30% !important; /* 첫 번째 열 (No 열) 30% 고정 */
+}
+
+.news_table th:nth-child(2),
+.news_table td:nth-child(2) {
+    width: 40% !important; /* 두 번째 열 (뉴스 제목 열) 40% 고정 */
+}
+
+.news_table th:nth-child(3),
+.news_table td:nth-child(3) {
+    width: 30% !important; /* 세 번째 열 (날짜 열) 30% 고정 */
 }
 
 .news-title {
@@ -323,7 +339,15 @@ image-container {
     .news-title {
         max-width: 200px;
     }
-}
+}	.news_table th:nth-child(1),
+    .news_table td:nth-child(1),
+    .news_table th:nth-child(2),
+    .news_table td:nth-child(2),
+    .news_table th:nth-child(3),
+    .news_table td:nth-child(3) {
+        width: auto !important; /* 모바일에서 모든 열 너비를 자동으로 설정 */
+    }
+    }
 
 .button-container {
     text-align: center;
