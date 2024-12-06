@@ -14,7 +14,6 @@ function ajax_get_data() {
 			    return;
 			}
 
-
             // 새로고침 버튼
             document.getElementById("refresh_news").style.display = 'inline-block';
 
@@ -35,7 +34,7 @@ function ajax_get_data() {
 
 // 특정 단어를 파란색으로 변경
 function highlightText(text) {
-    const keywords = ['인하공전', '인하공업전문대학'];
+    const keywords = ['인하공전', '인하공업전문대학', '전문대학'];
     keywords.forEach(keyword => {
         const regex = new RegExp(keyword, 'g');
         text = text.replace(regex, `<span style="color: #0049cf;">${keyword}</span>`);
@@ -62,21 +61,22 @@ function write_news_data(result) {
     result.forEach(function(company, i) {
         let name = getnewsname(company);
 
-        // 각 result 별로 table 생성
+        // 테이블을 .table-responsive로 감싸기
         const tableId = `table_${i + 1}`;
         let html = `
-        <table id="${name}" class="table table-striped news_table" style="display: inline-block;">
-        <thead>
-            <tr>
-                <th scope="col" colspan="3"><h1>${name}</h1></th>
-            </tr>
-            <tr>
-                <th>No</th>
-                <th scope="col">뉴스 제목</th>
-                <th scope="col">날짜</th>
-            </tr>
-        </thead>
-        <tbody>
+        <div class="news-table-responsive">
+            <table id="${name}" class="table table-striped news_table" style="display: inline-block;">
+                <thead>
+                    <tr>
+                        <th scope="col" colspan="3"><h1>${name}</h1></th>
+                    </tr>
+                    <tr>
+                        <th>No</th>
+                        <th scope="col">뉴스 제목</th>
+                        <th scope="col">날짜</th>
+                    </tr>
+                </thead>
+                <tbody>
         `;
 
         for (let i = 0; i < company.length && i < 10; i++) {
@@ -92,13 +92,13 @@ function write_news_data(result) {
 
         html += `
             </tbody>
-            </table><br>
+            </table>
+        </div><br>
         `;
 
         container.insertAdjacentHTML('beforeend', html);
     });
 }
-
 
 // 임시 카운터
 function count_value(time) {

@@ -61,7 +61,7 @@ function enterkey() {
 function writeTablePage(count, date, link, title) {
     // 특정 단어를 파란색으로 변경
     function highlightText(text) {
-        const keywords = ['인하공전', '인하공업전문대학'];
+        const keywords = ['인하공전', '인하공업전문대학', '전문대학'];
         keywords.forEach(keyword => {
             const regex = new RegExp(keyword, 'g');
             text = text.replace(regex, `<b><span style="color: #0049cf;">${keyword}</span></b>`);
