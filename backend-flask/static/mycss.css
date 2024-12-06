@@ -342,8 +342,8 @@ image-container {
     box-sizing: border-box;  /* 패딩 및 테두리를 포함한 크기 계산 */
 
 }
-.news_table td {
-    text-align:left;
+.news_table td:nth-child(2) {
+    text-align: left;
 }
 
 .news_table tbody a {
