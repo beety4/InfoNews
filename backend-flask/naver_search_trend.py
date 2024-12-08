@@ -31,7 +31,14 @@ def create_df(data):
 
 
 # 데이터 입력받은 뒤, naver_api를 사용하여 요청
-def get_each_data(keyword_list, startDate, endDate, timeUnit, nowdate):
+def get_each_data(universityGroup, startDate, endDate, timeUnit, nowdate):
+
+    keyword_list = []
+    if universityGroup == "uni1":
+        keyword_list = ['인하공전', '유한대', '부천대', '재능대', '재능대', '동양미래대', '연성대', '동서울대', '한양여대']
+    elif universityGroup == "uni2":
+        keyword_list = ['인하공전', '유한대', '부천대', '재능대', '동양미래대', '연성대', '동서울대', '한양여대', '경복대', '명지전문대', '서일대']
+
     each_keyword_list = keyword_split(keyword_list)
 
     try:

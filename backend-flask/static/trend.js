@@ -195,7 +195,8 @@ function getAllItem() {
 
 // 검색 버튼 클릭 함수
 document.getElementById("trend-search").addEventListener("click", function() {
-    let keywordList = getAllItem();
+    //let keywordList = getAllItem();
+    let universityGroup = document.querySelector('input[name="universityGroup"]:checked').value;
     let startDate = document.getElementById("startDate").value;
     let endDate = document.getElementById("endDate").value;
     let timeUnit = document.querySelector('input[name="timeUnit"]:checked').value;
@@ -205,7 +206,8 @@ document.getElementById("trend-search").addEventListener("click", function() {
     	url:"/queryItem",
         type:"post",
         dataType:"text",
-        data:{"keywordList" : JSON.stringify(keywordList),
+        // data:{"keywordList" : JSON.stringify(keywordList),
+        data:{"universityGroup" : universityGroup,
               "startDate" : startDate,
               "endDate" : endDate,
               "timeUnit" : timeUnit

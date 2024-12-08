@@ -20,14 +20,15 @@ def home():
 
 @app.route('/queryItem', methods=['POST'])
 def query_item():
-    keywordList = ast.literal_eval(request.form["keywordList"])
+    #keywordList = ast.literal_eval(request.form["keywordList"])
+    universityGroup = request.form["universityGroup"]
     startDate = request.form["startDate"]
     endDate = request.form["endDate"]
     timeUnit = request.form["timeUnit"]
 
     # 네이버 API 요청
     now_date = f"{datetime.now().strftime('%Y%m%d-%H%M%S')}.png"
-    result = nst.get_each_data(keywordList, startDate, endDate, timeUnit, now_date)
+    result = nst.get_each_data(universityGroup, startDate, endDate, timeUnit, now_date)
     return result
 
 
