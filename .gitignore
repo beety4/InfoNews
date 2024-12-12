@@ -5,6 +5,8 @@ backend-flask/.gitignore
 backend-flask/static/wc-img/*
 backend-flask/static/chart-img/*
 
+backend-flask/applicantMap/*
+
 frontend-vue/.DS_Store
 frontend-vue/node_modules
 frontend-vue//dist
