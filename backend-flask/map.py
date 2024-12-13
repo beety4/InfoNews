@@ -246,13 +246,10 @@ def sidoMap():
         style_function=lambda x: {"color": "black", "weight": 0.5, "fillOpacity": 0},
         tooltip=folium.GeoJsonTooltip(
             fields=["CTP_KOR_NM", "고교수"],  # 표시할 필드
-            aliases=["지역명", "고교수"],  # 필드명에 대한 별칭
+            aliases=["시도명", "고교수"],  # 필드명에 대한 별칭
             localize=True,
             style="font-size: 16px; font-weight: bold;",
         ),
-        # on_click 이벤트 추가
-        highlight_function=lambda x: {"weight": 3, "color": "blue"},
-        on_click=onClick()
     ).add_to(m)
 
     # 지도 저장
@@ -294,7 +291,7 @@ def sigunguMap():
         style_function=lambda x: {"color": "black", "weight": 0.5, "fillOpacity": 0},
         tooltip=folium.GeoJsonTooltip(
             fields=["SIG_KOR_NM"],  # 표시할 필드
-            aliases=["지역명"],  # 필드명에 대한 별칭
+            aliases=["시군구명"],  # 필드명에 대한 별칭
             localize=True,
             style="font-size: 16px; font-weight: bold;",
         ),
@@ -309,7 +306,9 @@ def onClick():
     pass
 
 
-def main():
+def test():
+    df = pd.read_csv('./applicantMap/가공_고교별_지원자_정보.csv')
+
     # SIDO.json 경계 파일 경로
     sido_geojson_path = "./applicantMap/SIDO.json"
     with open(sido_geojson_path, 'r', encoding='utf-8') as f:
@@ -323,7 +322,7 @@ def main():
     # 지도 생성 (대한민국 중심)
     m = folium.Map(location=[36.5, 127.5], zoom_start=7)
 
-    # SIDO 경계 추가 (빨간색 경계)
+    # SIDO 경계 추가
     folium.GeoJson(
         sido_geojson_data,
         name="SIDO Boundary",
@@ -337,7 +336,7 @@ def main():
         ),
     ).add_to(m)
 
-    # SIGUNGU 경계 추가 (파란색 경계)
+    # SIGUNGU 경계 추가
     folium.GeoJson(
         sigungu_geojson_data,
         name="SIGUNGU Boundary",
@@ -351,6 +350,18 @@ def main():
         ),
     ).add_to(m)
 
+    # 데이터프레임의 모든 데이터를 마커로 추가
+    for _, row in df.iterrows():
+        folium.Marker(
+            location=[row["위도"], row["경도"]],
+            tooltip=f"{row['지역명']} - 고교수: {row['고교수']}",
+            popup=folium.Popup(
+                f"<b>지역명:</b> {row['지역명']}<br><b>고교수:</b> {row['고교수']}",
+                max_width=300
+            ),
+            icon=folium.Icon(color="blue", icon="info-sign"),
+        ).add_to(m)
+
     # 지도에 Layer Control 추가
     folium.LayerControl().add_to(m)
 
@@ -359,10 +370,114 @@ def main():
     print("지도가 생성되어 'map.html'로 저장되었습니다.")
 
 
+def main():
+    # 시도 데이터 로드
+    df = pd.read_csv('./applicantMap/가공_고교별_지원자_정보.csv')
+    geojson_path_sido = "./applicantMap/SIDO.json"
+    geojson_path_sigungu = "./applicantMap/SIGUNGU.json"
+    with open(geojson_path_sido, 'r', encoding='utf-8') as f:
+        geojson_data_sido = json.load(f)
+    with open(geojson_path_sigungu, 'r', encoding='utf-8') as f:
+        geojson_data_sigungu = json.load(f)
+    # 지도 생성
+    m = folium.Map(location=[36.5, 127.5], zoom_start=7)
+
+    # 지역별 고교 수 집계
+    지역별_고교수 = df.groupby('지역명').size().reset_index(name='고교수')
+    # GeoJSON 데이터에 고교 수 추가
+    for feature in geojson_data_sido['features']:
+        지역명 = feature['properties']['CTP_KOR_NM']
+        고교수 = 지역별_고교수[지역별_고교수['지역명'] == 지역명]['고교수'].values
+        feature['properties']['고교수'] = int(고교수[0]) if len(고교수) > 0 else 0
+    # Choropleth 추가
+    folium.Choropleth(
+        geo_data=geojson_data_sido,
+        name="choropleth",
+        data=지역별_고교수,
+        columns=['지역명', '고교수'],
+        key_on="feature.properties.CTP_KOR_NM",
+        fill_color="YlGnBu",
+        fill_opacity=0.7,
+        line_opacity=0.2,
+        legend_name="고교수",
+    ).add_to(m)
+    # GeoJSON 추가 (시도)
+
+    # GeoJSON 데이터를 JSON으로 변환하여 JavaScript로 전달
+    geojson_sido = json.dumps(geojson_data_sido)
+    geojson_sigungu = json.dumps(geojson_data_sigungu)
+
+    my_js = \
+        f"""
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {{
+    var geojson_sido = {geojson_sido};
+    var geojson_sigungu = {geojson_sigungu};
+
+    var mapId = document.querySelector('.folium-map').id;
+    var map = window[mapId];
+    
+    
+    var sidoLayer = L.geoJson(geojson_sido, {{
+        style: function(feature) {{
+            return {{
+                color: 'black',
+                weight: 0.5,
+                fillOpacity: 0
+            }};
+        }},
+        onEachFeature: function(feature, layer) {{
+            layer.bindTooltip('<b>' + feature.properties.CTP_KOR_NM + '</b><br>고교수: ' + feature.properties.고교수);
+        }}
+    }}).addTo(map);
+
+    var sigunguLayer = L.geoJson(geojson_sigungu, {{
+        style: function(feature) {{
+            return {{
+                color: 'black',
+                weight: 1,
+                fillOpacity: 0
+            }};
+        }},
+        onEachFeature: function(feature, layer) {{
+            layer.bindTooltip('<b>' + feature.properties.SIG_KOR_NM + '</b>');
+        }},
+        show: false
+    }});
+
+    // 시도 클릭 시 시군구 레이어를 보이게 하고, 해당 시도 영역으로 확대
+    sidoLayer.on('click', function(e) {{
+        // 시군구 레이어를 추가
+        sigunguLayer.addTo(map);
+
+        // 클릭한 시도의 경계를 기준으로 지도 확대
+        map.fitBounds(e.target.getBounds());
+    }});
+
+    // 줌 이벤트가 끝날 때마다 실행
+    map.on('zoomend', function() {{
+        var zoomLevel = map.getZoom();
+        if (zoomLevel <= 7) {{
+            // 줌 레벨이 7 이하일 때 시군구 레이어 제거
+            sigunguLayer.remove();
+        }}
+    }});
+    }});
+</script>
+    """
+
+    m.get_root().html.add_child(folium.Element(my_js))
+
+    # 저장
+    m.save('./applicantMap/map.html')
+    print("지도가 생성되어 map.html로 저장되었습니다.")
+
+
 if __name__ == '__main__':
     # makeCSV()
     # sido()
     # sidoMap()
     # sigungu()
     # sigunguMap()
+    # test()
     main()
