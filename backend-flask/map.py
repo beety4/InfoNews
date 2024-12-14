@@ -380,7 +380,7 @@ def main():
     with open(geojson_path_sigungu, 'r', encoding='utf-8') as f:
         geojson_data_sigungu = json.load(f)
     # 지도 생성
-    m = folium.Map(location=[36.5, 127.5], zoom_start=7)
+    m = folium.Map(location=[36.5, 127.5], zoom_start=7, tiles="Stamen Toner", attr="Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under ODbL.")
 
     # 지역별 고교 수 집계
     지역별_고교수 = df.groupby('지역명').size().reset_index(name='고교수')
@@ -421,22 +421,28 @@ def main():
     var sidoLayer = L.geoJson(geojson_sido, {{
         style: function(feature) {{
             return {{
-                color: 'black',
-                weight: 0.5,
-                fillOpacity: 0
+                color: 'darkblue',   // 시도 경계선 색상 (다크블루)
+                weight: 3,           // 경계선 두께 (좀 더 두껍게 설정)
+                opacity: 0.7,        // 경계선 투명도 (약간 투명하게 설정)
+                fillOpacity: 0       // 내부 영역 투명도 (내부는 투명하게 설정)
             }};
         }},
         onEachFeature: function(feature, layer) {{
             layer.bindTooltip('<b>' + feature.properties.CTP_KOR_NM + '</b><br>고교수: ' + feature.properties.고교수);
+            layer.on('click', function(e) {{
+                changezoomFocus(feature, e);
+            }});
         }}
     }}).addTo(map);
 
     var sigunguLayer = L.geoJson(geojson_sigungu, {{
         style: function(feature) {{
             return {{
-                color: 'black',
-                weight: 1,
-                fillOpacity: 0
+                color: 'green',      // 시군구 경계선 색상 (초록색)
+                weight: 2,           // 경계선 두께 (좀 더 얇게 설정)
+                opacity: 0.6,        // 경계선 투명도 (약간 투명하게 설정)
+                dashArray: '5, 5',   // 점선 스타일 (5px 점선, 5px 간격)
+                fillOpacity: 0       // 내부 영역 투명도 (내부는 투명하게 설정)
             }};
         }},
         onEachFeature: function(feature, layer) {{
@@ -445,23 +451,57 @@ def main():
         show: false
     }});
 
-    // 시도 클릭 시 시군구 레이어를 보이게 하고, 해당 시도 영역으로 확대
-    sidoLayer.on('click', function(e) {{
-        // 시군구 레이어를 추가
-        sigunguLayer.addTo(map);
 
-        // 클릭한 시도의 경계를 기준으로 지도 확대
-        map.fitBounds(e.target.getBounds());
-    }});
-
-    // 줌 이벤트가 끝날 때마다 실행
+    // 줌 이벤트: 줌 레벨에 따라 레이어 전환
     map.on('zoomend', function() {{
-        var zoomLevel = map.getZoom();
-        if (zoomLevel <= 7) {{
-            // 줌 레벨이 7 이하일 때 시군구 레이어 제거
+    var zoomLevel = map.getZoom();
+    if (zoomLevel >= 9) {{  // 줌 레벨이 10 이상일 때 시군구 레이어 추가
+        if (!map.hasLayer(sigunguLayer)) {{
+            sigunguLayer.addTo(map);
+        }}
+        if (!map.hasLayer(sidoLayer)) {{
+            sidoLayer.remove();
+        }}
+    }} else {{  // 줌 레벨이 10 미만일 때 시군구 레이어 제거하고 시도 레이어 보이게 함
+        if (!map.hasLayer(sidoLayer)) {{
+            sidoLayer.addTo(map);
+        }}
+        if (map.hasLayer(sigunguLayer)) {{
             sigunguLayer.remove();
         }}
+    }}
     }});
+    
+    
+    // 클릭 시 줌 이벤트 함수
+    function changezoomFocus(feature, e) {{
+        var sido = feature.properties;
+        var bounds = e.target.getBounds();
+        var center = bounds.getCenter();
+        
+        console.log(sido.CTP_KOR_NM);
+        console.log(center);
+        
+        // 시도별 zoom 레벨 지정
+        zoomLevel = 10;
+        switch (sido.CTP_KOR_NM) {{
+            case "서울특별시": zoomLevel = 12; break;
+            case "강원특별자치도": zoomLevel = 9; break;
+            case "세종특별자치시": zoomLevel = 11; break;
+            case "대전광역시": zoomLevel = 12; break;
+            case "경상북도": zoomLevel = 9; break;
+            case "전라남도": zoomLevel = 9; break;
+            case "광주광역시": zoomLevel = 11; break;
+            case "울산광역시": zoomLevel = 11; break;
+            case "부산광역시": zoomLevel = 11; break;
+            default: zoomLevel = 10; break;
+        }}
+        
+        map.setView(center, zoomLevel);
+    }}
+    
+
+    
     }});
 </script>
     """
