@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import os
 import requests
 from dotenv import load_dotenv
@@ -8,7 +7,7 @@ from concurrent.futures import ThreadPoolExecutor
 import geopandas as gpd
 import json
 import folium
-from IPython.display import display
+from folium.plugins import MarkerCluster
 
 
 def makeCSV():
@@ -192,7 +191,7 @@ def sidoMap():
     # 지도 생성 (대한민국 중심으로 설정)
     m = folium.Map(location=[36.5, 127.5], zoom_start=7)
 
-    # 대한민국의 범위로 fit_bounds 설정 (Optional)
+    # 대한민국의 범위로 fit_bounds 설정
     south_lat = 33.0  # 최남단 위도
     north_lat = 38.6  # 최북단 위도
     west_lon = 124.0  # 최서단 경도
@@ -276,36 +275,6 @@ def sigungu():
     print("GeoJSON 파일이 생성되었습니다.")
 
 
-def sigunguMap():
-    geojson_path = "./applicantMap/SIGUNGU.json"
-
-    with open(geojson_path, 'r', encoding='utf-8') as f:
-        geojson_data = json.load(f)
-
-    # 지도 생성 (대한민국 중심으로 설정)
-    m = folium.Map(location=[36.5, 127.5], zoom_start=7)
-
-    folium.GeoJson(
-        geojson_data,
-        name="boundary",
-        style_function=lambda x: {"color": "black", "weight": 0.5, "fillOpacity": 0},
-        tooltip=folium.GeoJsonTooltip(
-            fields=["SIG_KOR_NM"],  # 표시할 필드
-            aliases=["시군구명"],  # 필드명에 대한 별칭
-            localize=True,
-            style="font-size: 16px; font-weight: bold;",
-        ),
-    ).add_to(m)
-
-    # 지도 저장
-    m.save('./applicantMap/map.html')
-    print("지도가 생성되어 map.html로 저장되었습니다.")
-
-
-def onClick():
-    pass
-
-
 def test():
     df = pd.read_csv('./applicantMap/가공_고교별_지원자_정보.csv')
 
@@ -370,25 +339,51 @@ def test():
     print("지도가 생성되어 'map.html'로 저장되었습니다.")
 
 
-def main():
+def makeMap():
     # 시도 데이터 로드
     df = pd.read_csv('./applicantMap/가공_고교별_지원자_정보.csv')
+
     geojson_path_sido = "./applicantMap/SIDO.json"
     geojson_path_sigungu = "./applicantMap/SIGUNGU.json"
+
     with open(geojson_path_sido, 'r', encoding='utf-8') as f:
         geojson_data_sido = json.load(f)
+
     with open(geojson_path_sigungu, 'r', encoding='utf-8') as f:
         geojson_data_sigungu = json.load(f)
+
     # 지도 생성
-    m = folium.Map(location=[36.5, 127.5], zoom_start=7, tiles="Stamen Toner", attr="Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under ODbL.")
+    m = folium.Map(location=[36.5, 127.5], zoom_start=7, tiles="OpenStreetMap",
+                   attr="Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under ODbL.")
+
+    # 대한민국의 범위로 fit_bounds 설정
+    south_lat = 33.0  # 최남단 위도
+    north_lat = 38.6  # 최북단 위도
+    west_lon = 124.0  # 최서단 경도
+    east_lon = 132.0  # 최동단 경도
+
+    m.fit_bounds([[south_lat, west_lon], [north_lat, east_lon]])
+    m.options['maxBounds'] = [[south_lat, west_lon], [north_lat, east_lon]]
+    m.options['minZoom'] = 7  # 최소 줌 레벨
+    m.options['maxZoom'] = 15  # 최대 줌 레벨
 
     # 지역별 고교 수 집계
     지역별_고교수 = df.groupby('지역명').size().reset_index(name='고교수')
+
     # GeoJSON 데이터에 고교 수 추가
     for feature in geojson_data_sido['features']:
         지역명 = feature['properties']['CTP_KOR_NM']
         고교수 = 지역별_고교수[지역별_고교수['지역명'] == 지역명]['고교수'].values
         feature['properties']['고교수'] = int(고교수[0]) if len(고교수) > 0 else 0
+
+    # 고교 수의 최소/최대 값 구하기 (범위 설정)
+    min_schools = 지역별_고교수['고교수'].min()
+    max_schools = 지역별_고교수['고교수'].max()
+
+    # 범위 설정 (색상 구간을 직접 설정)
+    thresholds = [0, 150, 250, 400, 600, 1000, 2000, 3500, 5000]
+    # thresholds = [0,  65, 127, 133, 142, 178, 183, 186, 200, 216, 243, 309, 325, 493, 1810, 3335, 5000]
+
     # Choropleth 추가
     folium.Choropleth(
         geo_data=geojson_data_sido,
@@ -400,111 +395,262 @@ def main():
         fill_opacity=0.7,
         line_opacity=0.2,
         legend_name="고교수",
+        threshold_scale=thresholds  # 색상 구간 설정
     ).add_to(m)
-    # GeoJSON 추가 (시도)
 
     # GeoJSON 데이터를 JSON으로 변환하여 JavaScript로 전달
     geojson_sido = json.dumps(geojson_data_sido)
     geojson_sigungu = json.dumps(geojson_data_sigungu)
 
-    my_js = \
-        f"""
+    my_js = f"""
         <script>
-        document.addEventListener('DOMContentLoaded', function() {{
-    var geojson_sido = {geojson_sido};
-    var geojson_sigungu = {geojson_sigungu};
-
-    var mapId = document.querySelector('.folium-map').id;
-    var map = window[mapId];
-    
-    
-    var sidoLayer = L.geoJson(geojson_sido, {{
-        style: function(feature) {{
-            return {{
-                color: 'darkblue',   // 시도 경계선 색상 (다크블루)
-                weight: 3,           // 경계선 두께 (좀 더 두껍게 설정)
-                opacity: 0.7,        // 경계선 투명도 (약간 투명하게 설정)
-                fillOpacity: 0       // 내부 영역 투명도 (내부는 투명하게 설정)
-            }};
-        }},
-        onEachFeature: function(feature, layer) {{
-            layer.bindTooltip('<b>' + feature.properties.CTP_KOR_NM + '</b><br>고교수: ' + feature.properties.고교수);
-            layer.on('click', function(e) {{
-                changezoomFocus(feature, e);
+            document.addEventListener('DOMContentLoaded', function() {{
+            var geojson_sido = {geojson_sido};
+            var geojson_sigungu = {geojson_sigungu};
+        
+            var mapId = document.querySelector('.folium-map').id;
+            var map = window[mapId];
+            
+            var sidoLayer = L.geoJson(geojson_sido, {{
+                style: function(feature) {{
+                    return {{
+                        color: 'black',      // 시도 경계선 색상
+                        weight: 2,           // 경계선 두께 (좀 더 두껍게 설정)
+                        opacity: 0.7,        // 경계선 투명도 (약간 투명하게 설정)
+                        fillOpacity: 0       // 내부 영역 투명도 (내부는 투명하게 설정)
+                    }};
+                }},
+                onEachFeature: function(feature, layer) {{
+                    layer.bindTooltip('<b>' + feature.properties.CTP_KOR_NM + '</b><br>고교수: ' + feature.properties.고교수);
+                    layer.on('click', function(e) {{
+                        changezoomFocus(feature, e);
+                    }});
+                }}
+            }}).addTo(map);
+        
+            var sigunguLayer = L.geoJson(geojson_sigungu, {{
+                style: function(feature) {{
+                    return {{
+                        color: 'black',      // 시군구 경계선 색상
+                        weight: 2,           // 경계선 두께 (좀 더 얇게 설정)
+                        opacity: 0.6,        // 경계선 투명도 (약간 투명하게 설정)
+                        dashArray: '5, 8',   // 점선 스타일 (5px 점선, 5px 간격)
+                        fillOpacity: 0       // 내부 영역 투명도 (내부는 투명하게 설정)
+                    }};
+                }},
+                onEachFeature: function(feature, layer) {{
+                    layer.bindTooltip('<b>' + feature.properties.SIG_KOR_NM + '</b>');
+                }},
+                show: false
             }});
-        }}
-    }}).addTo(map);
+            
+            // 줌 이벤트: 줌 레벨에 따라 레이어 전환
+            map.on('zoomend', function() {{
+            var zoomLevel = map.getZoom();
+            if (zoomLevel >= 9) {{  // 줌 레벨이 9 이상일 때 시군구 레이어 추가
+                if (!map.hasLayer(sigunguLayer)) {{
+                    sigunguLayer.addTo(map);
+                }}
+                if (!map.hasLayer(sidoLayer)) {{
+                    sidoLayer.remove();
+                }}
+            }} else {{  // 줌 레벨이 10 미만일 때 시군구 레이어 제거하고 시도 레이어 보이게 함
+                if (!map.hasLayer(sidoLayer)) {{
+                    sidoLayer.addTo(map);
+                }}
+                if (map.hasLayer(sigunguLayer)) {{
+                    sigunguLayer.remove();
+                }}
+            }}
+            }});
+            
+            
+            // 클릭 시 줌 이벤트 함수
+            function changezoomFocus(feature, e) {{
+                var sido = feature.properties;
+                var bounds = e.target.getBounds();
+                var center = bounds.getCenter();
+                
+                console.log(sido.CTP_KOR_NM);
+                console.log(center);
+                
+                // 시도별 zoom 레벨 지정
+                zoomLevel = 10;
+                switch (sido.CTP_KOR_NM) {{
+                    case "서울특별시": zoomLevel = 12; break;
+                    case "강원특별자치도": zoomLevel = 9; break;
+                    case "세종특별자치시": zoomLevel = 11; break;
+                    case "대전광역시": zoomLevel = 12; break;
+                    case "경상북도": zoomLevel = 9; center = [36.5759, 128.5052]; break;
+                    case "전라남도": zoomLevel = 9; center = [34.8679, 126.9910];break;
+                    case "전북특별자치도": zoomLevel = 10; center = [35.7175, 127.1530];;break;
+                    case "광주광역시": zoomLevel = 11; break;
+                    case "울산광역시": zoomLevel = 11; break;
+                    case "부산광역시": zoomLevel = 11; break;
+                    case "인천광역시": zoomLevel = 10; center = [37.4563, 126.7052]; break;
+                    case "경기도": zoomLevel = 9; break;
+                    default: zoomLevel = 10; break;
+                }}
+                
+                map.setView(center, zoomLevel);
+            }}
+            
+            }});
+        </script>
+        """
 
-    var sigunguLayer = L.geoJson(geojson_sigungu, {{
-        style: function(feature) {{
-            return {{
-                color: 'green',      // 시군구 경계선 색상 (초록색)
-                weight: 2,           // 경계선 두께 (좀 더 얇게 설정)
-                opacity: 0.6,        // 경계선 투명도 (약간 투명하게 설정)
-                dashArray: '5, 5',   // 점선 스타일 (5px 점선, 5px 간격)
-                fillOpacity: 0       // 내부 영역 투명도 (내부는 투명하게 설정)
-            }};
-        }},
-        onEachFeature: function(feature, layer) {{
-            layer.bindTooltip('<b>' + feature.properties.SIG_KOR_NM + '</b>');
-        }},
-        show: false
-    }});
+    m.get_root().html.add_child(folium.Element(my_js))
+
+    # 저장
+    m.save('./applicantMap/map.html')
+    print("지도가 생성되어 map.html로 저장되었습니다.")
 
 
-    // 줌 이벤트: 줌 레벨에 따라 레이어 전환
-    map.on('zoomend', function() {{
-    var zoomLevel = map.getZoom();
-    if (zoomLevel >= 9) {{  // 줌 레벨이 10 이상일 때 시군구 레이어 추가
-        if (!map.hasLayer(sigunguLayer)) {{
-            sigunguLayer.addTo(map);
-        }}
-        if (!map.hasLayer(sidoLayer)) {{
-            sidoLayer.remove();
-        }}
-    }} else {{  // 줌 레벨이 10 미만일 때 시군구 레이어 제거하고 시도 레이어 보이게 함
-        if (!map.hasLayer(sidoLayer)) {{
-            sidoLayer.addTo(map);
-        }}
-        if (map.hasLayer(sigunguLayer)) {{
-            sigunguLayer.remove();
-        }}
-    }}
-    }});
-    
-    
-    // 클릭 시 줌 이벤트 함수
-    function changezoomFocus(feature, e) {{
-        var sido = feature.properties;
-        var bounds = e.target.getBounds();
-        var center = bounds.getCenter();
-        
-        console.log(sido.CTP_KOR_NM);
-        console.log(center);
-        
-        // 시도별 zoom 레벨 지정
-        zoomLevel = 10;
-        switch (sido.CTP_KOR_NM) {{
-            case "서울특별시": zoomLevel = 12; break;
-            case "강원특별자치도": zoomLevel = 9; break;
-            case "세종특별자치시": zoomLevel = 11; break;
-            case "대전광역시": zoomLevel = 12; break;
-            case "경상북도": zoomLevel = 9; break;
-            case "전라남도": zoomLevel = 9; break;
-            case "광주광역시": zoomLevel = 11; break;
-            case "울산광역시": zoomLevel = 11; break;
-            case "부산광역시": zoomLevel = 11; break;
-            default: zoomLevel = 10; break;
-        }}
-        
-        map.setView(center, zoomLevel);
-    }}
-    
+def main():
+    # 시도 데이터 로드
+    df = pd.read_csv('./applicantMap/가공_고교별_지원자_정보.csv')
 
-    
-    }});
-</script>
-    """
+    geojson_path_sido = "./applicantMap/SIDO.json"
+    geojson_path_sigungu = "./applicantMap/SIGUNGU.json"
+
+    with open(geojson_path_sido, 'r', encoding='utf-8') as f:
+        geojson_data_sido = json.load(f)
+
+    with open(geojson_path_sigungu, 'r', encoding='utf-8') as f:
+        geojson_data_sigungu = json.load(f)
+
+    # 지도 생성
+    m = folium.Map(location=[36.5, 127.5], zoom_start=7)
+
+    # 대한민국의 범위로 fit_bounds 설정
+    south_lat = 33.0  # 최남단 위도
+    north_lat = 38.6  # 최북단 위도
+    west_lon = 124.0  # 최서단 경도
+    east_lon = 132.0  # 최동단 경도
+
+    m.fit_bounds([[south_lat, west_lon], [north_lat, east_lon]])
+    m.options['maxBounds'] = [[south_lat, west_lon], [north_lat, east_lon]]
+    m.options['minZoom'] = 7  # 최소 줌 레벨
+
+    # MarkerCluster 객체 생성
+    marker_cluster = MarkerCluster().add_to(m)
+
+    # 마커와 CircleMarker 추가
+    for _, row in df.iterrows():
+        folium.Marker(
+            location=[row["위도"], row["경도"]],
+            popup=f"{row['고교명']} ({row['지역명']})\n학과: {row['학과명']}",
+        ).add_to(marker_cluster)
+
+        # 마커 주변에 원을 그리기
+        folium.CircleMarker(
+            location=[row["위도"], row["경도"]],
+            radius=10,
+            color="blue",
+            fill=True,
+            fill_color="blue",
+            fill_opacity=0.4,
+        ).add_to(marker_cluster)
+
+    # GeoJSON 데이터를 JSON으로 변환하여 JavaScript로 전달
+    geojson_sido = json.dumps(geojson_data_sido)
+    geojson_sigungu = json.dumps(geojson_data_sigungu)
+
+    my_js = f"""
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {{
+                var geojson_sido = {geojson_sido};
+                var geojson_sigungu = {geojson_sigungu};
+
+                var mapId = document.querySelector('.folium-map').id;
+                var map = window[mapId];
+
+                var sidoLayer = L.geoJson(geojson_sido, {{
+                    style: function(feature) {{
+                        return {{
+                            color: 'black',      // 시도 경계선 색상
+                            weight: 2,           // 경계선 두께 (좀 더 두껍게 설정)
+                            opacity: 0.7,        // 경계선 투명도 (약간 투명하게 설정)
+                            fillOpacity: 0       // 내부 영역 투명도 (내부는 투명하게 설정)
+                        }};
+                    }},
+                    onEachFeature: function(feature, layer) {{
+                        layer.bindTooltip('<b>' + feature.properties.CTP_KOR_NM + '</b><br>고교수: ' + feature.properties.고교수);
+                        layer.on('click', function(e) {{
+                            changezoomFocus(feature, e);
+                        }});
+                    }}
+                }}).addTo(map);
+
+                var sigunguLayer = L.geoJson(geojson_sigungu, {{
+                    style: function(feature) {{
+                        return {{
+                            color: 'black',      // 시군구 경계선 색상
+                            weight: 2,           // 경계선 두께 (좀 더 얇게 설정)
+                            opacity: 0.6,        // 경계선 투명도 (약간 투명하게 설정)
+                            dashArray: '5, 8',   // 점선 스타일 (5px 점선, 5px 간격)
+                            fillOpacity: 0       // 내부 영역 투명도 (내부는 투명하게 설정)
+                        }};
+                    }},
+                    onEachFeature: function(feature, layer) {{
+                        layer.bindTooltip('<b>' + feature.properties.SIG_KOR_NM + '</b>');
+                    }},
+                    show: false
+                }});
+
+                // 줌 이벤트: 줌 레벨에 따라 레이어 전환
+                map.on('zoomend', function() {{
+                var zoomLevel = map.getZoom();
+                if (zoomLevel >= 9) {{  // 줌 레벨이 9 이상일 때 시군구 레이어 추가
+                    if (!map.hasLayer(sigunguLayer)) {{
+                        sigunguLayer.addTo(map);
+                    }}
+                    if (!map.hasLayer(sidoLayer)) {{
+                        sidoLayer.remove();
+                    }}
+                }} else {{  // 줌 레벨이 10 미만일 때 시군구 레이어 제거하고 시도 레이어 보이게 함
+                    if (!map.hasLayer(sidoLayer)) {{
+                        sidoLayer.addTo(map);
+                    }}
+                    if (map.hasLayer(sigunguLayer)) {{
+                        sigunguLayer.remove();
+                    }}
+                }}
+                }});
+
+                // 클릭 시 줌 이벤트 함수
+                function changezoomFocus(feature, e) {{
+                    var sido = feature.properties;
+                    var bounds = e.target.getBounds();
+                    var center = bounds.getCenter();
+
+                    console.log(sido.CTP_KOR_NM);
+                    console.log(center);
+
+                    // 시도별 zoom 레벨 지정
+                    zoomLevel = 10;
+                    switch (sido.CTP_KOR_NM) {{
+                        case "서울특별시": zoomLevel = 12; break;
+                        case "강원특별자치도": zoomLevel = 9; break;
+                        case "세종특별자치시": zoomLevel = 11; break;
+                        case "대전광역시": zoomLevel = 12; break;
+                        case "경상북도": zoomLevel = 9; center = [36.5759, 128.5052]; break;
+                        case "전라남도": zoomLevel = 9; center = [34.8679, 126.9910];break;
+                        case "전북특별자치도": zoomLevel = 10; center = [35.7175, 127.1530];;break;
+                        case "광주광역시": zoomLevel = 11; break;
+                        case "울산광역시": zoomLevel = 11; break;
+                        case "부산광역시": zoomLevel = 11; break;
+                        case "인천광역시": zoomLevel = 10; center = [37.4563, 126.7052]; break;
+                        case "경기도": zoomLevel = 9; break;
+                        default: zoomLevel = 10; break;
+                    }}
+
+                    map.setView(center, zoomLevel);
+                }}
+
+                }});
+            </script>
+            """
 
     m.get_root().html.add_child(folium.Element(my_js))
 
@@ -520,4 +666,5 @@ if __name__ == '__main__':
     # sigungu()
     # sigunguMap()
     # test()
+    # makeMap()
     main()
