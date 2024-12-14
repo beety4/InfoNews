@@ -25,7 +25,7 @@ document.getElementById("searchItem").addEventListener("click", function() {
             document.querySelector("#news_table tbody").textContent = "";
 
             let table = document.getElementById("news_table");
-            table.style.display = 'inline-block';
+            table.style.visibility = 'visible';
 
             // 데이터 가져와서 출력
             var count = 0;
@@ -71,9 +71,9 @@ function writeTablePage(count, date, link, title) {
 
     const html = `
         <tr>
-            <th>${count}</th>
-            <td><a href="${link}" target="_blank" class="news-title">${highlightText(title)}</a></td>
-            <th scope="row" style="vertical-align: middle;">${date.substr(5)}</th>
+            <td class="column-no">${count}</td>
+            <td class="column-title"><a href="${link}" target="_blank">${highlightText(title)}</a></td>
+            <td class="column-date" scope="row">${date.substr(5)}</td>
         </tr>
     `;
 

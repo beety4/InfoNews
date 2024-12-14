@@ -61,19 +61,17 @@ function write_news_data(result) {
     result.forEach(function(company, i) {
         let name = getnewsname(company);
 
-        // 테이블을 .table-responsive로 감싸기
+        // 테이블을 .responsive-container로 감싸기
         const tableId = `table_${i + 1}`;
         let html = `
-        <div class="news-table-responsive">
-            <table id="${name}" class="table table-striped news_table" style="display: inline-block;">
+        <div class="responsive-container">
+            <h1>${name}</h1>
+            <table id="${name}" class="custom-table" style="visibility:hidden;">
                 <thead>
                     <tr>
-                        <th scope="col" colspan="3"><h1>${name}</h1></th>
-                    </tr>
-                    <tr>
-                        <th>No</th>
-                        <th scope="col">뉴스 제목</th>
-                        <th scope="col">날짜</th>
+                        <th class="column-no">No</th>
+                        <th class="column-title" scope="col">뉴스 제목</th>
+                        <th class="column-date" scope="col">날짜</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -83,9 +81,9 @@ function write_news_data(result) {
             const news = company[i];
             html += `
                 <tr>
-                <th>${i + 1}</th>
-                <td><a href="${news.link}" target="_blank" class="news-title">${highlightText(news.title)}</a></td>
-                <td scope="row" style="vertical-align: middle;">${(news.date).substr(5)}</td>
+                <td class="column-no">${i + 1}</td>
+                <td class="column-title"><a href="${news.link}" target="_blank">${highlightText(news.title)}</a></td>
+                <td class="column-date" scope="row">${(news.date).substr(5)}</td>
                 </tr>
             `;
         }
@@ -97,6 +95,8 @@ function write_news_data(result) {
         `;
 
         container.insertAdjacentHTML('beforeend', html);
+
+        document.getElementById(name).style.visibility = 'visible';
     });
 }
 
