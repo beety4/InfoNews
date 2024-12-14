@@ -60,6 +60,10 @@ def news_item():
     return result
 
 
+@app.route('/map')
+def map_item():
+    return render_template('map.html')
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=8080, debug=True)

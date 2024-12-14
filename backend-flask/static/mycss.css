@@ -286,7 +286,7 @@ image-container {
 /* map */
 .map-container {
     width: 80%;
-    height: 500px;
+    height: 650px;
     margin: 5% auto;
     border: 2px solid #ccc;
     border-radius: 8px;
@@ -482,3 +482,6 @@ image-container {
         width:100%;
     }
 }
+
+
+

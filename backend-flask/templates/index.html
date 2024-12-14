@@ -6,7 +6,7 @@
 -->
 <html>
 <head>
-    <title>모죽 - 통합뉴스</title>
+    <title>인하공전 통합 정보조회 시스템</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/main.css') }}"/>
@@ -21,8 +21,8 @@
     <!-- Header -->
     <section id="header" class="wrapper">
         <div id="logo">
-            <h1><a href="/">모죽 - 통합뉴스</a></h1>
-            <p>You can Search News and get trend</p>
+            <h1><a href="/">인하공전 통합 정보조회 시스템</a></h1>
+            <p>Compare search trends, and get a variety of news.</p>
         </div>
     </section>
 
@@ -86,7 +86,7 @@
                     <img class="result-image" src="{{ url_for('static', filename='blank.png') }}" alt="chart-img"
                          id="chart-img" width="auto">
                 </div>
-
+                <br><br><br><br>
 
             </div>
         </div>
@@ -143,12 +143,12 @@
                 <br><br>
                 <div style="text-align: center;">
                     <h1>입학지도</h1>
-                    <p>입학지도</p>
+                    <p>2024년도 기준, 지원자별 지도 시각화 정보 입니다.</p>
                 </div>
                 <br>
                 <div class="map-container">
                     <div class="map">
-                        <!-- 지도 들어갈 위치-->
+                        <iframe src="{{ url_for('map_item') }}" width="100%" height="100%"></iframe>
                     </div>
                 </div>
                 <hr>
@@ -176,15 +176,15 @@
                         <thead>
                         <tr>
                             <th class="column-no">No</th>
-                            <th class="column-title">제목</th>
-                            <th class="column-date">날짜</th>
+                            <th class="column-title">학교</th>
+                            <th class="column-date">지원자 수</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
                             <td class="column-no">1</td>
                             <td class="column-title">제목제목제목제목제목제제목제목제목제목제목제목</td>
-                            <td class="column-date">24.12.12</td>
+                            <td class="column-date">15</td>
                         </tr>
                         </tbody>
                     </table>
@@ -211,6 +211,11 @@
                 </div>
 
                 <div id="news-checkbox" class="news-checkbox">
+                    <div class="check-items">
+                        <input type="checkbox" id="checkbox12" class="form-check-input" value="네이버통합뉴스"
+                               onchange="toggleCheck(this)" checked="checked">
+                        <label for="checkbox12">네이버통합뉴스</label>
+                    </div>
                     <div class="check-items">
                         <input type="checkbox" id="checkbox10" class="form-check-input" value="한국전문대학교육협의회"
                                onchange="toggleCheck(this)" checked="checked">

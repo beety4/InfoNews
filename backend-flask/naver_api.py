@@ -80,7 +80,7 @@ class NaverAPI:
         if response.status_code == 200:
             return response.json()
         else:
-            print(f"HTTP 요청 실패 : {response.status_code}")
+            #print(f"HTTP 요청 실패 : {response.status_code}")
             return None
 
 

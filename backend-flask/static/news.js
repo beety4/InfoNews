@@ -64,9 +64,9 @@ function write_news_data(result) {
         // 테이블을 .responsive-container로 감싸기
         const tableId = `table_${i + 1}`;
         let html = `
-        <div class="responsive-container">
+        <div id="${name}" class="responsive-container">
             <h1>${name}</h1>
-            <table id="${name}" class="custom-table" style="visibility:hidden;">
+            <table class="custom-table" style="visibility:inherit;">
                 <thead>
                     <tr>
                         <th class="column-no">No</th>
@@ -96,7 +96,7 @@ function write_news_data(result) {
 
         container.insertAdjacentHTML('beforeend', html);
 
-        document.getElementById(name).style.visibility = 'visible';
+        //document.getElementById(name).style.visibility = 'visible';
     });
 }
 
@@ -161,7 +161,7 @@ function getnewsname(company) {
     } else if(company[0].link.includes("edu.chosun.com")) {
             return "조선에듀";
     } else {
-            return "UNKNOWN";
+            return "네이버통합뉴스";
     }
 }
 
@@ -169,8 +169,10 @@ function getnewsname(company) {
 // 뉴스 체크표시 on off
 function toggleCheck(item) {
     if (item.checked) {
+        document.getElementById(item.value).style.visibility = 'visible';
         document.getElementById(item.value).style.display = 'inline-block';
     } else {
+        document.getElementById(item.value).style.visibility = 'hidden';
         document.getElementById(item.value).style.display = 'none';
     }
 }

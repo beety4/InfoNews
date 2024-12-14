@@ -6,6 +6,7 @@ backend-flask/static/wc-img/*
 backend-flask/static/chart-img/*
 
 backend-flask/applicantMap/*
+backend-flask/templates/map.html
 
 frontend-vue/.DS_Store
 frontend-vue/node_modules
