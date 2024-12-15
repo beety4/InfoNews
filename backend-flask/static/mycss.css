@@ -11,6 +11,7 @@ html, body{
     overflow-wrap: break-word;
     text-align: center;
     margin: 0;
+    text-shadow: 0.7px 0.7px 0px black, -0.7px -0.7px 0px black, 0.7px -0.7px 0px black, -0.7px 0.7px 0px black;
 }
 
 
