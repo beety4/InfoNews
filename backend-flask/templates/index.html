@@ -6,7 +6,7 @@
 -->
 <html>
 <head>
-    <title>모죽 - 통합뉴스</title>
+    <title>인하공전 통합 정보조회 시스템</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/main.css') }}"/>
@@ -21,8 +21,8 @@
     <!-- Header -->
     <section id="header" class="wrapper">
         <div id="logo">
-            <h1><a href="/">모죽 - 통합뉴스</a></h1>
-            <p>You can Search News and get trend</p>
+            <h1><a href="/">인하공전 통합 정보조회 시스템</a></h1>
+            <p>Compare search trends, and get a variety of news.</p>
         </div>
     </section>
 
@@ -36,10 +36,6 @@
                 <br><br>
                 <div style="text-align: center;" class="form-check trend">
                     <h1>검색 빈도 수 조회</h1>
-
-                    <!--                    <input type="date" id="startDate" name="startDate" class="form-control date-input">-->
-                    <!--                    ~-->
-                    <!--                    <input type="date" id="endDate" name="endDate" class="form-control date-input">-->
                     <div class="d-flex justify-content-center align-items-center center-container">
                         <form class="d-flex align-items-center gap-3 date-container">
                             <div class="input-group">
@@ -68,13 +64,32 @@
                         <input class="form-check-input" type="radio" name="universityGroup" id="uni1" value="uni1"
                                checked>
                         <label class="form-check-label" for="uni1">
-                            인하공전, 유한대, 부천대, 재능대, 재능대, 동양미래대, 연성대, 동서울대, 한양여대
+                            <div class="university">인하공전</div>
+                            <div class="university">유한대</div>
+                            <div class="university">부천대</div>
+                            <div class="university">재능대</div>
+                            <div class="university">동양미래대</div>
+                            <div class="university">연성대</div>
+                            <div class="university">동서울대</div>
+                            <div class="university">한양여대</div>
+
                         </label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="universityGroup" id="uni2" value="uni2">
                         <label class="form-check-label" for="uni2">
-                            인하공전, 유한대, 부천대, 재능대, 동양미래대, 연성대, 동서울대, 한양여대, 경복대, 명지전문대, 서일대
+                            <div class="university">인하공전</div>
+                            <div class="university">유한대</div>
+                            <div class="university">부천대</div>
+                            <div class="university">재능대</div>
+                            <div class="university">동양미래대</div>
+                            <div class="university">연성대</div>
+                            <div class="university">동서울대</div>
+                            <div class="university">한양여대</div>
+                            <div class="university">경복대</div>
+                            <div class="university">명지전문대</div>
+                            <div class="university">서일대</div>
+
                         </label>
                     </div>
                     <button id="trend-search" class="btn btn-secondary">검색</button>
@@ -86,7 +101,7 @@
                     <img class="result-image" src="{{ url_for('static', filename='blank.png') }}" alt="chart-img"
                          id="chart-img" width="auto">
                 </div>
-
+                <br><br><br><br>
 
             </div>
         </div>
@@ -143,48 +158,30 @@
                 <br><br>
                 <div style="text-align: center;">
                     <h1>입학지도</h1>
-                    <p>입학지도</p>
+                    <p>2024년도 기준, 지원자별 지도 시각화 정보 입니다.</p>
                 </div>
                 <br>
                 <div class="map-container">
                     <div class="map">
-                        <!-- 지도 들어갈 위치-->
+                        <iframe src="{{ url_for('map_item') }}" width="100%" height="100%"></iframe>
                     </div>
                 </div>
                 <hr>
                 <br>
-<!--                                <div class="table-responsive">-->
-<!--                                    <table class="table table-striped news_table">-->
-<!--                                        <thead>-->
-<!--                                        <tr>-->
-<!--                                            <th scope="col">No</th>-->
-<!--                                            <th scope="col">example</th>-->
-<!--                                            <th scope="col">example</th>-->
-<!--                                        </tr>-->
-<!--                                        </thead>-->
-<!--                                        <tbody>-->
-<!--                                             <tr>-->
-<!--                                                <th>1</th>-->
-<!--                                                <td>제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제</td>-->
-<!--                                                <th>24.12</th>-->
-<!--                                            </tr>-->
-<!--                                        </tbody>-->
-<!--                                    </table>-->
-<!--                                </div>-->
                 <div class="responsive-container">
                     <table class="custom-table">
                         <thead>
                         <tr>
                             <th class="column-no">No</th>
-                            <th class="column-title">제목</th>
-                            <th class="column-date">날짜</th>
+                            <th class="column-title">학교</th>
+                            <th class="column-date">지원자 수</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
                             <td class="column-no">1</td>
                             <td class="column-title">제목제목제목제목제목제제목제목제목제목제목제목</td>
-                            <td class="column-date">24.12.12</td>
+                            <td class="column-date">15</td>
                         </tr>
                         </tbody>
                     </table>
@@ -211,6 +208,11 @@
                 </div>
 
                 <div id="news-checkbox" class="news-checkbox">
+                    <div class="check-items">
+                        <input type="checkbox" id="checkbox12" class="form-check-input" value="네이버통합뉴스"
+                               onchange="toggleCheck(this)" checked="checked">
+                        <label for="checkbox12">네이버통합뉴스</label>
+                    </div>
                     <div class="check-items">
                         <input type="checkbox" id="checkbox10" class="form-check-input" value="한국전문대학교육협의회"
                                onchange="toggleCheck(this)" checked="checked">

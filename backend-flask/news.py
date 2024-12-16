@@ -3,7 +3,9 @@ import importlib.util
 import json
 import threading
 import queue
-from concurrent.futures import ThreadPoolExecutor, as_completed
+import multiprocessing
+from concurrent.futures import ThreadPoolExecutor, as_completed, ProcessPoolExecutor
+import naver_search as ns
 
 
 def load_and_run_get_data(py_file):
@@ -40,54 +42,61 @@ def news_data_crawling():
     #return data_list
 
 
-
 def get_py_modules():
     directory = "crawling"
     py_files = [directory + "/" + str(f) for f in os.listdir(directory) if f.endswith('.py')]
     return py_files
 
 
+
+
+## == 위 코드는 폐기 ==
+
+# 모듈을 동적으로 로드하고 실행하는 함수
+def load_and_run_module(module):
+    try:
+        # 모듈을 동적으로 불러옴
+        spec = importlib.util.spec_from_file_location(module, module)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+
+        # 데이터 수집 후 반환
+        value = mod.get_data()
+        #print(f"Module {module} returned: {value}")  # 결과 로그 확인
+        return value
+    except Exception as e:
+        print(f"Error in {module}: {e}")
+        return f"Error in {module}: {e}"
+
+
 # 모듈 Import 및 실행 함수
 def module_exec():
     #module_list = get_py_modules()
-    module_list = ['crawling/10_unipress.py',
+    module_list = ['crawling/10_unipress.py', 'crawling/11_chosunedu.py',
                         'crawling/12_yna.py', 'crawling/2_kcce.py',
                         'crawling/3_moe.py', 'crawling/4_incheon.py',
                         'crawling/5_veritas-a.py', 'crawling/6_unn.py',
                         'crawling/7_dhnews.py', 'crawling/8_usline.py',
                         'crawling/9_kyosu.py']
 
-    th_list = []
-    results_queue = queue.Queue()
-
-    for module in module_list:
-        spec = importlib.util.spec_from_file_location(module, module)
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-
-        # 3. 모듈 내 함수 호출
-        # module.py 안에 있는 함수 이름을 호출
-        #result = module.get_data()
-        th = threading.Thread(target=lambda q, mod: q.put(mod.get_data()), args=(results_queue, module))
-        th_list.append(th)
-
-    # 3. 모든 쓰레드 시작
-    for th in th_list:
-        th.start()
-        th.join()
-
-    # 4. 모든 쓰레드 완료 대기
-    for th in th_list:
-        pass
-
-    # 5. 결과 수집
+    # 결과를 담을 리스트
     result = []
-    while not results_queue.empty():
-        result.append(results_queue.get())
 
+    # ProcessPoolExecutor로 멀티프로세싱
+    with ProcessPoolExecutor() as executor:
+        # `executor.map`으로 병렬 실행 결과를 직접 받아오기
+        results = executor.map(load_and_run_module, module_list)
+
+    # 결과를 리스트에 저장
+    result.extend(results)
+
+    # 네이버 검색 결과를 최상단에 삽입
+    naver_search = ns.search_item_with_ai("인하공전", "인하공업전문대학")
+    result.insert(0, naver_search)
+
+    # 결과를 JSON으로 반환
     json_data = json.dumps(result, ensure_ascii=False, indent=4)
     return json_data
-    #return result
 
 
 #print(module_exec())

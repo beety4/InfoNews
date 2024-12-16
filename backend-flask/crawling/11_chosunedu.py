@@ -1,9 +1,10 @@
+import requests
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 
 
-def get_data():
+def get_data_before():
     # 웹드라이버 설정 (크롬 드라이버)
     options = Options()
     options.add_argument('headless')
@@ -37,5 +38,33 @@ def get_data():
         result.append(dict_data)
 
     driver.quit()
+    return result
+
+
+
+def get_data():
+    # AJAX 요청을 보내는 URL 및 헤더 설정
+    url = 'https://edu.chosun.com/svc/app/edu_list.php'
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+    }
+
+    # 요청 파라미터 설정
+    params = {
+        'catid': '14',
+        'pn': 1,
+        'rows': 10
+    }
+
+    # AJAX 요청 보내기
+    response = requests.get(url, headers=headers, params=params)
+    data = response.json()
+
+    result = []
+    # 데이터 출력
+    for content in data["CONTENT"]:
+        dict_data = {"title": content["TITLE"], "link": "https:" + content["ART_HREF"], "date": content["DATE"][:10]}
+        result.append(dict_data)
+
     return result
 

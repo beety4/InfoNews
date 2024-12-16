@@ -60,13 +60,16 @@ function write_news_data(result) {
 
     result.forEach(function(company, i) {
         let name = getnewsname(company);
+        if(name == "사이트에러") {
+            return;
+        }
 
         // 테이블을 .responsive-container로 감싸기
         const tableId = `table_${i + 1}`;
         let html = `
-        <div class="responsive-container">
+        <div id="${name}" class="responsive-container">
             <h1>${name}</h1>
-            <table id="${name}" class="custom-table" style="visibility:hidden;">
+            <table class="custom-table" style="visibility:inherit;">
                 <thead>
                     <tr>
                         <th class="column-no">No</th>
@@ -96,7 +99,7 @@ function write_news_data(result) {
 
         container.insertAdjacentHTML('beforeend', html);
 
-        document.getElementById(name).style.visibility = 'visible';
+        //document.getElementById(name).style.visibility = 'visible';
     });
 }
 
@@ -138,30 +141,34 @@ function getdate() {
 
 // 뉴스 이름
 function getnewsname(company) {
-    if(company[0].link.includes("unipress.co.kr")) {
+    try {
+        if(company[0].link.includes("unipress.co.kr")) {
             return "대학지성IN&OUT";
-    } else if(company[0].link.includes("news.unn.net")) {
+        } else if(company[0].link.includes("news.unn.net")) {
             return "한국대학신문(UNN)";
-    } else if(company[0].link.includes("usline.kr")) {
+        } else if(company[0].link.includes("usline.kr")) {
             return "유스라인(Usline)";
-    } else if(company[0].link.includes("dhnews.co.kr")) {
+        } else if(company[0].link.includes("dhnews.co.kr")) {
             return "대학저널";
-    } else if(company[0].link.includes("veritas-a.com")) {
+        } else if(company[0].link.includes("veritas-a.com")) {
             return "베리타스알파";
-    } else if(company[0].link.includes("yna.co.kr")) {
+        } else if(company[0].link.includes("yna.co.kr")) {
             return "연합뉴스";
-    } else if(company[0].link.includes("moe.go.kr")) {
+        } else if(company[0].link.includes("moe.go.kr")) {
             return "교육부보도자료";
-    } else if(company[0].link.includes("incheon.go.kr")) {
+        } else if(company[0].link.includes("incheon.go.kr")) {
             return "인천광역시보도자료";
-    } else if(company[0].link.includes("kyosu.net")) {
+        } else if(company[0].link.includes("kyosu.net")) {
             return "교수신문";
-    } else if(company[0].link.includes("kcce.or.kr")) {
+        } else if(company[0].link.includes("kcce.or.kr")) {
             return "한국전문대학교육협의회";
-    } else if(company[0].link.includes("edu.chosun.com")) {
+        } else if(company[0].link.includes("edu.chosun.com")) {
             return "조선에듀";
-    } else {
-            return "UNKNOWN";
+        } else {
+            return "네이버통합뉴스";
+        }
+    } catch (e) {
+        return "사이트에러"
     }
 }
 
@@ -169,8 +176,10 @@ function getnewsname(company) {
 // 뉴스 체크표시 on off
 function toggleCheck(item) {
     if (item.checked) {
+        document.getElementById(item.value).style.visibility = 'visible';
         document.getElementById(item.value).style.display = 'inline-block';
     } else {
+        document.getElementById(item.value).style.visibility = 'hidden';
         document.getElementById(item.value).style.display = 'none';
     }
 }
