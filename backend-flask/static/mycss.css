@@ -410,9 +410,28 @@ image-container {
     .responsive-container {
         margin: 0 1%;
     }
-
+    .custom-table {
+        font-size: 0.9em;
+    }
     .column-no {
-        width: 8%;
+        width: 7%;
+    }
+
+    .column-title {
+        width: 82%;
+    }
+
+    .column-date {
+        width: 11%;
+    }
+}
+
+@media (max-width: 425px) {
+    .custom-table {
+        font-size: 0.9em;
+    }
+    .column-no {
+        width: 7%;
     }
 
     .column-title {
@@ -420,21 +439,7 @@ image-container {
     }
 
     .column-date {
-        width: 12%;
-    }
-}
-
-@media (max-width: 425px) {
-    .column-no {
-        width: 9%;
-    }
-
-    .column-title {
-        width: 75%;
-    }
-
-    .column-date {
-        width: 16%;
+        width: 13%;
     }
 }
 
