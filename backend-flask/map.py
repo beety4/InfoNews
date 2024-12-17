@@ -806,6 +806,11 @@ def main():
     with open(geojson_path_sigungu, 'r', encoding='utf-8') as f:
         geojson_data_sigungu = json.load(f)
 
+    # GeoJSON 데이터를 JSON으로 변환하여 JavaScript로 전달
+    geojson_sido = json.dumps(geojson_data_sido)
+    geojson_sigungu = json.dumps(geojson_data_sigungu)
+
+
     # 17개 지역 경로 설정
     regions = [
         "서울특별시", "부산광역시", "대구광역시", "인천광역시", "광주광역시", "대전광역시", "울산광역시",
@@ -899,9 +904,13 @@ def main():
         threshold_scale=thresholds  # 색상 구간 설정
     ).add_to(m)
 
+
+
+
+
+    """
     # 클러스터 생성
     marker_cluster = MarkerCluster().add_to(m)
-
     # 마커 추가: 시도별 클러스터에 해당하는 고교 데이터 개수를 마커로 표시
     for _, row in 지역별_고교수.iterrows():
         # 해당 지역에 맞는 마커 클러스터 생성
@@ -911,10 +920,21 @@ def main():
             popup=f"{row['지역명']} 고교수: {row['고교수']}개",
             icon=folium.Icon(color='blue')
         ).add_to(marker_cluster)
+    """
 
-    # GeoJSON 데이터를 JSON으로 변환하여 JavaScript로 전달
-    geojson_sido = json.dumps(geojson_data_sido)
-    geojson_sigungu = json.dumps(geojson_data_sigungu)
+    # 시도별 마커 그룹화
+    feature_groups = {}
+
+    # 시도별로 DataFrame을 그룹화
+    grouped = df.groupby('지역명')
+    grouped_json = {시도: group[['고교명', '위도', '경도']].to_dict(orient='records') for 시도, group in grouped}
+
+    # JSON 형태로 출력 (예시)
+    grouped_marker_str = json.dumps(grouped_json)
+
+
+
+
 
     my_js = f"""
         <script>
@@ -922,6 +942,7 @@ def main():
             var geojson_sido = {geojson_sido};
             var geojson_sigungu = {geojson_sigungu};
             var each_sigungu = {each_sigungu};
+            var groupedData = {grouped_marker_str};
 
             var mapId = document.querySelector('.folium-map').id;
             var map = window[mapId];
@@ -985,6 +1006,37 @@ def main():
                     show: false  // 해당 레이어는 기본적으로 보이지 않도록 설정
                 }});
             }});
+            
+            
+            
+            
+            
+            
+            
+            // 시도별로 마커 그룹화하여 추가
+            for (var 시도 in groupedData) {{
+                var featureGroup = L.featureGroup().addTo(map);  // 시도별 마커 그룹 생성
+    
+                // 해당 시도에 속한 학교 마커 추가
+                groupedData[시도].forEach(function(school) {{
+                    L.marker([school.위도, school.경도])
+                        .bindPopup(school.고교명)
+                        .addTo(featureGroup);  // 시도 그룹에 마커 추가
+                }});
+    
+                // 각 시도에 대해 레이어 컨트롤에 추가 (그룹별로 표시/숨기기 가능)
+                featureGroup.addTo(map);
+                sigunguLayers[시도]
+                L.control.layers(null, {{ 시도: featureGroup }}).addTo(map);
+            }}
+            
+            
+            
+            
+            
+            
+            
+            
 
 
             // 줌 이벤트: 줌 레벨에 따라 레이어 전환
@@ -1073,5 +1125,5 @@ if __name__ == '__main__':
     # test()
     # makeMap()
     # markerCircle()
-    sigungu_json_split()
+    # sigungu_json_split()
     main()
