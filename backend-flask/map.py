@@ -8,6 +8,7 @@ import geopandas as gpd
 import json
 import folium
 from folium.plugins import MarkerCluster
+from folium import FeatureGroup
 
 
 def makeCSV():
@@ -922,15 +923,27 @@ def main():
         ).add_to(marker_cluster)
     """
 
-    # 시도별 마커 그룹화
-    feature_groups = {}
 
-    # 시도별로 DataFrame을 그룹화
-    grouped = df.groupby('지역명')
-    grouped_json = {시도: group[['고교명', '위도', '경도']].to_dict(orient='records') for 시도, group in grouped}
+    # 시도별 시군구 고교 json 불러오기
+    marker_sigungu = {}
+    for region in regions:
+        file_path = os.path.join("./applicantMap/sigungu", f"{region}.json")
 
-    # JSON 형태로 출력 (예시)
-    grouped_marker_str = json.dumps(grouped_json)
+        # 해당 파일이 존재하는 경우에만 처리
+        if os.path.exists(file_path):
+            with open(file_path, 'r', encoding='utf-8') as file:
+                geojson_data = json.load(file)
+                marker_sigungu[region] = geojson_data
+
+
+    # 최종 결과 출력 (혹은 반환)
+    marker_sigungu = json.dumps(marker_sigungu)
+    print("각 시도 별 marker 데이터 로드 완료")
+
+
+
+
+
 
 
 
@@ -942,7 +955,7 @@ def main():
             var geojson_sido = {geojson_sido};
             var geojson_sigungu = {geojson_sigungu};
             var each_sigungu = {each_sigungu};
-            var groupedData = {grouped_marker_str};
+            var marker_sigungu = {marker_sigungu};
 
             var mapId = document.querySelector('.folium-map').id;
             var map = window[mapId];
@@ -961,7 +974,7 @@ def main():
                     layer.bindTooltip('<b>' + feature.properties.CTP_KOR_NM + '</b><br>고교수: ' + feature.properties.고교수);
                     layer.on('click', function(e) {{
                         changezoomFocus(feature, e);
-                        showMarkers(feature);  // 클릭 시 해당 마커만 표시
+                        //showMarkers(feature);  // 클릭 시 해당 마커만 표시
                     }});
                 }}
             }}).addTo(map);
@@ -1012,24 +1025,32 @@ def main():
             
             
             
+            // MarkerCluster 객체 생성
+            var markerCluster = L.markerClusterGroup();
             
-            // 시도별로 마커 그룹화하여 추가
-            for (var 시도 in groupedData) {{
-                var featureGroup = L.featureGroup().addTo(map);  // 시도별 마커 그룹 생성
-    
-                // 해당 시도에 속한 학교 마커 추가
-                groupedData[시도].forEach(function(school) {{
-                    L.marker([school.위도, school.경도])
-                        .bindPopup(school.고교명)
-                        .addTo(featureGroup);  // 시도 그룹에 마커 추가
+            function marker_zzan(clickSidoName) {{
+                map.removeLayer(markerCluster);
+            
+                // 새로운 마커 클러스터 생성
+                markerCluster = L.markerClusterGroup();
+            
+                // 해당 시도의 데이터를 기반으로 마커 추가
+                marker_sigungu.forEach(function(school) {{
+                    var lat = school.위도;
+                    var lon = school.경도;
+                    var schoolName = school.고교명;
+                    var applicantCount = school.고교수;
+        
+                        // 마커 생성
+                    var marker = L.marker([lat, lon])
+                        .bindPopup("<b>" + schoolName + "</b><br>지원자 수: " + applicantCount);
+        
+                    markerCluster.addLayer(marker);
                 }});
-    
-                // 각 시도에 대해 레이어 컨트롤에 추가 (그룹별로 표시/숨기기 가능)
-                featureGroup.addTo(map);
-                sigunguLayers[시도]
-                L.control.layers(null, {{ 시도: featureGroup }}).addTo(map);
+        
+                // 마커 클러스터를 지도에 추가
+                map.addLayer(markerCluster);
             }}
-            
             
             
             
@@ -1089,10 +1110,7 @@ def main():
                     default: console.log("Unknown Sido name: " + clickSidoName); break;
                 }}
                 
-                console.log(clickSidoName);
-                console.log(sigunguLayers[clickSidoName]);
-                sigunguLayers[clickSidoName].addTo(map);
-                
+                marker_zzan(clickSidoName);
                 map.setView(center, zoomLevel);
             }}
 
