@@ -44,7 +44,7 @@ def get_data():
             dict_data = {"title": title, "link": link, "date": date}
             result.append(dict_data)
 
-        return result
+        return {"연합뉴스": result}
     else:
         print(f"HTTP 요청 실패: {response.status_code}")
-
+        return {"Error": response.status_code}

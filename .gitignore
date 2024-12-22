@@ -4,6 +4,7 @@ backend-flask/.git
 backend-flask/.gitignore
 backend-flask/static/wc-img/*
 backend-flask/static/chart-img/*
+backend-flask/static/xlsx/*
 
 backend-flask/applicantMap/*
 backend-flask/templates/map.html

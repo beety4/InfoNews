@@ -90,12 +90,27 @@ def module_exec():
     # 결과를 리스트에 저장
     result.extend(results)
 
+
     # 네이버 검색 결과를 최상단에 삽입
     naver_search = ns.search_item_with_ai("인하공전", "인하공업전문대학")
-    result.insert(0, naver_search)
+    result.append(naver_search)
 
+
+    order_list = ["네이버통합뉴스", "한국전문대학교육협의회", "교육부보도자료",
+                  "인천광역시보도자료", "베리타스알파", "한국대학신문(UNN)",
+                  "대학저널", "유스라인(Usline)", "교수신문",
+                  "대학지성IN&OUT", "조선에듀", "연합뉴스"]
+
+    sorted_list = sorted(
+        (item for item in result if next(iter(item)) in order_list),  # order_list에 없는 값 필터링
+        key=lambda x: order_list.index(next(iter(x)))
+    )
+
+
+
+    #print(sorted_list)
     # 결과를 JSON으로 반환
-    json_data = json.dumps(result, ensure_ascii=False, indent=4)
+    json_data = json.dumps(sorted_list, ensure_ascii=False)
     return json_data
 
 

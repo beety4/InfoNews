@@ -48,9 +48,9 @@ def get_data():
             dict_data = {"title": title, "link": link, "date": date}
             result.append(dict_data)
 
-        return result
+        return {"교육부보도자료": result}
     else:
         print(f"Failed to fetch the page, status code: {response.status_code}")
-
+        return {"Error": response.status_code}
 
 

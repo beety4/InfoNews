@@ -102,5 +102,8 @@ def search_item_with_ai(keyword1, keyword2, threshold=0.8):
     #print(result)
     #print(filtered_titles)
 
-    return filtered_titles
+    if len(filtered_titles) == 0:
+        return {"Error": 0}
+
+    return {"네이버통합뉴스": filtered_titles}
 

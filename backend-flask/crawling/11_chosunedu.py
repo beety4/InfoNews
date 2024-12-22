@@ -66,5 +66,8 @@ def get_data():
         dict_data = {"title": content["TITLE"], "link": "https:" + content["ART_HREF"], "date": content["DATE"][:10]}
         result.append(dict_data)
 
-    return result
+    if len(result) == 0:
+        return {"Error": response.status_code}
+
+    return {"조선에듀": result}
 

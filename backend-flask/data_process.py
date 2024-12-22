@@ -10,20 +10,24 @@ def create_wc_img(dict_data, file_name):
     wordcloud = WordCloud(
         font_path="./malgun.ttf",
         #font_path="malgun",
-        width=800,
-        height=400,
-        max_font_size=100,
+        width=1400,
+        height=1400,
+        max_font_size=400,
         background_color="white",
+        margin=2,
+        prefer_horizontal=0.6,
+        collocations=False,
+        colormap='plasma'
     ).generate_from_frequencies(dict_data)
 
     matplotlib.use('Agg')
-    plt.figure()
+    plt.figure(figsize=(14,14))
     plt.imshow(wordcloud, interpolation="bilinear")
     plt.axis("off")
     #plt.show()
 
     # 로컬에 파일 저장
-    plt.savefig(f"static/wc-img/{file_name}")
+    plt.savefig(rf"static/wc-img/{file_name}", dpi=200, bbox_inches='tight', pad_inches=0)
 
 
 # 차트 이미지 생성 및 저장
@@ -48,7 +52,7 @@ def create_chart_imgs(df, file_name):
     plt.grid(True)
 
     # 이미지 저장
-    plt.savefig(f"static/chart-img/{file_name}")  # 이미지 경로 설정
+    plt.savefig(rf"static//chart-img//{file_name}")  # 이미지 경로 설정
     #plt.show()
 
 
@@ -63,7 +67,7 @@ def create_chart_img(df, file_name):
     line_styles = ['-', '--', '-.', ':']
 
     # 차트 생성
-    plt.figure(figsize=(12, 7))
+    fig, ax = plt.subplots(figsize=(15, 9))
     for idx, (title, group) in enumerate(df.groupby('title')):
         color = colors[idx % len(colors)]
         linestyle = line_styles[idx % len(line_styles)]
@@ -78,7 +82,7 @@ def create_chart_img(df, file_name):
         else:
             linewidth = 1.0  # 기본 선 굵기
             marker = 'x'  # 기본 마커
-            alpha = 0.8  # 기본 투명도
+            alpha = 1.0  # 기본 투명도
 
         plt.plot(
             group['period'],
@@ -92,13 +96,22 @@ def create_chart_img(df, file_name):
         )
 
     # 그래프 제목, 축 레이블, 범례 등 설정
-    plt.title("키워드 별 검색 빈도 수 추이", fontsize=16)
-    plt.xlabel("날짜", fontsize=12)
-    plt.ylabel("검색 빈도 수", fontsize=12)
-    plt.xticks(rotation=45, fontsize=10)
-    plt.legend(title="키워드 항목", bbox_to_anchor=(1.05, 1), loc='upper left', fontsize=10)
-    plt.grid(True, linestyle='--', alpha=0.5)
-    plt.tight_layout()
+    ax.set_title("키워드 별 검색 빈도 수 추이", fontsize=18)
+    ax.set_xlabel("날짜", fontsize=14)
+    ax.set_ylabel("검색 빈도 수", fontsize=14)
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=45, fontsize=12)
+    ax.legend(title="키워드 항목", bbox_to_anchor=(1.05, 1), loc='upper left', fontsize=12)
+    ax.grid(True, linestyle='--', alpha=0.5)    # 차트 영역 테두리 설정 (검정색)
+
+    for spine in ax.spines.values():
+        spine.set_edgecolor('black')  # 테두리 색을 검정색으로 설정
+        spine.set_linewidth(1)  # 테두리 두께를 1로 설정    # 전체 figure 테두리 설정
+
+    fig.patch.set_edgecolor('black')  # 전체 figure의 테두리 색상
+    fig.patch.set_linewidth(2)  # 전체 figure의 테두리 두께
+    fig.patch.set_facecolor('white')  # figure 배경 색상을 흰색으로 설정    # 차트 이미지 저장
+    plt.tight_layout()  # 레이아웃을 조정하여 요소들이 잘리지 않도록 함
+
 
     # 차트 이미지 저장
-    plt.savefig(f"static/chart-img/{file_name}")  # 이미지 경로 설정
+    plt.savefig(rf"static/chart-img/{file_name}", dpi=200)  # 이미지 경로 설정

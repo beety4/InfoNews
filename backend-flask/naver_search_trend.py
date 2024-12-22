@@ -1,3 +1,5 @@
+import json
+
 from naver_api import NaverAPI
 import pandas as pd
 from scipy.stats import zscore
@@ -41,6 +43,7 @@ def get_each_data(universityGroup, startDate, endDate, timeUnit, nowdate):
 
     each_keyword_list = keyword_split(keyword_list)
 
+
     try:
         api = NaverAPI()
         df_list = []
@@ -61,7 +64,7 @@ def get_each_data(universityGroup, startDate, endDate, timeUnit, nowdate):
 
 
     # 가져와졌는지 확인
-    print(f"dfList Size : {len(df_list)}")
+    #print(f"dfList Size : {len(df_list)}")
     if len(df_list) == 0:
         return "1"
 
@@ -72,7 +75,7 @@ def get_each_data(universityGroup, startDate, endDate, timeUnit, nowdate):
     min_point = merge_df['point_ratio'].min()
     max_point = merge_df['point_ratio'].max()
     merge_df['normalize_ratio'] = (merge_df['point_ratio'] - min_point) / (max_point - min_point) * 100
-    print(merge_df)
+    #print(merge_df)
 
     # 완성된 DataFrame을 딕셔너리 형태로 변환 후 wordcloud 생성
     wc_dict = merge_df.groupby('title')['normalize_ratio'].sum().to_dict()
@@ -81,7 +84,37 @@ def get_each_data(universityGroup, startDate, endDate, timeUnit, nowdate):
     # 차트 생성
     dp.create_chart_img(merge_df, nowdate)
 
-    return nowdate
+
+
+
+    # 테이블에 보여줄 값 처리
+    # Drop unnecessary columns and create the pivot table
+    pivot_df = merge_df.drop(columns=["ratio", "point_ratio"]) \
+        .pivot_table(index="title", columns="period", values="normalize_ratio", fill_value=0)
+
+    # Reset index to ensure a clean table format
+    pivot_df = pivot_df.reset_index()
+
+    # Rename columns for better readability (optional)
+    pivot_df.columns.name = None
+
+    # 1. 'title'을 '대학명'으로 변경
+    pivot_df = pivot_df.rename(columns={'title': '대학명'})
+
+    # 2. 날짜 컬럼의 포맷을 변경 (2023-12-01 -> 23.12.01)
+    pivot_df.columns = [col[2:4] + '.' + col[5:7] + '.' + col[8:10] if '-' in col else col for col in pivot_df.columns]
+
+    # 3. 값들을 소수점 한 자리로 반올림
+    pivot_df.iloc[:, 1:] = pivot_df.iloc[:, 1:].round(1)
+    #print(pivot_df)
+
+    # 엑셀 파일 저장
+    excel_name = nowdate.split(".")[0] + ".xlsx"
+    pivot_df.to_excel(rf"static/xlsx/{excel_name}", index=True)
+
+
+    json_data = json.dumps({nowdate: pivot_df.to_dict(orient="records")}, ensure_ascii=False)
+    return json_data
 
 
 

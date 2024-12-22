@@ -191,7 +191,7 @@ function getAllItem() {
 
 
 
-
+let downloadname = "";
 
 // 검색 버튼 클릭 함수
 document.getElementById("trend-search").addEventListener("click", function() {
@@ -201,6 +201,10 @@ document.getElementById("trend-search").addEventListener("click", function() {
     let endDate = document.getElementById("endDate").value;
     let timeUnit = document.querySelector('input[name="timeUnit"]:checked').value;
 
+    // 결과 표 가리기
+    document.getElementById("trend_result_table").innerText = "";
+    document.getElementById("downloadxlsx").style.display = 'none';
+    //document.getElementById("trend_info").style.display = 'none';
 
     $.ajax({
     	url:"/queryItem",
@@ -213,16 +217,13 @@ document.getElementById("trend-search").addEventListener("click", function() {
               "timeUnit" : timeUnit
             },
         success: function(data){
-			// console.log(data);
+			//console.log(data);
 			if(data == 1 || data == "1") {
 			    alert("외부 API 연동에 실패하였습니다.");
 			    return;
 			}
 
-
-            // 이미지 띄우기
-			document.getElementById("wc-img").src = "static/wc-img/" + data;
-			document.getElementById("chart-img").src = "static/chart-img/" + data;
+            showTrendResult(data);
         },
         error: function(request, status, error) {
 			alert("비동기 요청 중 오류가 발생했습니다.");
@@ -235,3 +236,61 @@ document.getElementById("trend-search").addEventListener("click", function() {
 });
 
 
+function showTrendResult(data) {
+    // 이미지 띄우기
+    let jsondata = JSON.parse(data);
+    let whereimg = Object.keys(jsondata)[0];
+    let tableData = jsondata[whereimg];
+	document.getElementById("wc-img").src = "static/wc-img/" + whereimg;
+	document.getElementById("chart-img").src = "static/chart-img/" + whereimg;
+	//document.getElementById("wc-img").src = "static/wc-img/20241221-175317.png";
+	//document.getElementById("chart-img").src = "static/chart-img/20241221-175317.png";
+
+	downloadname = "static/xlsx/" + whereimg.split(".")[0] + ".xlsx";
+
+	// HTML 테이블 생성
+    let html = `<table class="custom-table trend-table">
+                <thead>
+                <tr>
+                <th>대학명</th>`;
+
+    // 헤더 생성
+    let columns = Object.keys(tableData[0]).filter(col => col !== "대학명");
+    columns.forEach(col => {
+        html += `<th>${col}</th>`;
+    });
+    html += `    </tr>
+                </thead>
+                <tbody>`;
+
+    // 데이터 행 생성
+    tableData.forEach(row => {
+        // '인하공전'인 경우에는 'highlight-row' 클래스를 추가
+        let rowClass = row.대학명 === "인하공전" ? "highlight-row" : "";
+        html += `<tr class="${rowClass}">
+                    <td>${row.대학명}</td>`;
+        columns.forEach(col => {
+            html += `<td>${row[col] !== undefined ? row[col] : '-'}</td>`;
+        });
+        html += `</tr>`;
+    });
+
+    html += `</tbody>
+             </table>`;
+
+    // 테이블 추가
+    document.getElementById("trend_result_table").innerHTML = html;
+    document.getElementById("downloadxlsx").style.display = 'block';
+    //document.getElementById("trend_info").style.display = 'block';
+}
+
+
+
+document.getElementById("downloadxlsx").addEventListener("click", function() {
+    // 가상의 앵커 태그 생성
+    //console.log(downloadname);
+    const a = document.createElement("a");
+    a.href = downloadname;
+    a.download = downloadname.split("/")[2];  // 다운로드될 파일 이름 설정
+    a.click();  // 다운로드 실행
+});

@@ -860,8 +860,7 @@ def main():
 
 
     # 지도 생성
-    m = folium.Map(location=[36.5, 127.5], zoom_start=7, tiles="OpenStreetMap",
-                   attr="Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under ODbL.")
+    m = folium.Map(location=[36.5, 127.5], zoom_start=7, tiles="CartoDB positron")
 
     # 대한민국의 범위로 fit_bounds 설정
     south_lat = 33.0  # 최남단 위도

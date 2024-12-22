@@ -278,7 +278,7 @@ image-container {
 }
 
 .result-image {
-    width: 48%;
+    width: 100%;
     height: auto;
     object-fit: cover;
 }
@@ -508,3 +508,70 @@ image-container {
 
 
 
+
+
+
+.trend-table {
+    border-collapse: collapse;
+    width: 100%; /* 테이블이 컨테이너의 너비를 초과하면 스크롤 가능 */
+    text-align: center;
+    table-layout: auto;
+}
+
+.trend-table th, .trend-table td {
+    border: 1px solid #ddd; /* 테두리 스타일 */
+    padding: 8px; /* 셀 안쪽 여백 */
+    white-space: nowrap; /* 공백을 줄바꿈하지 않음 */
+}
+
+.trend-table th {
+    background-color: #f4f4f4; /* 헤더 배경색 */
+    font-weight: bold;
+    position: sticky;
+    text-align: center;
+    width: 1rem;
+    top: 0; /* 스크롤 시 헤더 고정 */
+}
+
+#trend_result_table_container {
+    overflow-x: auto; /* 가로 스크롤바 활성화 */
+    max-width: 100%; /* 페이지 너비에 맞게 조정 */
+    margin: 20px 0; /* 여백 추가 */
+}
+
+.highlight-row {
+    background-color: #f0f8ff; /* 연한 파란색 배경 */
+    font-weight: bold;         /* 글자 굵게 */
+    color: #00008b;            /* 글자 색은 어두운 파란색 */
+}
+
+
+
+#chart-img {
+    width: 100%;
+    height: auto;  /* 비율에 맞게 자동 조정 */
+}
+
+/* wc-img와 테이블을 나란히 배치할 수 있도록 설정 */
+.content-wrappers {
+    display: flex;
+    justify-content: space-between; /* 이미지와 테이블을 양쪽에 배치 */
+    align-items: flex-start; /* 이미지와 테이블을 수직 정렬 */
+    gap: 20px; /* 이미지와 테이블 사이 간격 */
+}
+
+.image-container {
+    flex: 1; /* 이미지가 테이블의 크기를 차지하지 않게 설정 */
+    text-align: center;
+}
+
+#trend_result_table_container {
+    flex: 2; /* 테이블이 더 많은 공간을 차지하도록 설정 */
+    max-width: 70%; /* 테이블의 최대 너비 설정 */
+    overflow-x: auto; /* 테이블이 너무 크면 가로 스크롤이 생기도록 */
+}
+
+#trend_info {
+    clear: both; /* 테이블 아래로 위치하도록 설정 */
+    margin-top: 20px;
+}
