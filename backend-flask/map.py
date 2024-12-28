@@ -548,7 +548,7 @@ def main():
                 var mapId = document.querySelector('.folium-map').id;
                 var map = window[mapId];
 
-                // 각 레이어 추가 부분
+                // 시도 경계선 레이어
                 var sidoLayer = L.geoJson(geojson_sido, {{
                     style: function(feature) {{
                         return {{
@@ -559,7 +559,7 @@ def main():
                         }};
                     }},
                     onEachFeature: function(feature, layer) {{
-                        layer.bindTooltip('<b>' + feature.properties.CTP_KOR_NM + '</b><br>지원자 수: ' + feature.properties.NUM_APPLICANT);
+                        layer.bindTooltip('<b>' + feature.properties.CTP_KOR_NM + '<br>지원자 수: ' + feature.properties.NUM_APPLICANT + '</b>');
                         layer.on('click', function(e) {{
                             changezoomFocus(feature, e);
                         }});
@@ -584,10 +584,10 @@ def main():
                 // 각각의 시군구 레이어를 시도별 분리한 데이터 레이어로 불러오기
                 var sigunguLayers = {{ }};
                 geojson_sigungu.forEach(function(item) {{
-                    var sido = item.sido.trim();  // 시도 이름
+                    var sidoName = item.sido.trim();  // 시도 이름
                     var geojsonData = item.data;  // 시도별 geojson 데이터
 
-                    sigunguLayers[sido] = L.geoJson(geojsonData, {{
+                    sigunguLayers[sidoName] = L.geoJson(geojsonData, {{
                         style: function(feature) {{
                             return {{
                                 color: 'black',
@@ -602,7 +602,7 @@ def main():
                             var totalApplicants = 0;
                             
                             // 해당 시군구의 데이터 개수 가져오기
-                            var key = sido + "_" + sigunguName;
+                            var key = sidoName + "_" + sigunguName;
                             
                             if (result[key]) {{
                                 totalApplicants = result[key];  // 데이터 개수
@@ -610,11 +610,87 @@ def main():
                                 console.log('No data for ' + sigunguName);  // 해당 시군구 데이터가 없을 경우
                             }}
                         
-                            layer.bindTooltip('<b>' + sigunguName + '</b><br>지원자 수: ' + totalApplicants);
+                            layer.bindTooltip('<b>' + sigunguName + '<br>지원자 수: ' + totalApplicants + '</b>');
+                             
+                            // 클릭 이벤트 - 마커
+                            layer.on('click', function(e) {{
+                                // 선택한 시군구 이름 출력
+                                console.log("Clicked sigungu:", sigunguName);
+                                
+                                addMarker(sidoName, sigunguName);
+                                
+                                // 줌 레벨 및 뷰 설정 (선택 사항)
+                                // var bounds = layer.getBounds();
+                                // map.fitBounds(bounds);
+                            }});
                         }},
                         show: false  // 해당 레이어는 기본적으로 보이지 않도록 설정
                     }});
                 }});
+                
+                
+                // 시군구 별 데이터 마커
+                function addMarker(sidoName, sigunguName) {{
+                    if (!dataBysigungu) return;
+                    
+                    var markerData = dataBysigungu[sidoName][sigunguName];
+                    console.log(sidoName, sigunguName);
+                    // console.log(markerData);
+                    
+                    if (!markerData || markerData.length === 0) {{
+                        console.log('No data for', sigunguName); 
+                        return;
+                    }}
+                    
+                    // 위도, 경도를 기준으로 그룹화
+                    var groupedData = {{}};                    
+                    // 마커 추가
+                    markerData.forEach(function(point) {{
+                        var lat = point.위도; 
+                        var lng = point.경도; 
+                        
+                        // 위도/경도가 없는 경우 로그 출력
+                        if (!lat || !lng) {{
+                            console.error('Invalid LatLng for', sigunguName, point);
+                            return;
+                        }}
+                        
+                        var key = `${{lat}},${{lng}}`; // 위도, 경도를 키로 사용
+                        if (!groupedData[key]) {{
+                            groupedData[key] = [];
+                        }}
+                        groupedData[key].push(point);
+                    }});
+                    
+                    // 그룹화된 데이터가 없는 경우
+                    if (Object.keys(groupedData).length === 0) {{
+                        return;
+                    }}
+                    
+                    // 그룹화된 데이터로 마커 추가
+                    Object.keys(groupedData).forEach(function(key) {{
+                        var points = groupedData[key];
+                        var latLng = key.split(',');        // 키를 다시 위도, 경도로 분리
+                        var lat = parseFloat(latLng[0]);    //위도
+                        var lng = parseFloat(latLng[1]);    //경도
+                
+                        // 마커에 표시할 학교명 리스트와 데이터 수 계산
+                        var schoolNames = points[0].고교명;
+                        var dataCount = points.length;
+                
+                        // 마커 생성
+                        var marker = L.marker([lat, lng]).addTo(map);
+                
+                        // 팝업 내용
+                        var popupContent = `
+                            <b>학교명: ${{schoolNames}}</b><br>
+                            <b>지원자 수: ${{dataCount}}</b>
+                        `;
+                        marker.bindPopup(popupContent);
+                    }});
+
+                    console.log("Markers added for:", sigunguName);
+                }}
 
 
 
@@ -685,5 +761,5 @@ if __name__ == '__main__':
 
     # sidoMap()
     # sigunguMap()
-    data_by_sigungu()
+    # data_by_sigungu()
     main()
