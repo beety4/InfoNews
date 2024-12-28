@@ -644,76 +644,79 @@ def main():
                     }}
                     
                     // 이미 생성된 마커가 있는지 확인하고 제거
-                    if (markersBySigungu[sidoName] && markersBySigungu[sidoName][sigunguName]) {{
-                        // 이미 추가된 마커가 있다면 모두 제거
+                    if (!markersBySigungu[sidoName]) {{
+                        markersBySigungu[sidoName] = {{}};
+                    }}
+                    if (!markersBySigungu[sidoName][sigunguName]) {{
+                        markersBySigungu[sidoName][sigunguName] = [];
+                    }}
+
+                    // 마커가 이미 있는지 체크
+                    if (markersBySigungu[sidoName][sigunguName].length > 0) {{
+                        // 마커가 있으면 제거
                         markersBySigungu[sidoName][sigunguName].forEach(function(marker) {{
-                            map.removeLayer(marker);  // 마커 제거
+                            map.removeLayer(marker);
                         }});
                         markersBySigungu[sidoName][sigunguName] = [];  // 마커 배열 초기화
                         console.log("Markers removed for:", sigunguName);
-                        return;  // 마커가 이미 있으면 제거하고 종료
-                    }}
-                    
-                    // 위도, 경도를 기준으로 그룹화
-                    var groupedData = {{}};          
-                              
-                    // 마커 추가
-                    markerData.forEach(function(point) {{
-                        var lat = point.위도; 
-                        var lng = point.경도; 
+                    }} else {{
+                        // 마커 추가
+                        var groupedData = {{}};           // 위도, 경도를 기준으로 그룹화
+                                
+                        markerData.forEach(function(point) {{
+                            var lat = point.위도; 
+                            var lng = point.경도; 
+                            
+                            // 위도/경도가 없는 경우 로그 출력
+                            if (!lat || !lng) {{
+                                console.error('Invalid LatLng for', sigunguName, point);
+                                return;
+                            }}
+                            
+                            var key = `${{lat}},${{lng}}`; // 위도, 경도를 키로 사용
+                            if (!groupedData[key]) {{
+                                groupedData[key] = [];
+                            }}
+                            groupedData[key].push(point);
+                        }});
                         
-                        // 위도/경도가 없는 경우 로그 출력
-                        if (!lat || !lng) {{
-                            console.error('Invalid LatLng for', sigunguName, point);
+                        // 그룹화된 데이터가 없는 경우
+                        if (Object.keys(groupedData).length === 0) {{
                             return;
                         }}
                         
-                        var key = `${{lat}},${{lng}}`; // 위도, 경도를 키로 사용
-                        if (!groupedData[key]) {{
-                            groupedData[key] = [];
-                        }}
-                        groupedData[key].push(point);
-                    }});
-                    
-                    // 그룹화된 데이터가 없는 경우
-                    if (Object.keys(groupedData).length === 0) {{
-                        return;
-                    }}
-                    
-                    // 해당 시군구의 마커 배열 초기화
-                    markersBySigungu[sidoName] = markersBySigungu[sidoName] || {{ }};
-                    markersBySigungu[sidoName][sigunguName] = [];
-                    
-                    // 그룹화된 데이터로 마커 추가
-                    Object.keys(groupedData).forEach(function(key) {{
-                        var points = groupedData[key];
-                        var latLng = key.split(',');        // 키를 다시 위도, 경도로 분리
-                        var lat = parseFloat(latLng[0]);    //위도
-                        var lng = parseFloat(latLng[1]);    //경도
-                
-                        // 마커에 표시할 학교명 리스트와 데이터 수 계산
-                        var schoolNames = points[0].고교명;
-                        var dataCount = points.length;
-                
-                        // 마커 생성
-                        var marker = L.marker([lat, lng]).addTo(map);
-                
-                        // 팝업 내용
-                        var popupContent = `
-                            <b>학교명: ${{schoolNames}}</b><br>
-                            <b>지원자 수: ${{dataCount}}</b>
-                        `;
-                        marker.bindPopup(popupContent);
+                        // 해당 시군구의 마커 배열 초기화
+                        markersBySigungu[sidoName] = markersBySigungu[sidoName] || {{ }};
+                        markersBySigungu[sidoName][sigunguName] = [];
                         
-                        // 마커 배열에 추가
-                        markersBySigungu[sidoName][sigunguName].push(marker);
-                    }});
-
-                    console.log("Markers added for:", sigunguName);
+                        // 그룹화된 데이터로 마커 추가
+                        Object.keys(groupedData).forEach(function(key) {{
+                            var points = groupedData[key];
+                            var latLng = key.split(',');        // 키를 다시 위도, 경도로 분리
+                            var lat = parseFloat(latLng[0]);    //위도
+                            var lng = parseFloat(latLng[1]);    //경도
+                    
+                            // 마커에 표시할 학교명 리스트와 데이터 수 계산
+                            var schoolNames = points[0].고교명;
+                            var dataCount = points.length;
+                    
+                            // 마커 생성
+                            var marker = L.marker([lat, lng]).addTo(map);
+                    
+                            // 팝업 내용
+                            var popupContent = `
+                                <b>학교명: ${{schoolNames}}</b><br>
+                                <b>지원자 수: ${{dataCount}}</b>
+                            `;
+                            marker.bindPopup(popupContent);
+                            
+                            // 마커 배열에 추가
+                            markersBySigungu[sidoName][sigunguName].push(marker);
+                        }});
+    
+                        console.log("Markers added for:", sigunguName);
+                    }}
                 }}
-
-
-
 
                 // 현재 활성화된 시군구 레이어
                 var currentSigunguLayer = null;
