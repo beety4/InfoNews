@@ -3,7 +3,7 @@ import re
 from bs4 import BeautifulSoup
 
 def get_data():
-    url = 'http://www.unipress.co.kr/news/articleList.html?view_type=sm'
+    url = 'http://www.unipress.co.kr/news/articleList.html?sc_section_code=S1N1&view_type=sm'
 
     response = requests.get(url)
 
