@@ -628,7 +628,8 @@ def main():
                     }});
                 }});
                 
-                
+                var markersBySigungu = {{ }};
+            
                 // 시군구 별 데이터 마커
                 function addMarker(sidoName, sigunguName) {{
                     if (!dataBysigungu) return;
@@ -642,8 +643,20 @@ def main():
                         return;
                     }}
                     
+                    // 이미 생성된 마커가 있는지 확인하고 제거
+                    if (markersBySigungu[sidoName] && markersBySigungu[sidoName][sigunguName]) {{
+                        // 이미 추가된 마커가 있다면 모두 제거
+                        markersBySigungu[sidoName][sigunguName].forEach(function(marker) {{
+                            map.removeLayer(marker);  // 마커 제거
+                        }});
+                        markersBySigungu[sidoName][sigunguName] = [];  // 마커 배열 초기화
+                        console.log("Markers removed for:", sigunguName);
+                        return;  // 마커가 이미 있으면 제거하고 종료
+                    }}
+                    
                     // 위도, 경도를 기준으로 그룹화
-                    var groupedData = {{}};                    
+                    var groupedData = {{}};          
+                              
                     // 마커 추가
                     markerData.forEach(function(point) {{
                         var lat = point.위도; 
@@ -667,6 +680,10 @@ def main():
                         return;
                     }}
                     
+                    // 해당 시군구의 마커 배열 초기화
+                    markersBySigungu[sidoName] = markersBySigungu[sidoName] || {{ }};
+                    markersBySigungu[sidoName][sigunguName] = [];
+                    
                     // 그룹화된 데이터로 마커 추가
                     Object.keys(groupedData).forEach(function(key) {{
                         var points = groupedData[key];
@@ -687,6 +704,9 @@ def main():
                             <b>지원자 수: ${{dataCount}}</b>
                         `;
                         marker.bindPopup(popupContent);
+                        
+                        // 마커 배열에 추가
+                        markersBySigungu[sidoName][sigunguName].push(marker);
                     }});
 
                     console.log("Markers added for:", sigunguName);
