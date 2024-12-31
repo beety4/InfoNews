@@ -338,7 +338,7 @@ def sigungu_json_split():
             "중구", "남구", "동구", "북구", "울주군"
         ],
         "세종특별자치시": [
-            "세종시"
+            "세종특별자치시"
         ],
         "경기도": [
             "수원시", "용인시", "고양시", "화성시", "성남시", "부천시", "남양주시", "안산시", "평택시", "안양시", "시흥시", "파주시", "김포시", "의정부시",
@@ -413,16 +413,17 @@ def data_by_sigungu():
 
     result = {}
 
-    # 세종특별시를 처리하기 위해 별도로 그룹화하기 전에 세종을 분리
+    # 시군구가 없는 세종특별자치시 처리
     sejong_data = df[df['지역명'] == '세종특별자치시']
 
-    # 세종특별시 데이터는 시군구명 없이 바로 추가
-    result['세종특별자치시'] = sejong_data[['모집시기명', '전형명', '학과명', '졸업년도',
-                                     '고교코드', '고교명', '주소지', '연락처',
-                                     '위도', '경도', '고교수']].to_dict(orient='records')
+    # '세종특별자치시'가 별도로 처리될 수 있도록 result에 추가
+    result['세종특별자치시'] = {}
+    result['세종특별자치시']['세종특별자치시'] = sejong_data[['모집시기명', '전형명', '학과명', '졸업년도',
+                                                '고교코드', '고교명', '주소지', '연락처',
+                                                '위도', '경도', '고교수']].to_dict(orient='records')
 
-    # 나머지 지역들은 지역명과 시군구명 기준으로 그룹화
-    grouped = df[df['지역명'] != '세종특별자치시'].groupby(['지역명', '시군구명'])
+    # 지역명과 시군구명 기준으로 그룹화
+    grouped = df.groupby(['지역명', '시군구명'])
 
     for (지역명, 시군구명), group in grouped:
         if 지역명 not in result:
@@ -670,7 +671,7 @@ def main():
                         parent.postMessage({{
                             action: 'remove',
                             data: removedMarkers
-                        }}, "http://localhost:8080/");
+                        }}, "https://news.mojuk.kr/");
                         
                     }} else {{
                         // 마커 추가
@@ -740,7 +741,7 @@ def main():
                                 schoolNames: item.schoolNames,
                                 dataCount: item.dataCount
                             }}))
-                        }}, "http://localhost:8080/");
+                        }}, "https://news.mojuk.kr/");
                     }}
                 }}
 
@@ -806,7 +807,6 @@ if __name__ == '__main__':
     # newColumn()
     # filteredBySido()
     # sigungu_json_split()
-
     # sidoMap()
     # sigunguMap()
     # data_by_sigungu()

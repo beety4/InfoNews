@@ -2,7 +2,7 @@ var allMarkerData = [];  // 모든 마커 데이터를 저장할 배열
 
 // 메시지 수신 처리
 window.addEventListener("message", function (event) {
-    if (event.origin !== "http://localhost:8080") {
+    if (event.origin !== "https://news.mojuk.kr") {
         console.warn("Unauthorized origin: ", event.origin);
         return;
     }
@@ -45,26 +45,26 @@ function updateTable(data) {
     const tableBody = document.querySelector(".custom-table tbody");
     tableBody.innerHTML = ""; // 기존 테이블 내용 초기화
 
+    // 데이터를 '지원자 수(dataCount)'를 기준으로 내림차순 정렬
+    const sortedData = data.sort((a,b) => b.dataCount - a.dataCount);
+
     // 테이블에 데이터 추가
-    data.forEach((item, index) => {
+    sortedData.forEach((item, index) => {
         const row = document.createElement("tr");
 
         // No 컬럼
         const noCell = document.createElement("td");
         noCell.textContent = index + 1;
-        noCell.className = "column-no";
         row.appendChild(noCell);
 
         // 고교명 컬럼
         const schoolNamesCell = document.createElement("td");
         schoolNamesCell.textContent = item.schoolNames;
-        schoolNamesCell.className = "column-title";
         row.appendChild(schoolNamesCell);
 
         // 지원자 수 컬럼
         const dataCountCell = document.createElement("td");
         dataCountCell.textContent = item.dataCount;
-        dataCountCell.className = "column-no";
         row.appendChild(dataCountCell);
 
         // 표에 행 추가
