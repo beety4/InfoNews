@@ -607,7 +607,7 @@ def main():
                             if (result[key]) {{
                                 totalApplicants = result[key];  // 데이터 개수
                             }} else {{
-                                console.log('No data for ' + sigunguName);  // 해당 시군구 데이터가 없을 경우
+                                // console.log('No data for ' + sigunguName);  // 해당 시군구 데이터가 없을 경우
                             }}
                         
                             layer.bindTooltip('<b>' + sigunguName + '<br>지원자 수: ' + totalApplicants + '</b>');
@@ -636,7 +636,6 @@ def main():
                     
                     var markerData = dataBysigungu[sidoName][sigunguName];
                     console.log(sidoName, sigunguName);
-                    // console.log(markerData);
                     
                     if (!markerData || markerData.length === 0) {{
                         console.log('No data for', sigunguName); 
@@ -653,12 +652,26 @@ def main():
 
                     // 마커가 이미 있는지 체크
                     if (markersBySigungu[sidoName][sigunguName].length > 0) {{
+                        
                         // 마커가 있으면 제거
+                        const removedMarkers = markersBySigungu[sidoName][sigunguName].map(item => ({{
+                            schoolNames: item.schoolNames,
+                            dataCount: item.dataCount
+                        }}));
+                        
                         markersBySigungu[sidoName][sigunguName].forEach(function(marker) {{
-                            map.removeLayer(marker);
+                            map.removeLayer(marker.marker);
                         }});
+                        
                         markersBySigungu[sidoName][sigunguName] = [];  // 마커 배열 초기화
                         console.log("Markers removed for:", sigunguName);
+                        
+                        // 부모로 remove 액션과 함께 데이터 전송
+                        parent.postMessage({{
+                            action: 'remove',
+                            data: removedMarkers
+                        }}, "http://localhost:8080/");
+                        
                     }} else {{
                         // 마커 추가
                         var groupedData = {{}};           // 위도, 경도를 기준으로 그룹화
@@ -693,8 +706,8 @@ def main():
                         Object.keys(groupedData).forEach(function(key) {{
                             var points = groupedData[key];
                             var latLng = key.split(',');        // 키를 다시 위도, 경도로 분리
-                            var lat = parseFloat(latLng[0]);    //위도
-                            var lng = parseFloat(latLng[1]);    //경도
+                            var lat = parseFloat(latLng[0]);    // 위도
+                            var lng = parseFloat(latLng[1]);    // 경도
                     
                             // 마커에 표시할 학교명 리스트와 데이터 수 계산
                             var schoolNames = points[0].고교명;
@@ -711,10 +724,23 @@ def main():
                             marker.bindPopup(popupContent);
                             
                             // 마커 배열에 추가
-                            markersBySigungu[sidoName][sigunguName].push(marker);
+                            markersBySigungu[sidoName][sigunguName].push({{
+                                marker : marker,
+                                schoolNames : schoolNames,
+                                dataCount : dataCount,
+                            }});
                         }});
     
                         console.log("Markers added for:", sigunguName);
+                        
+                        // 부모에게 데이터 전달
+                        parent.postMessage({{
+                            action: 'add',
+                            data: markersBySigungu[sidoName][sigunguName].map(item => ({{
+                                schoolNames: item.schoolNames,
+                                dataCount: item.dataCount
+                            }}))
+                        }}, "http://localhost:8080/");
                     }}
                 }}
 
@@ -762,7 +788,6 @@ def main():
                         map.addLayer(sidoLayer);
                     }}
                 }}
-
             }})
             </script>
         """
