@@ -92,11 +92,12 @@ def module_exec():
 
 
     # 네이버 검색 결과를 최상단에 삽입
-    naver_search = ns.search_item_with_ai("인하공전", "인하공업전문대학")
-    result.append(naver_search)
+    keyword_list = ['인하공전', '인하대', '항공대']
+    for keyword in keyword_list:
+        search = ns.search_item_with_ai(keyword)
+        result.append(search)
 
-
-    order_list = ["네이버통합뉴스", "한국전문대학교육협의회", "교육부보도자료",
+    order_list = ["네이버통합뉴스(인하공전)", "네이버통합뉴스(인하대)", "네이버통합뉴스(항공대)", "한국전문대학교육협의회", "교육부보도자료",
                   "인천광역시보도자료", "베리타스알파", "한국대학신문(UNN)",
                   "대학저널", "유스라인(Usline)", "교수신문",
                   "대학지성IN&OUT", "조선에듀", "연합뉴스"]
