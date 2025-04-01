@@ -1,7 +1,8 @@
 // ============================================
 // 화면 로딩 후 기본 페이지 로드 및 뉴스데이터 비동기 요청
 $(document).ready(function () {
-    ajax_get_data();
+    //ajax_get_data();
+    ajax_get_data_from_file();
 });
 
 

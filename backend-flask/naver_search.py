@@ -68,10 +68,8 @@ def sort_by_date(data):
     return sorted_data
 
 
-def search_item_with_ai(keyword1, keyword2, threshold=0.8):
-    result1 = search_item(keyword1)
-    result2 = search_item(keyword2)
-    result = result1 + result2
+def search_item_with_ai(keyword, threshold=0.8):
+    result = search_item(keyword)
     result = sort_by_date(result)
 
     #print(result1)
@@ -105,5 +103,6 @@ def search_item_with_ai(keyword1, keyword2, threshold=0.8):
     if len(filtered_titles) == 0:
         return {"Error": 0}
 
-    return {"네이버통합뉴스": filtered_titles}
+    return {f"네이버통합뉴스({keyword})": filtered_titles}
+    #return {"네이버통합뉴스": filtered_titles}
 

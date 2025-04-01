@@ -28,7 +28,7 @@ def get_data():
         soup = BeautifulSoup(response.text, 'html.parser')
 
         # 뉴스 데이터 선택
-        news_table = soup.select_one('#form1 > fieldset > div.list_tbl > table > tbody')
+        news_table = soup.select_one('#form1 > div > div > table > tbody')
         newses = news_table.select('tr')
 
         result = []
@@ -63,7 +63,3 @@ def get_data():
     else:
         print(f"Failed to fetch the page, status code: {response.status_code}")
         return {"Error": response.status_code}
-
-
-
-

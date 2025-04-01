@@ -32,9 +32,45 @@ function ajax_get_data() {
 	});
 }
 
+function ajax_get_data_from_file() {
+    $.ajax({
+    	url:"/newsItemfromFile",
+        type:"post",
+        dataType:"json",
+        data:{"None" : "None"},
+        success: function(data){
+			//console.log(data);
+			if(data == 1 || data == "1") {
+			    alert("뉴스 정보를 불러오는데 실패하였습니다.");
+			    return;
+			}
+
+			// 크롤링 데이터 시간 확인
+            let jsonData = JSON.parse(data);
+            console.log(jsonData[1]);
+            document.getElementById("msg").innerText = jsonData[0];
+
+            // 새로고침 버튼
+            document.getElementById("refresh_news").style.display = 'inline-block';
+
+            // 체크박스 표시  및 함수 정의
+            document.getElementById("news-checkbox").style.display = 'block';
+
+            // 가져온 json 데이터 파싱 후 forEach문으로 table 출력
+            write_news_data(JSON.parse(jsonData[1]));
+        },
+        error: function(request, status, error) {
+			alert("비동기 요청 중 오류가 발생했습니다.");
+			console.log("code : " + request.status);
+			console.log("message : " + request.responseText);
+			console.log("error : " + error);
+		}
+	});
+}
+
 // 특정 단어를 파란색으로 변경
 function highlightText(text) {
-    const keywords = ['인하공전', '인하공업전문대학', '전문대학'];
+    const keywords = ['인하공전', '인하공업전문대학', '전문대학', '인하대', '항공대'];
     keywords.forEach(keyword => {
         const regex = new RegExp(keyword, 'g');
         text = text.replace(regex, `<span style="color: #0049cf;">${keyword}</span>`);
@@ -49,6 +85,9 @@ function write_news_data(result) {
     result.forEach(function(company, i) {
         //let name = getnewsname(company);
         let name = Object.keys(company);
+        if(company[name].length == 0) {
+            return;
+        }
         check_newsItem(name);
 
         // 테이블을 .responsive-container로 감싸기
@@ -153,7 +192,7 @@ function check_newsItem(company) {
             document.getElementById("kcce").checked = true; break;
         case "조선에듀":
             document.getElementById("chosun").checked = true; break;
-        case "네이버통합뉴스":
+        case "네이버통합뉴스(인하공전)":
             document.getElementById("naver").checked = true; break;
     }
 }
@@ -162,11 +201,29 @@ function check_newsItem(company) {
 // 뉴스 체크표시 on off
 function toggleCheck(item) {
     if (item.checked) {
-        document.getElementById(item.value).style.visibility = 'visible';
-        document.getElementById(item.value).style.display = 'inline-block';
+        if (item.value == "네이버통합뉴스") {
+            document.getElementById("네이버통합뉴스(인하공전)").style.visibility = 'visible';
+            document.getElementById("네이버통합뉴스(인하공전)").style.display = 'inline-block';
+            document.getElementById("네이버통합뉴스(인하대)").style.visibility = 'visible';
+            document.getElementById("네이버통합뉴스(인하대)").style.display = 'inline-block';
+            document.getElementById("네이버통합뉴스(항공대)").style.visibility = 'visible';
+            document.getElementById("네이버통합뉴스(항공대)").style.display = 'inline-block';
+        } else {
+            document.getElementById(item.value).style.visibility = 'visible';
+            document.getElementById(item.value).style.display = 'inline-block';
+        }
     } else {
-        document.getElementById(item.value).style.visibility = 'hidden';
-        document.getElementById(item.value).style.display = 'none';
+        if (item.value == "네이버통합뉴스") {
+            document.getElementById("네이버통합뉴스(인하공전)").style.visibility = 'hidden';
+            document.getElementById("네이버통합뉴스(인하공전)").style.display = 'none';
+            document.getElementById("네이버통합뉴스(인하대)").style.visibility = 'hidden';
+            document.getElementById("네이버통합뉴스(인하대)").style.display = 'none';
+            document.getElementById("네이버통합뉴스(항공대)").style.visibility = 'hidden';
+            document.getElementById("네이버통합뉴스(항공대)").style.display = 'none';
+        } else {
+            document.getElementById(item.value).style.visibility = 'hidden';
+            document.getElementById(item.value).style.display = 'none';
+        }
     }
 }
 

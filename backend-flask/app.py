@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from datetime import datetime
 import naver_search_trend as nst
 import naver_search as ns
@@ -10,6 +10,9 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
+    with open('access.log', 'a', encoding='utf-8') as f:
+        f.write(datetime.today().strftime("%Y/%m/%d %H:%M:%S") + '\n')
+
     return render_template('index.html')
 
 
@@ -57,8 +60,14 @@ def news_item():
     # 크롤링 진행
     #result = n.news_data_crawling()
     result = n.module_exec()
+    print(result)
     return result
 
+# 처음 화면 접속 시 사전에 받아온 뉴스 데이터 보여줌.
+@app.route('/newsItemfromFile', methods=['POST'])
+def news_item_from_db():
+    result = n.read_file_data()
+    return jsonify(result)
 
 @app.route('/map')
 def map_item():

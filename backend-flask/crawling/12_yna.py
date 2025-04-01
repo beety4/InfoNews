@@ -14,11 +14,11 @@ def get_data():
         soup = BeautifulSoup(response.text, 'html.parser')
 
         # ul.list의 li 요소를 선택
-        news_list = soup.select('ul.list li')
+        news_list = soup.select('ul.list01 li')
 
         result = []
         for news in news_list:
-            title_tag = news.select_one('strong.tit-news')
+            title_tag = news.select_one('strong.tit-wrap')
 
             # 제목이 존재하는지 확인
             if title_tag:
@@ -35,7 +35,7 @@ def get_data():
                 # 2024.10.30
                 date = f"{current_year}.{date_unformatted.replace('-', '.')}"
 
-            link = soup.select_one('div.news-con a').attrs['href']
+            link = news.select_one('div.news-con a').attrs['href']
 
             #print(f"제목: {title}")
             #print(f"날짜: {date}")

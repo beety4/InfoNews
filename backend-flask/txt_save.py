@@ -6,6 +6,7 @@ import queue
 import multiprocessing
 from concurrent.futures import ThreadPoolExecutor, as_completed, ProcessPoolExecutor
 import naver_search as ns
+from datetime import datetime
 
 
 def load_and_run_get_data(py_file):
@@ -118,17 +119,12 @@ def module_exec():
     return json_data
 
 
+if __name__ == "__main__":
+    datenow = str(datetime.today().year) + "/" + str(datetime.today().month) + "/" + str(datetime.today().day)
+    timenow = str(datetime.today().hour) + ":" + str(datetime.today().minute)
+    whatnow = datenow + " " + timenow + " 기준 결과 입니다."
 
-# 주기적응로 크롤링한 데이터 가져오기.
-def read_file_data():
-    with open('newsinfo.txt', 'r', encoding='utf-8') as f:
-        whatdate = f.readline().replace('\n', '')
-        context = f.readline()
-
-    #print(whatdate)
-    #print(context)
-    json_data = json.dumps([whatdate, context], ensure_ascii=False)
-    return json_data
-
-
-#print(module_exec())
+    with open('newsinfo.txt', 'w', encoding='utf-8') as f:
+        f.write(whatnow)
+        f.write('\n')
+        f.write(module_exec())
