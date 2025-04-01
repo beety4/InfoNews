@@ -104,5 +104,3 @@ def search_item_with_ai(keyword, threshold=0.8):
         return {"Error": 0}
 
     return {f"네이버통합뉴스({keyword})": filtered_titles}
-    #return {"네이버통합뉴스": filtered_titles}
-
