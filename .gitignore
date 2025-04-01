@@ -1,5 +1,6 @@
 backend-flask/env/*
 
+backend-flask/*.log
 backend-flask/*.txt
 backend-flask/.git
 backend-flask/.gitignore
