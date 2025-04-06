@@ -47,7 +47,7 @@ function ajax_get_data_from_file() {
 
 			// 크롤링 데이터 시간 확인
             let jsonData = JSON.parse(data);
-            console.log(jsonData[1]);
+            //console.log(jsonData[1]);
             document.getElementById("msg").innerText = jsonData[0];
 
             // 새로고침 버튼
@@ -108,6 +108,9 @@ function write_news_data(result) {
 
         for (let i = 0; i < 10; i++) {
             const news = company[name][i];
+            if(news == undefined) {
+                return;
+            }
 
             html += `
                 <tr>
