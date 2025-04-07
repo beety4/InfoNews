@@ -42,7 +42,7 @@ window.addEventListener("message", function (event) {
 });
 
 function updateTable(data) {
-    const tableBody = document.querySelector(".custom-table tbody");
+    const tableBody = document.querySelector(".map-table tbody");
     tableBody.innerHTML = ""; // 기존 테이블 내용 초기화
 
     // 데이터를 '지원자 수(dataCount)'를 기준으로 내림차순 정렬
