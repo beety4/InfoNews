@@ -57,6 +57,11 @@ function updateTable(data) {
         noCell.textContent = index + 1;
         row.appendChild(noCell);
 
+        // 모집전형 컬럼
+        const typeCell = document.createElement("td");
+        typeCell.textContent = item.;
+        row.appendChild(typeCell);
+
         // 고교명 컬럼
         const schoolNamesCell = document.createElement("td");
         schoolNamesCell.textContent = item.schoolNames;

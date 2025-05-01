@@ -239,6 +239,7 @@ def main():
 
                         // 마커가 있으면 제거
                         const removedMarkers = markersBySigungu[sidoName][sigunguName].map(item => ({{
+                            type: item.type,
                             schoolNames: item.schoolNames,
                             dataCount: item.dataCount
                         }}));
@@ -293,7 +294,8 @@ def main():
                             var lat = parseFloat(latLng[0]);    // 위도
                             var lng = parseFloat(latLng[1]);    // 경도
 
-                            // 마커에 표시할 학교명 리스트와 데이터 수 계산
+                            // 마커에 표시할 데이터 
+                            var type = points[0].모집전형;
                             var schoolNames = points[0].고교명;
                             var dataCount = points.length;
 
@@ -302,6 +304,7 @@ def main():
 
                             // 팝업 내용
                             var popupContent = `
+                                <b>모집전형: ${{type}}</b><br>
                                 <b>학교명: ${{schoolNames}}</b><br>
                                 <b>지원자 수: ${{dataCount}}</b>
                             `;
@@ -310,6 +313,7 @@ def main():
                             // 마커 배열에 추가
                             markersBySigungu[sidoName][sigunguName].push({{
                                 marker : marker,
+                                type : type,
                                 schoolNames : schoolNames,
                                 dataCount : dataCount,
                             }});
@@ -321,6 +325,7 @@ def main():
                         parent.postMessage({{
                             action: 'add',
                             data: markersBySigungu[sidoName][sigunguName].map(item => ({{
+                                type: item.type,
                                 schoolNames: item.schoolNames,
                                 dataCount: item.dataCount
                             }}))
