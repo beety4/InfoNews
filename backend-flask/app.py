@@ -71,7 +71,7 @@ def news_item_from_db():
 
 @app.route('/map')
 def map_item():
-    return render_template('map.html')
+    return render_template('2025_map.html')
 
 
 if __name__ == '__main__':

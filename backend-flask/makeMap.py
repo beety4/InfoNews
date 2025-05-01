@@ -255,7 +255,7 @@ def main():
                         parent.postMessage({{
                             action: 'remove',
                             data: removedMarkers
-                        }}, "https://news.mojuk.kr/");
+                        }}, "http://127.0.0.1:8080");
 
                     }} else {{
                         // 마커 추가
@@ -295,7 +295,6 @@ def main():
                             var lng = parseFloat(latLng[1]);    // 경도
 
                             // 마커에 표시할 데이터 
-                            var type = points[0].모집전형;
                             var schoolNames = points[0].고교명;
                             var dataCount = points.length;
 
@@ -329,7 +328,7 @@ def main():
                                 schoolNames: item.schoolNames,
                                 dataCount: item.dataCount
                             }}))
-                        }}, "https://news.mojuk.kr/");
+                        }}, "http://127.0.0.1:8080");
                     }}
                 }}
 
@@ -384,8 +383,8 @@ def main():
     m.get_root().html.add_child(folium.Element(my_js))
 
     # 저장
-    m.save('./applicantMap/2025_map.html')
-    print("지도가 생성되어 map.html로 저장되었습니다.")
+    m.save('./templates/2025_map.html')
+    print("지도가 생성되어 2025_map.html로 저장되었습니다.")
 
 
 if __name__ == '__main__':

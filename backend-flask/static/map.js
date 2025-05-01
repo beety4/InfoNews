@@ -2,7 +2,13 @@ var allMarkerData = [];  // 모든 마커 데이터를 저장할 배열
 
 // 메시지 수신 처리
 window.addEventListener("message", function (event) {
-    if (event.origin !== "https://news.mojuk.kr") {
+    const allowedOrigins = [
+        "https://news.mojuk.kr",
+        "http://127.0.0.1:8080",  // PyCharm 등 로컬 개발 환경 주소
+        "http://localhost:8080"   // 추가적으로 localhost도 허용하면 좋습니다
+    ];
+
+    if (!allowedOrigins.includes(event.origin)) {
         console.warn("Unauthorized origin: ", event.origin);
         return;
     }
@@ -59,7 +65,7 @@ function updateTable(data) {
 
         // 모집전형 컬럼
         const typeCell = document.createElement("td");
-        typeCell.textContent = item.;
+        typeCell.textContent = item.type;
         row.appendChild(typeCell);
 
         // 고교명 컬럼
