@@ -322,6 +322,29 @@ image-container {
     border-radius: 6px;
 }
 
+.map-checkbox-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.map-checkbox {
+    border: 2px solid #ccc;
+    width: 80%;
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px; /* 체크박스 간 간격 */
+    padding: 10px 20px; /* 내부 여백 늘림 */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-check-input {
+    position: relative;
+    top: 3px; /* 숫자 조정 가능 (예: 1~3px 정도) */
+}
+
 .responsive-container-list {
     overflow-x: auto;
     margin: 0 0%;

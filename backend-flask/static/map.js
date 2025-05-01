@@ -14,7 +14,7 @@ window.addEventListener("message", function (event) {
     }
 
     const receivedData = event.data;
-    console.log("Received Data:", receivedData);
+    // console.log("Received Data:", receivedData);
 
     // 'action'이 'add'인 경우에는 마커 추가, 'remove'인 경우에는 마커 제거
     if (receivedData.action === "add") {
@@ -27,7 +27,18 @@ window.addEventListener("message", function (event) {
             // 기존에 있는 데이터를 중복없이 누적
             const existingItem = allMarkerData.find(existingItem => `${existingItem.schoolNames}-${existingItem.dataCount}` === uniqueKey);
             if (!existingItem) {
-                allMarkerData.push(item);  // 중복되지 않으면 추가
+                //allMarkerData.push(item);  // 중복되지 않으면 추가
+                // 전형별로 데이터 구조 변환
+                const typeGroups = {}; // 전형별로 데이터를 분리
+                if (item.type && item.dataCount) {
+                    typeGroups[item.type] = item.dataCount;
+                }
+
+                // 변환된 데이터를 allMarkerData에 추가
+                allMarkerData.push({
+                    schoolNames: item.schoolNames,
+                    typeGroups: item.typeGroups,
+                });
             }
         });
     } else if (receivedData.action === "remove") {
@@ -43,42 +54,77 @@ window.addEventListener("message", function (event) {
         });
     }
 
-    console.log("Updated Marker Data:", allMarkerData);
+    //console.log("Updated Marker Data:", allMarkerData);
     updateTable(allMarkerData);  // 테이블 업데이트
+});
+
+// DOMContentLoaded 이벤트 리스너
+document.addEventListener("DOMContentLoaded", function () {
+    const allCheckbox = document.getElementById("check_all");
+    const otherCheckboxes = document.querySelectorAll('.form-check-input:not(#check_all)');
+
+    // 전체 체크박스를 변경할 때
+    allCheckbox.addEventListener("change", () => {
+        otherCheckboxes.forEach(cb => cb.checked = allCheckbox.checked);
+        updateTable(allMarkerData);
+    });
+
+    // 나머지 체크박스 변경 시 전체 체크 상태 반영
+    otherCheckboxes.forEach(cb => {
+        cb.addEventListener("change", () => {
+            const allChecked = Array.from(otherCheckboxes).every(cb => cb.checked);
+            allCheckbox.checked = allChecked;
+            updateTable(allMarkerData);
+        });
+    });
+
+    // 초기에 테이블 렌더링
+    updateTable(allMarkerData);
 });
 
 function updateTable(data) {
     const tableBody = document.querySelector(".map-table tbody");
     tableBody.innerHTML = ""; // 기존 테이블 내용 초기화
 
+    // 체크박스
+    const selectedTypes = Array.from(document.querySelectorAll('.form-check-input:checked'))
+        .map(checkbox => checkbox.value);
+
     // 데이터를 '지원자 수(dataCount)'를 기준으로 내림차순 정렬
-    const sortedData = data.sort((a,b) => b.dataCount - a.dataCount);
+    const sortedData = data.sort((a, b) => b.dataCount - a.dataCount);
 
     // 테이블에 데이터 추가
     sortedData.forEach((item, index) => {
-        const row = document.createElement("tr");
+        const schoolName = item.schoolNames;
+        const typeGroups = item.typeGroups;
 
-        // No 컬럼
-        const noCell = document.createElement("td");
-        noCell.textContent = index + 1;
-        row.appendChild(noCell);
+        for (const type in typeGroups) {
+            // 선택된 전형만 테이블에 표시
+            if (selectedTypes.includes(type)) {
+                const row = document.createElement("tr");
 
-        // 모집전형 컬럼
-        const typeCell = document.createElement("td");
-        typeCell.textContent = item.type;
-        row.appendChild(typeCell);
+                // No
+                const noCell = document.createElement("td");
+                noCell.textContent = index + 1;
+                row.appendChild(noCell);
 
-        // 고교명 컬럼
-        const schoolNamesCell = document.createElement("td");
-        schoolNamesCell.textContent = item.schoolNames;
-        row.appendChild(schoolNamesCell);
+                // 모집전형
+                const typeCell = document.createElement("td");
+                typeCell.textContent = type;
+                row.appendChild(typeCell);
 
-        // 지원자 수 컬럼
-        const dataCountCell = document.createElement("td");
-        dataCountCell.textContent = item.dataCount;
-        row.appendChild(dataCountCell);
+                // 고교명
+                const schoolNamesCell = document.createElement("td");
+                schoolNamesCell.textContent = schoolName;
+                row.appendChild(schoolNamesCell);
 
-        // 표에 행 추가
-        tableBody.appendChild(row);
+                // 지원자 수
+                const dataCountCell = document.createElement("td");
+                dataCountCell.textContent = typeGroups[type];
+                row.appendChild(dataCountCell);
+
+                tableBody.appendChild(row);
+            }
+        }
     });
 }
