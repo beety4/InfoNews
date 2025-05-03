@@ -238,7 +238,7 @@ def main():
 
                         // 마커가 있으면 제거
                         const removedMarkers = markersBySigungu[sidoName][sigunguName].map(item => ({{
-                            type: item.type,
+                            typeGroups: item.typeGroups,
                             schoolNames: item.schoolNames,
                             dataCount: item.dataCount
                         }}));

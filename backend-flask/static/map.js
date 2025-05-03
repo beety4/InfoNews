@@ -38,6 +38,7 @@ window.addEventListener("message", function (event) {
                 allMarkerData.push({
                     schoolNames: item.schoolNames,
                     typeGroups: item.typeGroups,
+                    dataCount: item.dataCount
                 });
             }
         });
