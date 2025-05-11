@@ -4,8 +4,8 @@ var allMarkerData = [];  // 모든 마커 데이터를 저장할 배열
 window.addEventListener("message", function (event) {
     const allowedOrigins = [
         "https://news.mojuk.kr",
-        "http://127.0.0.1:8080",  // PyCharm 등 로컬 개발 환경 주소
-        "http://localhost:8080"   // 추가적으로 localhost도 허용하면 좋습니다
+        "http://127.0.0.1:8080",  // 로컬 개발 환경 주소
+        "http://localhost:8080"
     ];
 
     if (!allowedOrigins.includes(event.origin)) {
@@ -20,6 +20,9 @@ window.addEventListener("message", function (event) {
     if (receivedData.action === "add") {
         // 받은 데이터 처리
         const newData = receivedData.data;
+
+        // 마커 초기화
+        allMarkerData = [];
 
         newData.forEach(item => {
             const uniqueKey = `${item.schoolNames}-${item.dataCount}`;

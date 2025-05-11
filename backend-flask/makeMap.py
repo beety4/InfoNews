@@ -216,24 +216,18 @@ def main():
                 
                 // 모든 마커 제거 함수
                 function clearAllMarkers() {{
-                    for (var sido in markerBySigungu) {{
+                    for (var sido in markersBySigungu) {{
                         for (var sigungu in markersBySigungu[sido]) {{
                             markersBySigungu[sido][sigungu].forEach(function (marker) {{
                                 map.removeLayer(marker.marker);
                             }});
                         }}
-                    }}
-                    
-                                parent.postMessage({{
-                        action: 'remove_all'
-                    }}, "https://news.mojuk.kr/");
-            
+                    }}            
                     markersBySigungu = {{}};
                 }}
 
                 // 시군구 별 데이터 마커
                 function addMarker(sidoName, sigunguName) {{
-                    # if (!dataBysigungu) return;
                     clearAllMarkers();
 
                     var markerData = dataBysigungu[sidoName][sigunguName];
@@ -242,129 +236,96 @@ def main():
                         console.log('No data for', sigunguName); 
                         return;
                     }}
+                    
+                    // 마커 추가
+                    var groupedData = {{}};           // 위도, 경도를 기준으로 그룹화
+                    
+                    markerData.forEach(function(point) {{
+                        var lat = point.위도; 
+                        var lng = point.경도; 
+                        // 위도/경도가 없는 경우 로그 출력
+                        if (!lat || !lng) {{
+                            console.error('Invalid LatLng for', sigunguName, point);
+                            return;
+                        }}
+                        var key = `${{lat}},${{lng}}`; // 위도, 경도를 키로 사용
+                        if (!groupedData[key]) {{
+                            groupedData[key] = [];
+                        }}
+                        groupedData[key].push(point);
+                    }});
 
-                    # // 이미 생성된 마커가 있는지 확인하고 제거
-                    # if (!markersBySigungu[sidoName]) {{
-                    #     markersBySigungu[sidoName] = {{}};
-                    # }}
-                    # if (!markersBySigungu[sidoName][sigunguName]) {{
-                    #     markersBySigungu[sidoName][sigunguName] = [];
-                    # }}
-                    # 
-                    # // 마커가 이미 있는지 체크
-                    # if (markersBySigungu[sidoName][sigunguName].length > 0) {{
-                    # 
-                    #     // 마커가 있으면 제거
-                    #     const removedMarkers = markersBySigungu[sidoName][sigunguName].map(item => ({{
-                    #         typeGroups: item.typeGroups,
-                    #         schoolNames: item.schoolNames,
-                    #         dataCount: item.dataCount
-                    #     }}));
-                    # 
-                    #     markersBySigungu[sidoName][sigunguName].forEach(function(marker) {{
-                    #         map.removeLayer(marker.marker);
-                    #     }});
-                    # 
-                    #     markersBySigungu[sidoName][sigunguName] = [];  // 마커 배열 초기화
-                    # 
-                    #     // 부모로 remove 액션과 함께 데이터 전송
-                    #     parent.postMessage({{
-                    #         action: 'remove',
-                    #         data: removedMarkers
-                    #     }}, "https://news.mojuk.kr/");
-                    # 
-                    # }} else {{
-                        // 마커 추가
-                        var groupedData = {{}};           // 위도, 경도를 기준으로 그룹화
-
-                        markerData.forEach(function(point) {{
-                            var lat = point.위도; 
-                            var lng = point.경도; 
-
-                            // 위도/경도가 없는 경우 로그 출력
-                            if (!lat || !lng) {{
-                                console.error('Invalid LatLng for', sigunguName, point);
+                    // 그룹화된 데이터가 없는 경우
+                    if (Object.keys(groupedData).length === 0) {{
+                        return;
+                    }}
+                    
+                    // 해당 시군구의 마커 배열 초기화
+                    markersBySigungu[sidoName] = markersBySigungu[sidoName] || {{ }};
+                    markersBySigungu[sidoName][sigunguName] = [];
+                    
+                    // 그룹화된 데이터로 마커 추가
+                    Object.keys(groupedData).forEach(function(key) {{
+                        var firstKey = Object.keys(groupedData)[0]; // 첫 번째 마커만 선택
+                        var points = groupedData[key];
+                        var latLng = key.split(',');        // 키를 다시 위도, 경도로 분리
+                        var lat = parseFloat(latLng[0]);    // 위도
+                        var lng = parseFloat(latLng[1]);    // 경도
+                        
+                        // 전형별로 그룹화
+                        var typeGroups = {{}};
+                        
+                        points.forEach(function(point) {{
+                            var type = point.모집시기;
+                            
+                            // 타입이 제대로 있는지 확인
+                            if (!type) {{
+                                console.error("모집시기 정보가 없습니다:", point);
                                 return;
                             }}
 
-                            var key = `${{lat}},${{lng}}`; // 위도, 경도를 키로 사용
-                            if (!groupedData[key]) {{
-                                groupedData[key] = [];
+                            if (!typeGroups[type]) {{
+                                typeGroups[type] = 0;
                             }}
-                            groupedData[key].push(point);
+                            typeGroups[type] += 1;
                         }});
 
-                        // 그룹화된 데이터가 없는 경우
-                        if (Object.keys(groupedData).length === 0) {{
-                            return;
+                        var schoolNames = points[0].고교명;
+                        var totalCount = 0;
+
+                        // 팝업 내용
+                        var popupContent = `<b style="font-size: 16px;">${{schoolNames}}</b><br><br>`;
+                        for (var type in typeGroups) {{
+                            if (typeGroups.hasOwnProperty(type)) {{
+                                popupContent += `<b style="font-size: 13px;">${{type}}: ${{typeGroups[type]}}명</b><br>`;
+                                totalCount += typeGroups[type];     // 총 지원자 수 계산
+                            }}
                         }}
+                        popupContent += `<br><b style="font-size: 13px;">지원자 총 ${{totalCount}}명</b><br>`;
+                        
+                        // 마커 생성
+                        var marker = L.marker([lat, lng]).addTo(map);
+                        marker.bindPopup(popupContent);
 
-                        // 해당 시군구의 마커 배열 초기화
-                        markersBySigungu[sidoName] = markersBySigungu[sidoName] || {{ }};
-                        markersBySigungu[sidoName][sigunguName] = [];
-
-                        // 그룹화된 데이터로 마커 추가
-                        Object.keys(groupedData).forEach(function(key) {{
-                            var points = groupedData[key];
-                            var latLng = key.split(',');        // 키를 다시 위도, 경도로 분리
-                            var lat = parseFloat(latLng[0]);    // 위도
-                            var lng = parseFloat(latLng[1]);    // 경도
-                            
-                             // 전형별로 그룹화
-                                var typeGroups = {{}};
-                            
-                                points.forEach(function(point) {{
-                                    var type = point.모집시기;
-                                    
-                                    // 타입이 제대로 있는지 확인
-                                    if (!type) {{
-                                        console.error("모집시기 정보가 없습니다:", point);
-                                        return;
-                                    }}
-    
-                                    if (!typeGroups[type]) {{
-                                        typeGroups[type] = 0;
-                                    }}
-                                    typeGroups[type] += 1;
-                                }});
-
-                            var schoolNames = points[0].고교명;
-                            var totalCount = 0;
-
-                            // 팝업 내용
-                            var popupContent = `<b style="font-size: 16px;">${{schoolNames}}</b><br><br>`;
-                            for (var type in typeGroups) {{
-                                if (typeGroups.hasOwnProperty(type)) {{
-                                    popupContent += `<b style="font-size: 13px;">${{type}}: ${{typeGroups[type]}}명</b><br>`;
-                                    totalCount += typeGroups[type];     // 총 지원자 수 계산
-                                }}
-                            }}
-                            popupContent += `<br><b style="font-size: 13px;">지원자 총 ${{totalCount}}명</b><br>`;
-                            
-                            // 마커 생성
-                            var marker = L.marker([lat, lng]).addTo(map);
-                            marker.bindPopup(popupContent);
-
-                            // 마커 배열에 추가
-                            markersBySigungu[sidoName][sigunguName].push({{
-                                marker : marker,
-                                typeGroups: typeGroups,
-                                schoolNames : schoolNames,
-                                dataCount : points.length,
-                            }});
+                        // 마커 배열에 추가
+                        markersBySigungu[sidoName][sigunguName].push({{
+                            marker : marker,
+                            typeGroups: typeGroups,
+                            schoolNames : schoolNames,
+                            dataCount : points.length,
                         }});
+                    }});
 
-                        // 부모에게 데이터 전달
-                        parent.postMessage({{
-                            action: 'add',
-                            data: markersBySigungu[sidoName][sigunguName].map(item => ({{
-                                type: item.type,
-                                typeGroups: item.typeGroups,
-                                schoolNames: item.schoolNames,
-                                dataCount: item.dataCount
-                            }}))
-                        }}, "https://news.mojuk.kr/");
-                    }}
+                    // 부모에게 데이터 전달
+                    parent.postMessage({{
+                        action: 'add',
+                        data: markersBySigungu[sidoName][sigunguName].map(item => ({{
+                            type: item.type,
+                            typeGroups: item.typeGroups,
+                            schoolNames: item.schoolNames,
+                            dataCount: item.dataCount
+                        }}))
+                    }}, "http://127.0.0.1:8080/");
                 }}
 
                 // 현재 활성화된 시군구 레이어
