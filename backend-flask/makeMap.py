@@ -213,10 +213,28 @@ def main():
                 }});
 
                 var markersBySigungu = {{ }};
+                
+                // 모든 마커 제거 함수
+                function clearAllMarkers() {{
+                    for (var sido in markerBySigungu) {{
+                        for (var sigungu in markersBySigungu[sido]) {{
+                            markersBySigungu[sido][sigungu].forEach(function (marker) {{
+                                map.removeLayer(marker.marker);
+                            }});
+                        }}
+                    }}
+                    
+                                parent.postMessage({{
+                        action: 'remove_all'
+                    }}, "https://news.mojuk.kr/");
+            
+                    markersBySigungu = {{}};
+                }}
 
                 // 시군구 별 데이터 마커
                 function addMarker(sidoName, sigunguName) {{
-                    if (!dataBysigungu) return;
+                    # if (!dataBysigungu) return;
+                    clearAllMarkers();
 
                     var markerData = dataBysigungu[sidoName][sigunguName];
 
@@ -225,37 +243,37 @@ def main():
                         return;
                     }}
 
-                    // 이미 생성된 마커가 있는지 확인하고 제거
-                    if (!markersBySigungu[sidoName]) {{
-                        markersBySigungu[sidoName] = {{}};
-                    }}
-                    if (!markersBySigungu[sidoName][sigunguName]) {{
-                        markersBySigungu[sidoName][sigunguName] = [];
-                    }}
-
-                    // 마커가 이미 있는지 체크
-                    if (markersBySigungu[sidoName][sigunguName].length > 0) {{
-
-                        // 마커가 있으면 제거
-                        const removedMarkers = markersBySigungu[sidoName][sigunguName].map(item => ({{
-                            typeGroups: item.typeGroups,
-                            schoolNames: item.schoolNames,
-                            dataCount: item.dataCount
-                        }}));
-
-                        markersBySigungu[sidoName][sigunguName].forEach(function(marker) {{
-                            map.removeLayer(marker.marker);
-                        }});
-
-                        markersBySigungu[sidoName][sigunguName] = [];  // 마커 배열 초기화
-
-                        // 부모로 remove 액션과 함께 데이터 전송
-                        parent.postMessage({{
-                            action: 'remove',
-                            data: removedMarkers
-                        }}, "https://news.mojuk.kr/");
-
-                    }} else {{
+                    # // 이미 생성된 마커가 있는지 확인하고 제거
+                    # if (!markersBySigungu[sidoName]) {{
+                    #     markersBySigungu[sidoName] = {{}};
+                    # }}
+                    # if (!markersBySigungu[sidoName][sigunguName]) {{
+                    #     markersBySigungu[sidoName][sigunguName] = [];
+                    # }}
+                    # 
+                    # // 마커가 이미 있는지 체크
+                    # if (markersBySigungu[sidoName][sigunguName].length > 0) {{
+                    # 
+                    #     // 마커가 있으면 제거
+                    #     const removedMarkers = markersBySigungu[sidoName][sigunguName].map(item => ({{
+                    #         typeGroups: item.typeGroups,
+                    #         schoolNames: item.schoolNames,
+                    #         dataCount: item.dataCount
+                    #     }}));
+                    # 
+                    #     markersBySigungu[sidoName][sigunguName].forEach(function(marker) {{
+                    #         map.removeLayer(marker.marker);
+                    #     }});
+                    # 
+                    #     markersBySigungu[sidoName][sigunguName] = [];  // 마커 배열 초기화
+                    # 
+                    #     // 부모로 remove 액션과 함께 데이터 전송
+                    #     parent.postMessage({{
+                    #         action: 'remove',
+                    #         data: removedMarkers
+                    #     }}, "https://news.mojuk.kr/");
+                    # 
+                    # }} else {{
                         // 마커 추가
                         var groupedData = {{}};           // 위도, 경도를 기준으로 그룹화
 
