@@ -6,7 +6,7 @@ import folium
 
 # 시군구별 Json 파일 생성
 def dataBySigungu():
-    df = pd.read_csv('./applicantMap/가공_2025 고교별 지원자 정보.csv', encoding='utf-8-sig')
+    df = pd.read_csv('./applicantMap/최종_2025지원자정보.csv', encoding='utf-8-sig')
     result = {}
     grouped = df.groupby(['지역명', '시군구명'])
 
@@ -26,7 +26,7 @@ def dataBySigungu():
 
 
 def main():
-    df = pd.read_csv('./applicantMap/가공_2025 고교별 지원자 정보.csv', encoding='utf-8-sig')
+    df = pd.read_csv('./applicantMap/최종_2025지원자정보.csv', encoding='utf-8-sig')
     geojson_path_sido = "./applicantMap/SIDO.json"
 
     with open(geojson_path_sido, 'r', encoding='utf-8') as f:
@@ -325,7 +325,7 @@ def main():
                             schoolNames: item.schoolNames,
                             dataCount: item.dataCount
                         }}))
-                    }}, "http://127.0.0.1:8080/");
+                    }}, "https://news.mojuk.kr/");
                 }}
 
                 // 현재 활성화된 시군구 레이어
@@ -384,6 +384,5 @@ def main():
 
 
 if __name__ == '__main__':
-    # sidoMap()
-    # dataBySigungu()
+    #dataBySigungu()
     main()
