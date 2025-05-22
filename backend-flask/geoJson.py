@@ -1,7 +1,7 @@
 import pandas as pd
 import geopandas as gpd
 import json
-import folium
+import os
 
 # 실행 필요 없음 - 시도 GeoJson 수정 완료
 def sido():
@@ -91,13 +91,16 @@ def sigungu():
     print("GeoJSON 파일 생성 완료")
 
 
-# 실행 필요 없음 - 시도별 파일 생성 완료
+# 실행 필요
 def filteredBySido():
-    df = pd.read_csv("./applicantMap/가공_2025 고교별 지원자 정보.csv")
+    df = pd.read_csv("./applicantMap/최종_2025지원자정보.csv")
     grouped = df.groupby("지역명")
 
+    output_dir = './applicantMap/REGION'
+    os.makedirs(output_dir, exist_ok=True)
+
     for region, group in grouped:
-        filename = "./applicantMap/" + region + ".json"
+        filename = "./applicantMap/REGION/" + region + ".json"
         with open(filename, "w", encoding="utf-8") as f:
             json.dump(group.to_dict(orient="records"), f, ensure_ascii=False, indent=4)
 
@@ -196,6 +199,11 @@ def filteredBySigungu():
                 frame['features'].append(feature)
 
         # 시도별로 GeoJSON 파일을 저장
+
+        # 시군구 GeoJSON 저장 폴더가 없다면 생성
+        output_dir = './applicantMap/sigungu_geojson'
+        os.makedirs(output_dir, exist_ok=True)
+
         file_path = f'./applicantMap/sigungu_geojson/{sido}.json'
         with open(file_path, 'w', encoding='utf-8') as f:
             json.dump(frame, f, ensure_ascii=False, separators=(',', ':'))
@@ -205,7 +213,8 @@ def filteredBySigungu():
 
 
 def main():
-    pass
+    filteredBySido()
+    filteredBySigungu()
 
 
 if __name__ == '__main__':

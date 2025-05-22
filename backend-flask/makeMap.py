@@ -242,9 +242,9 @@ def main():
                     
                     markerData.forEach(function(point) {{
                         var lat = point.위도; 
-                        var lng = point.경도; 
+                        var lng = point.경도;
                         // 위도/경도가 없는 경우 로그 출력
-                        if (!lat || !lng) {{
+                        if (isNaN(lat) || isNaN(lng)) {{
                             console.error('Invalid LatLng for', sigunguName, point);
                             return;
                         }}
@@ -257,6 +257,8 @@ def main():
 
                     // 그룹화된 데이터가 없는 경우
                     if (Object.keys(groupedData).length === 0) {{
+                        console.warn("groupedData is empty for", sigunguName);
+                        //console.log("markerData:", markerData);
                         return;
                     }}
                     

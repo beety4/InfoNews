@@ -10,7 +10,7 @@ import json
 def getAddressLatLon():
     # 1. 파일 불러오기
     origin_df = pd.read_csv('./applicantMap/가공_2025 고교별 지원자 정보.csv')
-    allSchool_df = pd.read_csv('./applicantMap/전국초중등학교위치표준데이터.csv', encoding='cp949')
+    allSchool_df = pd.read_csv('./applicantMap/전국초중고등학교위치데이터.csv')
 
     # 2. 컬럼명 정리
     allSchool_df = allSchool_df.rename(columns={
@@ -46,94 +46,95 @@ def getAddressLatLon():
         print("모든 고교명 병합 성공!")
 
 
-# def getLatLon():
-#     file_path = './applicantMap/2025 고교별 지원자 정보.csv'
-#
-#     df = pd.read_csv(file_path)
-#
-#     # .env 파일 로드
-#     load_dotenv(dotenv_path='./env/data.env')
-#
-#     # API 키 읽기
-#     kakao_api_key = os.getenv("KAKAO_API_KEY")
-#
-#     # API 키 확인
-#     print("API Key:", kakao_api_key)  # 확인용 출력
-#
-#     # 캐시 파일 로드
-#     try:
-#         with open('./applicantMap/cache.json', 'r', encoding='utf-8') as f:
-#             cached = json.load(f)
-#     except FileNotFoundError:
-#         cached = {}
-#
-#     failed_addresses = []
-#
-#     def kakao_geocode(address, rest_api_key=kakao_api_key):
-#         # 프로세싱 확인
-#         print(f"요청 중: {address}")
-#
-#         # 캐시 확인
-#         if address in cached:
-#             return cached[address]
-#
-#         url = "https://dapi.kakao.com/v2/local/search/address.json"
-#         headers = {"Authorization": f"KakaoAK {rest_api_key}"}
-#         params = {"query": address}
-#
-#         try:
-#             response = requests.get(url, headers=headers, params=params, timeout=5)
-#             if response.status_code == 200:
-#                 documents = response.json().get('documents')
-#                 if documents:
-#                     # 위도, 경도 반환 및 캐시 저장
-#                     lat, lon = documents[0]['y'], documents[0]['x']
-#                     cached[address] = (lat, lon)
-#                     return lat, lon
-#             # 실패 시 None 반환
-#             return None, None
-#         except requests.exceptions.RequestException as e:
-#             print(f"Error: {e} for address: {address}")
-#             return None, None
-#
-#     # 병렬 처리를 위한 함수
-#     def process_addresses(addresses, rest_api_key=kakao_api_key):
-#         with ThreadPoolExecutor(max_workers=5) as executor:
-#             return list(executor.map(lambda addr: kakao_geocode(addr, rest_api_key), addresses))
-#
-#     # 요청 간 딜레이 추가 (API 제한 고려)
-#     batch_size = 30
-#     results = []
-#
-#     for i in range(0, len(df), batch_size):
-#         batch = df['주소지'][i:i + batch_size]
-#         batch_results = process_addresses(batch)
-#
-#         # 실패한 주소 추적
-#         for address, result in zip(batch, batch_results):
-#             if result == (None, None):
-#                 failed_addresses.append(address)
-#
-#         results.extend(batch_results)
-#         time.sleep(1)  # 요청 간 1초 딜레이
-#
-#     # 위도, 경도 컬럼 추가
-#     df['위도'], df['경도'] = zip(*results)
-#
-#     # 결과 저장 또는 출력
-#     df.to_csv('./applicantMap/가공_2025 고교별 지원자 정보.csv', index=False, encoding='utf-8-sig')
-#
-#     # 캐시 저장
-#     with open('./applicantMap/cache.json', 'w', encoding='utf-8') as f:
-#         json.dump(cached, f, ensure_ascii=False, indent=2)
-#
-#     # 실패한 주소 출력
-#     if failed_addresses:
-#         print("다음 주소에서 실패한 결과가 있습니다:")
-#         for address in failed_addresses:
-#             print(address)
-#     else:
-#         print("모든 주소 처리 완료.")
+# 학교데이터 위도/경도 저장하기
+def getLatLon():
+    file_path = './applicantMap/전국초중등학교위치표준데이터.csv'
+
+    df = pd.read_csv(file_path, encoding='cp949')
+
+    # .env 파일 로드
+    load_dotenv(dotenv_path='./env/data.env')
+
+    # API 키 읽기
+    kakao_api_key = os.getenv("KAKAO_API_KEY")
+
+    # API 키 확인
+    print("API Key:", kakao_api_key)  # 확인용 출력
+
+    # 캐시 파일 로드
+    try:
+        with open('./applicantMap/cache.json', 'r', encoding='utf-8') as f:
+            cached = json.load(f)
+    except FileNotFoundError:
+        cached = {}
+
+    failed_addresses = []
+
+    def kakao_geocode(address, rest_api_key=kakao_api_key):
+        # 프로세싱 확인
+        print(f"요청 중: {address}")
+
+        # 캐시 확인
+        if address in cached:
+            return cached[address]
+
+        url = "https://dapi.kakao.com/v2/local/search/address.json"
+        headers = {"Authorization": f"KakaoAK {rest_api_key}"}
+        params = {"query": address}
+
+        try:
+            response = requests.get(url, headers=headers, params=params, timeout=5)
+            if response.status_code == 200:
+                documents = response.json().get('documents')
+                if documents:
+                    # 위도, 경도 반환 및 캐시 저장
+                    lat, lon = documents[0]['y'], documents[0]['x']
+                    cached[address] = (lat, lon)
+                    return lat, lon
+            # 실패 시 None 반환
+            return None, None
+        except requests.exceptions.RequestException as e:
+            print(f"Error: {e} for address: {address}")
+            return None, None
+
+    # 병렬 처리를 위한 함수
+    def process_addresses(addresses, rest_api_key=kakao_api_key):
+        with ThreadPoolExecutor(max_workers=5) as executor:
+            return list(executor.map(lambda addr: kakao_geocode(addr, rest_api_key), addresses))
+
+    # 요청 간 딜레이 추가 (API 제한 고려)
+    batch_size = 30
+    results = []
+
+    for i in range(0, len(df), batch_size):
+        batch = df['소재지지번주소'][i:i + batch_size]
+        batch_results = process_addresses(batch)
+
+        # 실패한 주소 추적
+        for address, result in zip(batch, batch_results):
+            if result == (None, None):
+                failed_addresses.append(address)
+
+        results.extend(batch_results)
+        time.sleep(1)  # 요청 간 1초 딜레이
+
+    # 위도, 경도 컬럼 추가
+    df['위도'], df['경도'] = zip(*results)
+
+    # 결과 저장 또는 출력
+    df.to_csv('./applicantMap/전국초중고등학교위치데이터.csv', index=False, encoding='utf-8-sig')
+
+    # 캐시 저장
+    with open('./applicantMap/cache.json', 'w', encoding='utf-8') as f:
+        json.dump(cached, f, ensure_ascii=False, indent=2)
+
+    # 실패한 주소 출력
+    if failed_addresses:
+        print("다음 주소에서 실패한 결과가 있습니다:")
+        for address in failed_addresses:
+            print(address)
+    else:
+        print("모든 주소 처리 완료.")
 
 
 def encoding():
@@ -172,13 +173,13 @@ def sigunguColumn():
 
 def schoolNum():
     # CSV 불러오기
-    df = pd.read_csv('./applicantMap/가공_2025 고교별 지원자 정보.csv', encoding='utf-8-sig')
+    df = pd.read_csv('./applicantMap/최종_2025지원자정보.csv', encoding='utf-8-sig')
 
     # 지역명 기준 고교 수 계산 후 각 행에 채우기
     df['고교수'] = df.groupby('지역명')['지역명'].transform('count')
 
     # 결과 저장
-    df.to_csv('./applicantMap/가공_2025 고교별 지원자 정보.csv', index=False, encoding='utf-8-sig')
+    df.to_csv('./applicantMap/최종_2025지원자정보.csv', index=False, encoding='utf-8-sig')
 
 
 if __name__ == '__main__':
@@ -186,4 +187,4 @@ if __name__ == '__main__':
     # getLatLon()
     # encoding()
     # sigunguColumn()
-    # schoolNum()
+    #schoolNum()
