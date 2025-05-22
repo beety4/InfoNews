@@ -333,8 +333,9 @@ image-container {
     border: 2px solid #ccc;
     width: 80%;
     display: flex;
+    flex-wrap: wrap;
     justify-content: flex-start;
-    gap: 20px; /* 체크박스 간 간격 */
+    gap: 10px; /* 체크박스 간 간격 */
     padding: 10px 20px; /* 내부 여백 늘림 */
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);

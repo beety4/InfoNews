@@ -5,12 +5,66 @@ from dotenv import load_dotenv
 import time
 from concurrent.futures import ThreadPoolExecutor
 import json
+import math
+
+
+def searchSameLatLon():
+    # CSV 파일 읽기
+    # df = pd.read_csv('./applicantMap/전국고등학교위치데이터.csv', encoding='utf-8-sig')
+    df = pd.read_csv('./applicantMap/최종_전국고등학교위치데이터.csv', encoding='utf-8-sig')
+
+    # 중복 좌표(위도+경도) 찾기
+    duplicates = df[df.duplicated(subset=["위도", "경도"], keep=False)]
+
+    # 위도+경도별로 고교명 그룹화
+    grouped = duplicates.groupby(["위도", "경도"])
+
+    # 고교명이 서로 다른 그룹만 필터링
+    result = []
+    for (lat, lon), group in grouped:
+        school_names = group["학교명"].unique()
+        if len(school_names) > 1:
+            result.append(list(school_names))
+
+    # 결과 출력
+    for group in result:
+        print(group)
+
+
+def makeDifferentLatLon():
+    # 데이터 불러오기
+    df = pd.read_csv("./applicantMap/전국고등학교위치데이터.csv", encoding='utf-8-sig')
+
+    # 중복 좌표 탐색
+    coord_counts = df.groupby(["위도", "경도"]).size().reset_index(name='count')
+    duplicates = coord_counts[coord_counts['count'] > 1]
+
+    # 오프셋 반지름 (1 ≒ 약 1.1m → 0.00001)
+    radius = 0.0005
+
+    for _, row in duplicates.iterrows():
+        lat, lon = row["위도"], row["경도"]
+        mask = (df["위도"] == lat) & (df["경도"] == lon)
+        indices = df[mask].index.tolist()
+        n = len(indices)
+
+        for i, idx in enumerate(indices):
+            if i == 0:
+                continue  # 첫 번째는 그대로 두기
+            angle = 2 * math.pi * i / n
+            offset_lat = math.sin(angle) * radius
+            offset_lon = math.cos(angle) * radius
+            df.at[idx, "위도"] += offset_lat
+            df.at[idx, "경도"] += offset_lon
+
+    # 저장
+    df.to_csv("./applicantMap/최종_전국고등학교위치데이터.csv", index=False, encoding='utf-8-sig')
 
 
 def getAddressLatLon():
     # 1. 파일 불러오기
     origin_df = pd.read_csv('./applicantMap/가공_2025 고교별 지원자 정보.csv')
-    allSchool_df = pd.read_csv('./applicantMap/전국초중고등학교위치데이터.csv')
+    allSchool_df = pd.read_csv('./applicantMap/최종_전국고등학교위치데이터.csv')
 
     # 2. 컬럼명 정리
     allSchool_df = allSchool_df.rename(columns={
@@ -48,7 +102,7 @@ def getAddressLatLon():
 
 # 학교데이터 위도/경도 저장하기
 def getLatLon():
-    file_path = './applicantMap/전국초중등학교위치표준데이터.csv'
+    file_path = './applicantMap/전국고등학교데이터.csv'
 
     df = pd.read_csv(file_path, encoding='cp949')
 
@@ -122,7 +176,7 @@ def getLatLon():
     df['위도'], df['경도'] = zip(*results)
 
     # 결과 저장 또는 출력
-    df.to_csv('./applicantMap/전국초중고등학교위치데이터.csv', index=False, encoding='utf-8-sig')
+    df.to_csv('./applicantMap/전국고등학교위치데이터.csv', index=False, encoding='utf-8-sig')
 
     # 캐시 저장
     with open('./applicantMap/cache.json', 'w', encoding='utf-8') as f:
@@ -183,8 +237,10 @@ def schoolNum():
 
 
 if __name__ == '__main__':
+    makeDifferentLatLon()
+    searchSameLatLon()
     getAddressLatLon()
     # getLatLon()
     # encoding()
     # sigunguColumn()
-    #schoolNum()
+    # schoolNum()

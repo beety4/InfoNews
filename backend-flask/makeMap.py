@@ -18,7 +18,7 @@ def dataBySigungu():
                                    '위도', '경도', '시군구명', '고교수']].to_dict(orient='records')
 
     # 결과를 JSON으로 출력
-    print(json.dumps(result, ensure_ascii=False, indent=4))
+    # print(json.dumps(result, ensure_ascii=False, indent=4))
 
     # JSON 파일로 저장
     with open('./applicantMap/DataBySigungu.json', 'w', encoding='utf-8') as json_file:
@@ -328,6 +328,7 @@ def main():
                             dataCount: item.dataCount
                         }}))
                     }}, "https://news.mojuk.kr/");
+                    //}}, "http://127.0.0.1:8080/");
                 }}
 
                 // 현재 활성화된 시군구 레이어
@@ -386,5 +387,5 @@ def main():
 
 
 if __name__ == '__main__':
-    #dataBySigungu()
+    dataBySigungu()
     main()
