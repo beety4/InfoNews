@@ -1,4 +1,5 @@
 import requests
+import tempfile
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -8,8 +9,12 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 
 def get_data():
+    temp_profile = tempfile.mkdtemp()
     options = Options()
     options.add_argument('headless')
+    options.add_argument(f'--user-data-dir={temp_profile}')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
     driver = webdriver.Chrome(options=options)
 
     result = []
@@ -46,10 +51,10 @@ def get_data():
                     "link": link,
                     "date": date
                 })
-                # print(f"제목: {title}")
-                # print(f"날짜: {date}")
-                # print(f"링크: {link}")
-                # print("-" * 100)
+                print(f"제목: {title}")
+                print(f"날짜: {date}")
+                print(f"링크: {link}")
+                print("-" * 100)
             except Exception as e:
                 print(f"개별 아이템 처리 중 오류 발생: {e}")
                 continue
@@ -62,3 +67,4 @@ def get_data():
     finally:
         driver.quit()
 
+get_data()
