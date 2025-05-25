@@ -5,9 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2039cbdf-c808-48da-b29c-65f69210a62d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/backend-flask/.idea/Flask-Code.iml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/.idea/Flask-Code.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-flask/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-flask/crawling/12_yna.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/crawling/12_yna.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-flask/access.log" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/access.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-flask/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-flask/naver_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/naver_api.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-flask/news.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/news.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-flask/static/news.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/static/news.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-flask/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/templates/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -48,7 +51,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "D:/storage/Management/뉴스크롤링-Mojuk/Flask_Vue_Srv",
+    "last_opened_file_path": "C:/2024/infoNews/InfoNews/backend-flask/crawling",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -67,6 +70,8 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\2024\infoNews\InfoNews\backend-flask\crawling" />
+      <recent name="C:\2024\infoNews\InfoNews\backend-flask\templates" />
       <recent name="C:\2024\infoNews\InfoNews\crawling" />
     </key>
     <key name="MoveFile.RECENT_KEYS">

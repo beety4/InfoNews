@@ -183,6 +183,10 @@ function check_newsItem(company) {
             document.getElementById("dhnews").checked = true; break;
         case "베리타스알파":
             document.getElementById("veritas").checked = true; break;
+        case "경인일보":
+            document.getElementById("kyeongin").checked = true; break;
+        case "인천일보":
+            document.getElementById("incheonilbo").checked = true; break;
         case "연합뉴스":
             document.getElementById("yna").checked = true; break;
         case "교육부보도자료":

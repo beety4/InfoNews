@@ -77,7 +77,8 @@ def module_exec():
                         'crawling/3_moe.py', 'crawling/4_incheon.py',
                         'crawling/5_veritas-a.py', 'crawling/6_unn.py',
                         'crawling/7_dhnews.py', 'crawling/8_usline.py',
-                        'crawling/9_kyosu.py']
+                        'crawling/9_kyosu.py', 'crawling/13_kyeongin.py',
+                        'crawling/14_incheonilbo.py']
 
     # 결과를 담을 리스트
     result = []
@@ -103,7 +104,7 @@ def module_exec():
     order_list = ["네이버통합뉴스(인하공전)", "네이버통합뉴스(인하대)", "네이버통합뉴스(항공대)", "한국전문대학교육협의회", "교육부보도자료",
                   "인천광역시보도자료", "베리타스알파", "한국대학신문(UNN)",
                   "대학저널", "유스라인(Usline)", "교수신문",
-                  "대학지성IN&OUT", "조선에듀", "연합뉴스"]
+                  "대학지성IN&OUT", "조선에듀", "경인일보", "인천일보", "연합뉴스"]
 
     sorted_list = sorted(
         (item for item in result if next(iter(item)) in order_list),  # order_list에 없는 값 필터링
