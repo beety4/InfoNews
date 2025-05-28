@@ -19,7 +19,7 @@ def get_data():
 
     result = []
     try:
-        driver.get('https://www.kyeongin.com/society/education')
+        driver.get('https://www.kyeongin.com/society')
         WebDriverWait(driver, 15).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "#container > div > section > div > ul"))
         )
@@ -51,10 +51,10 @@ def get_data():
                     "link": link,
                     "date": date
                 })
-                print(f"제목: {title}")
-                print(f"날짜: {date}")
-                print(f"링크: {link}")
-                print("-" * 100)
+                # print(f"제목: {title}")
+                # print(f"날짜: {date}")
+                # print(f"링크: {link}")
+                # print("-" * 100)
             except Exception as e:
                 print(f"개별 아이템 처리 중 오류 발생: {e}")
                 continue
@@ -66,5 +66,3 @@ def get_data():
         return {"경인일보": []}
     finally:
         driver.quit()
-
-get_data()

@@ -2,16 +2,15 @@ import requests
 from bs4 import BeautifulSoup
 
 def get_data():
-    url = 'https://www.incheonilbo.com/news/articleList.html?sc_sub_section_code=S2N14&view_type=sm'
+    url = 'https://www.incheonilbo.com/news/articleList.html?view_type=sm'
     response = requests.get(url)
 
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
 
-        # 원하는 ul > li들 선택
         news_items = soup.select('#section-list ul > li')
         result = []
-        print(news_items)
+
         for item in news_items:
             # 제목 및 링크
             title_tag = item.select_one('h2.titles > a')
