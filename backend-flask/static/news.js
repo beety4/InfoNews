@@ -51,13 +51,15 @@ function ajax_get_data_from_file() {
             document.getElementById("msg").innerText = jsonData[0];
 
             // 새로고침 버튼
-            document.getElementById("refresh_news").style.display = 'inline-block';
+            //document.getElementById("refresh_news").style.display = 'inline-block';
 
             // 체크박스 표시  및 함수 정의
             document.getElementById("news-checkbox").style.display = 'block';
 
             // 가져온 json 데이터 파싱 후 forEach문으로 table 출력
-            write_news_data(JSON.parse(jsonData[1]));
+            //console.log(jsonData[1]);
+            write_news_data(jsonData[1]);
+            //write_news_data(JSON.parse(jsonData[1]));
         },
         error: function(request, status, error) {
 			alert("비동기 요청 중 오류가 발생했습니다.");
@@ -116,7 +118,7 @@ function write_news_data(result) {
                 <tr>
                 <td class="column-no">${i + 1}</td>
                 <td class="column-title"><a href="${news.link}" target="_blank">${highlightText(news.title)}</a></td>
-                <td class="column-date" scope="row">${(news.date).substr(5)}</td>
+                <td class="column-date" scope="row">${(news.date)}</td>
                 </tr>
             `;
         }

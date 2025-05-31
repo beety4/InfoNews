@@ -7,6 +7,61 @@ $(document).ready(function () {
 
 
 
+// 입학지도 pwd 검증
+// 라디오 버튼 체크 상태 변경 감지
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const aboutRadio = document.getElementById("about");
+
+    aboutRadio.addEventListener("change", async (event) => {
+      if (aboutRadio.checked) {
+        const isAuthenticated = getCookie("authenticated");
+        if (isAuthenticated === "true") {
+          // 이미 인증된 경우 - 허용
+          return;
+        }
+
+        // 공백 검사
+        const password = prompt("비밀번호를 입력하세요:");
+        if (!password) {
+          aboutRadio.checked = false;
+          document.getElementById('contact').checked = true;
+          return;
+        }
+
+        aboutRadio.checked = false;
+        document.getElementById('contact').checked = true;
+        const response = await fetch("/validatePwd", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password }),
+        });
+
+        const result = await response.json();
+
+        // 인증 처리 결과 분기
+        if (result.success) {
+          aboutRadio.checked = true;
+        } else {
+          aboutRadio.checked = false;
+          document.getElementById('contact').checked = true;
+          alert("비밀번호가 틀렸습니다.");
+        }
+      }
+    });
+});
+
+
+
+
+
+
 
 
 // ============================================

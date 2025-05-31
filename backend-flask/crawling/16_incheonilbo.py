@@ -31,10 +31,10 @@ def get_data():
                 "link": link,
                 "date": date
             })
-            # print(f"제목: {title}")
-            # print(f"날짜: {date}")
-            # print(f"링크: {link}")
-            # print("-" * 100)
+            #print(f"제목: {title}")
+            #print(f"날짜: {date}")
+            #print(f"링크: {link}")
+            #print("-" * 100)
         return {"인천일보": result}
 
     else:

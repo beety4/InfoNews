@@ -36,10 +36,10 @@ def get_data():
 
                 link = "https://www.kyosu.net" + news.select_one('div.list-titles a').attrs['href']
 
-                print(f"제목: {title}")
-                print(f"날짜: {date}")
-                print(f"링크: {link}")
-                print("-" * 100)
+                #print(f"제목: {title}")
+                #print(f"날짜: {date}")
+                #print(f"링크: {link}")
+                #print("-" * 100)
                 dict_data = {"title": title, "link": link, "date": date}
                 result.append(dict_data)
         else:

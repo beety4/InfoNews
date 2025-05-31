@@ -3,7 +3,11 @@ from datetime import datetime
 import naver_search_trend as nst
 import naver_search as ns
 import news as n
+import db_control as dc
 import ast
+from dotenv import load_dotenv
+import os
+import json
 
 app = Flask(__name__)
 
@@ -66,12 +70,39 @@ def news_item():
 # 처음 화면 접속 시 사전에 받아온 뉴스 데이터 보여줌.
 @app.route('/newsItemfromFile', methods=['POST'])
 def news_item_from_db():
-    result = n.read_file_data()
+    #result = n.read_file_data()
+    #return jsonify(result)
+
+    result = dc.get_data_fromDB()
     return jsonify(result)
 
 @app.route('/map')
 def map_item():
     return render_template('2025_map.html')
+
+
+
+
+
+# 입학지도 쿠키 지정 및 로그인 검증 route
+@app.route('/validatePwd', methods=['POST'])
+def validate_pwd():
+    data = request.get_json()
+    password = data.get("password")
+
+    load_dotenv('env/data.env')
+    map_key = str(os.getenv('map_key'))
+
+    if password == map_key:
+        response = jsonify({"success": True})
+        # 쿠키에 'authenticated=true' 저장
+        # 365일 -> 24시간 * 60분 * 60초 
+        response.set_cookie("authenticated", "true", max_age=60 * 60 * 24* 365)  # 1년
+        return response
+    else:
+        return jsonify({"success": False})
+
+
 
 
 if __name__ == '__main__':

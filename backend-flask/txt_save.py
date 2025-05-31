@@ -78,7 +78,7 @@ def module_exec():
                         'crawling/3_moe.py', 'crawling/4_incheon.py',
                         'crawling/5_veritas-a.py', 'crawling/6_unn.py',
                         'crawling/7_dhnews.py', 'crawling/8_usline.py',
-                        'crawling/9_kyosu.py', 'crawling/13_kyeongin.py', 'crawling/14_incheonilbo.py'']
+                        'crawling/9_kyosu.py', 'crawling/13_kyeongin.py', 'crawling/14_incheonilbo.py']
 
     # 결과를 담을 리스트
     result = []
