@@ -2,6 +2,9 @@ import requests
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
+from datetime import datetime
+import pytz
+import re
 
 
 def get_data_before():
@@ -30,10 +33,6 @@ def get_data_before():
 
         link = "https:" + title_tag.attrs['href'].strip()
 
-        #print(f"제목: {title}")
-        #print(f"날짜: {date}")
-        #print(f"링크: {link}")
-        #print("-" * 100)
         dict_data = {"title": title, "link": link, "date": date}
         result.append(dict_data)
 
@@ -62,10 +61,34 @@ def get_data():
         data = response.json()
 
         result = []
+        # 타임존 설정
+        kst = pytz.timezone('Asia/Seoul')
         # 데이터 출력
         for content in data["CONTENT"]:
-            dict_data = {"title": content["TITLE"], "link": "https:" + content["ART_HREF"],
-                         "date": content["DATE"][:10]}
+            link = "https:" + content["ART_HREF"]
+
+            article_resp = requests.get(link, headers=headers)
+            if article_resp.status_code == 200:
+                article_soup = BeautifulSoup(article_resp.text, 'html.parser')
+                date_div = article_soup.select_one(
+                    '#detailBlock2 > div > div.innerwrap > div.side-01.article > div.article_etc > div')
+
+                if date_div:
+                    raw_text = date_div.text.strip()
+                    match = re.search(r'(\d{4}\.\d{2}\.\d{2} \d{2}:\d{2})', raw_text)
+                    if match:
+                        raw_date = match.group(1)
+                        naive_dt = datetime.strptime(raw_date, "%Y.%m.%d %H:%M")
+                        aware_dt = kst.localize(naive_dt)
+
+                    else:
+                        date = content["DATE"][:10]
+                else:
+                    date = content["DATE"][:10]
+            else:
+                date = content["DATE"][:10]
+
+            dict_data = {"title": content["TITLE"], "link": link, "date": aware_dt}
             result.append(dict_data)
 
         if len(result) == 0:
@@ -74,5 +97,3 @@ def get_data():
         return {"조선에듀": result}
     except Exception as e:
         return {"조선에듀": ["Error", response.status_code, e]}
-
-

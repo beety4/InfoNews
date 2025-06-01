@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
+import pytz
 
 
 def get_data():
@@ -18,6 +19,9 @@ def get_data():
             news_list = soup.select('ul.list01 li')
 
             result = []
+            # 타임존 설정
+            kst = pytz.timezone('Asia/Seoul')
+
             for news in news_list:
                 title_tag = news.select_one('strong.tit-wrap')
 
@@ -31,18 +35,17 @@ def get_data():
                 if date_text:
                     # 10-30 18:00
                     date_text = date_text.text.strip()
-                    # 10-30
-                    date_unformatted = date_text.split(' ')[0]
-                    # 2024.10.30
-                    date = f"{current_year}.{date_unformatted.replace('-', '.')}"
+                    full_date_str = f"{datetime.now().year}-{date_text}"
+                    naive_dt = datetime.strptime(full_date_str, "%Y-%m-%d %H:%M")
+                    aware_dt = kst.localize(naive_dt)
 
                 link = news.select_one('div.news-con a').attrs['href']
 
                 # print(f"제목: {title}")
-                # print(f"날짜: {date}")
+                # print(f"날짜: {aware_dt}")
                 # print(f"링크: {link}")
                 # print("-" * 100)
-                dict_data = {"title": title, "link": link, "date": date}
+                dict_data = {"title": title, "link": link, "date": aware_dt}
                 result.append(dict_data)
 
             return {"연합뉴스": result}

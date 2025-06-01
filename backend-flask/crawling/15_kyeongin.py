@@ -1,59 +1,70 @@
 import requests
-import tempfile
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
+import re
 from datetime import datetime
+import pytz
+
+def get_article_date(article_url, headers):
+    try:
+        res = requests.get(article_url, headers=headers)
+        if res.status_code != 200:
+            return None
+
+        soup = BeautifulSoup(res.text, 'html.parser')
+        date_tag = soup.select_one('#container > div > article > header > div.article-date > div > span.date-publish')
+        if date_tag:
+            text = date_tag.text.strip()
+            match = re.search(r'(\d{4}-\d{2}-\d{2} \d{2}:\d{2})', text)
+            if match:
+                raw_date = match.group(1)
+                naive_dt = datetime.strptime(raw_date, "%Y-%m-%d %H:%M")
+                kst = pytz.timezone("Asia/Seoul")
+                aware_dt = kst.localize(naive_dt)
+
+                return aware_dt
+        print(f"날짜 태그를 찾지 못했습니다 for {article_url}")
+    except Exception as e:
+        print(f"[{article_url}] 날짜 추출 오류: {e}")
+    return None
 
 def get_data():
-    temp_profile = tempfile.mkdtemp()
-    options = Options()
-    options.add_argument('headless')
-    options.add_argument(f'--user-data-dir={temp_profile}')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-dev-shm-usage')
-    driver = webdriver.Chrome(options=options)
-
+    # URL 및 헤더 설정
+    base_html_url = 'https://www.kyeongin.com/society'
+    html_headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'ko-KR,ko;q=0.8,en-US;q=0.5,en;q=0.3',
+        'DNT': '1',  # Do Not Track
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1',
+    }
     result = []
     try:
-        driver.get('https://www.kyeongin.com/society')
-        WebDriverWait(driver, 15).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "#container > div > section > div > ul"))
-        )
-        html = driver.page_source
-        soup = BeautifulSoup(html, 'html.parser')
+        response = requests.get(base_html_url, headers=html_headers)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.text, 'html.parser')
 
         li_elements = soup.select("#container > div > section > div > ul > li")
 
-        for li in li_elements:
+        for i, li in enumerate(li_elements):
             try:
                 title_tag = li.select_one('h2 > a')
-                title = title_tag.text.strip() if title_tag else "No Title"
-                raw_link = title_tag.get('href').strip() if title_tag and title_tag.get('href') else "No Link"
-                if raw_link != "No Link" and not raw_link.startswith('https:'):
-                    link = "https:" + raw_link
-                else:
-                    link = raw_link
+                title = title_tag.text.strip() if title_tag else "제목 없음"
 
-                date_elem = li.select_one('div.byline span.date')
-                raw_date = date_elem.text.strip() if date_elem else ""
+                raw_link = title_tag.get('href').strip() if title_tag and title_tag.get('href') else "링크 없음"
+                full_link = "https:" + raw_link
 
-                if not raw_date:
-                    date = datetime.today().strftime("%Y.%m.%d")
-                else:
-                    date = raw_date.replace('-', '.')
+                date = get_article_date(full_link, html_headers)
 
                 result.append({
                     "title": title,
-                    "link": link,
+                    "link": full_link,
                     "date": date
                 })
+
                 # print(f"제목: {title}")
                 # print(f"날짜: {date}")
-                # print(f"링크: {link}")
+                # print(f"링크: {full_link}")
                 # print("-" * 100)
             except Exception as e:
                 print(f"개별 아이템 처리 중 오류 발생: {e}")
@@ -62,7 +73,4 @@ def get_data():
         return {"경인일보": result}
 
     except Exception as e:
-        #print(f"전체 크롤링 중 오류 발생: {e}")
         return {"경인일보": ["Error", 999, "News Server Error"]}
-    finally:
-        driver.quit()

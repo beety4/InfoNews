@@ -1,5 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
+from datetime import datetime
+import pytz
 
 def get_data():
     # 웹사이트 URL 설정
@@ -17,6 +19,8 @@ def get_data():
             news_list = soup.select('#section-list > ul > li')
 
             result = []
+            # 타임존 설정
+            kst = pytz.timezone('Asia/Seoul')
             for news in news_list:
                 # 제목과 링크
                 title_tag = news.select_one('div h4 a')
@@ -29,16 +33,16 @@ def get_data():
                 write_info = news.select_one('.byline')
                 if write_info:
                     date_em = write_info.select('em')[2]
-                    date = date_em.text.strip()
-
-                    date = date.split(' ')[0]
+                    raw_date_str = date_em.text.strip()
+                    naive_dt = datetime.strptime(raw_date_str, "%Y.%m.%d %H:%M")
+                    aware_dt = kst.localize(naive_dt)
 
                 # 출력
                 # print(f"제목: {title}")
                 # print(f"링크: {link}")
-                # print(f"날짜: {date}")
+                # print(f"날짜: {aware_dt}")
                 # print("-" * 100)
-                dict_data = {"title": title, "link": link, "date": date}
+                dict_data = {"title": title, "link": link, "date": aware_dt}
                 result.append(dict_data)
 
             return {"한국대학신문(UNN)": result}

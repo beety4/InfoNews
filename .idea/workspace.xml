@@ -8,10 +8,16 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-flask/access.log" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/access.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-flask/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-flask/naver_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/naver_api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-flask/news.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/news.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-flask/static/news.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/static/news.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-flask/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-flask/crawling/10_usline.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/crawling/10_usline.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-flask/crawling/11_kyosu.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/crawling/11_kyosu.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-flask/crawling/12_unipress.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/crawling/12_unipress.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-flask/crawling/13_chosunedu.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/crawling/13_chosunedu.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-flask/crawling/14_yna.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/crawling/14_yna.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-flask/crawling/15_kyeongin.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/crawling/15_kyeongin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-flask/crawling/16_incheonilbo.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/crawling/16_incheonilbo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-flask/crawling/7_veritas-a.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/crawling/7_veritas-a.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-flask/crawling/8_unn.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/crawling/8_unn.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-flask/crawling/9_dhnews.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/crawling/9_dhnews.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +57,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/2024/infoNews/InfoNews/backend-flask/crawling",
+    "last_opened_file_path": "C:/2024/infoNews/InfoNews/backend-flask/templates",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -70,11 +76,13 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\2024\infoNews\InfoNews\backend-flask\crawling" />
       <recent name="C:\2024\infoNews\InfoNews\backend-flask\templates" />
+      <recent name="C:\2024\infoNews\InfoNews\backend-flask" />
+      <recent name="C:\2024\infoNews\InfoNews\backend-flask\crawling" />
       <recent name="C:\2024\infoNews\InfoNews\crawling" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\2024\infoNews\InfoNews\backend-flask\templates" />
       <recent name="D:\Project\인하공전_뉴스_크롤링\InfoNews\backend-flask\applicantMap" />
       <recent name="D:\Project\인하공전_뉴스_크롤링\InfoNews\backend-flask\env" />
     </key>

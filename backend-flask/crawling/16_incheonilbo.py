@@ -1,5 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
+from datetime import datetime
+import pytz
 
 def get_data():
     url = 'https://www.incheonilbo.com/news/articleList.html?view_type=sm'
@@ -11,6 +13,8 @@ def get_data():
 
             news_items = soup.select('#section-list ul > li')
             result = []
+            # 타임존 설정
+            kst = pytz.timezone('Asia/Seoul')
 
             for item in news_items:
                 # 제목 및 링크
@@ -23,17 +27,17 @@ def get_data():
 
                 # 날짜
                 byline_ems = item.select('span.byline > em')
-                full_date = byline_ems[2].get_text(strip=True)
-                # 날짜만 추출
-                date = full_date.split()[0]
+                raw_date = byline_ems[2].get_text(strip=True)
+                naive_dt = datetime.strptime(raw_date, "%Y.%m.%d %H:%M")
+                aware_dt = kst.localize(naive_dt)
 
                 result.append({
                     "title": title,
                     "link": link,
-                    "date": date
+                    "date": aware_dt
                 })
                 # print(f"제목: {title}")
-                # print(f"날짜: {date}")
+                # print(f"날짜: {aware_dt}")
                 # print(f"링크: {link}")
                 # print("-" * 100)
             return {"인천일보": result}
@@ -43,4 +47,3 @@ def get_data():
             return {"인천일보": ["Error", response.status_code, "News Server Error"]}
     except Exception as e:
         return {"인천일보": ["Error", response.status_code, e]}
-    

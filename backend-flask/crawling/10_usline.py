@@ -1,6 +1,8 @@
 import requests
 import re
 from bs4 import BeautifulSoup
+from datetime import datetime
+import pytz
 
 def get_data():
     url = 'https://www.usline.kr/news/articleList.html?view_type=sm'
@@ -13,6 +15,8 @@ def get_data():
             news_list = soup.select('section#section-list div.view-cont')
 
             result = []
+            # 타임존 설정
+            kst = pytz.timezone('Asia/Seoul')
             for news in news_list:
                 title_tag = news.select_one('h4 a')
                 title = title_tag.text.strip()
@@ -22,16 +26,20 @@ def get_data():
                 for em in news.find_all('em'):
                     match = re.match(r'(\d{4}\.\d{2}\.\d{2}) \d{2}:\d{2}', em.text)
                     if match:
-                        date = match.group(1)
+                        raw_date = match.group(0)
+                        naive_dt = datetime.strptime(raw_date, "%Y.%m.%d %H:%M")
+                        aware_dt = kst.localize(naive_dt)
+                        # date = aware_dt.strftime("%Y-%m-%d %H:%M:%S%z")
+                        # date = date[:-2] + ':' + date[-2:]
                         break
 
                 link = "https://www.usline.kr" + title_tag.get('href')
 
                 # print(f"제목: {title}")
-                # print(f"날짜: {date}")
+                # print(f"날짜: {aware_dt}")
                 # print(f"링크: {link}")
                 # print("-" * 100)
-                dict_data = {"title": title, "link": link, "date": date}
+                dict_data = {"title": title, "link": link, "date": aware_dt}
                 result.append(dict_data)
 
             return {"유스라인(Usline)": result}
