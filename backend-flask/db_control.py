@@ -7,6 +7,8 @@ import naver_search as ns
 import json
 from collections import defaultdict
 from dateutil.parser import parse
+import smtplib
+from email.mime.text import MIMEText
 
 
 # sourceIDX 와 뉴스 정보 매칭
@@ -62,7 +64,7 @@ def load_modules():
     # 네이버 결과 추가
     keyword_list = ['인하공전', '인하대', '항공대']
     for keyword in keyword_list:
-        crawler_funcs.append(lambda k=keyword: ns.search_item_with_ai(k))
+        crawler_funcs.append(lambda k=keyword: ns.search_item(k))
         
     return crawler_funcs
 
@@ -108,18 +110,15 @@ def save_data_toDB():
 
         for source_name, articles in data_dict.items():
             sourceIDX = source_map.get(source_name)
-            if sourceIDX is None:
-                continue  # unknown source, skip
 
             # last_attempt 업데이트
             cur.execute(update_attempt_query, (now, sourceIDX))
 
-
             # 에러 처리: dict가 {"Error": code} 형식이면 실패 처리
-            if isinstance(articles, dict) and "Error" in articles:
-                error_msg = f"HTTP Error {articles['Error']}"
-                cur.execute(update_fail_query, (error_msg, sourceIDX))
+            if isinstance(articles, list) and articles and articles[0] == "Error":
+                cur.execute(update_fail_query, (str(articles), sourceIDX))
                 continue
+
 
             try:
                 for article in articles:
@@ -133,14 +132,14 @@ def save_data_toDB():
                 cur.execute(update_success_query, (now, sourceIDX))
 
             except Exception as e:
-                print(f"Error inserting: {article.get('title', 'Unknown')}", e)
+                #print(f"Error inserting: {article.get('title', 'Unknown')}", e)
                 cur.execute(update_fail_query, (str(e), sourceIDX))
 
     conn.commit()
     cur.close()
     conn.close()
 
-    print("==Data Input Success!! (postgresql)")
+    #print("==Data Input Success!! (postgresql)")
     return
 
 
@@ -193,16 +192,119 @@ def get_data_fromDB():
     #print(json.dumps(final_json, indent=2, ensure_ascii=False))
     #return final_json
 
-    json_data = json.dumps(["DB로 부터 가져온 데이터입니다.", final_json], ensure_ascii=False)
+    crawling_result = check_crawling() if check_crawling() else ""
+    json_data = json.dumps([crawling_result, final_json], ensure_ascii=False)
     return json_data
 
 
 
 
+# 크롤링 실패 여부 확인
+def check_crawling():
+    conn = get_connection()
+    cur = conn.cursor()
+
+    query = """
+       SELECT name, status, last_attempt, last_success, message
+       FROM source
+       WHERE status = 'Fail' OR
+         (last_attempt IS NOT NULL
+         AND last_success IS NOT NULL
+         AND last_attempt != last_success);
+       """
+
+    try:
+        cur.execute(query)
+        failed_data = cur.fetchall()
+        result = []
+
+        if failed_data:
+            for row in failed_data:
+                dict_data = {"name": row[0], "status": row[1], "last_attempt": str(row[2]), "last_success": str(row[3]), "message": row[4]}
+                result.append(dict_data)
+        else:
+            #print("모든 데이터가 성공적으로 크롤링되었습니다.")
+            return None
+        return result
+    except Exception as e:
+        print(f"오류 발생: {e}")
+    finally:
+        cur.close()
+        conn.close()
+
+
+
+
+# 하루 지정 시간 2번 검사 후, 메일 보내기
+def send_mail():
+    # 크롤링 검증 확인 및 메일 내용 작성
+    result = check_crawling()
+    if result:
+        mailText = f'''
+                <html>
+                <body>
+                <h2>실패한 크롤링 데이터</h2>
+                <table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse;">
+                    <tr>
+                        <th>뉴스이름</th>
+                        <th>크롤링 상태</th>
+                        <th>마지막 시도</th>
+                        <th>마지막 성공</th>
+                        <th>오류메세지</th>
+                    </tr>
+                '''
+        # result 리스트의 데이터를 HTML 테이블로 변환
+        for row in result:
+            mailText += f"""
+                    <tr>
+                       <td>{row["name"]}</td>
+                       <td>{row["status"]}</td>
+                       <td>{str(row["last_attempt"]).split('.')[0]}</td>
+                       <td>{str(row["last_success"]).split('.')[0]}</td>
+                       <td>{row["message"]}</td>
+                   </tr>
+                   """
+        mailText += """
+                </table>
+                </body>
+                </html>
+                """
+
+        # 메일 정보 가져오기
+        load_dotenv()
+        mail_sender = os.getenv("mailsender")
+        mail_list = os.getenv("maillist").split(",")
+        mail_key = os.getenv("mailkey")
+
+        # 메일 설정
+        s = smtplib.SMTP('smtp.gmail.com', 587)
+        s.starttls()
+        s.login(mail_sender, mail_key)
+
+        msg = MIMEText(mailText, 'html')
+        msg['Subject'] = '인하공전 뉴스 크롤링 실패 알림'
+        s.sendmail(mail_sender, mail_list, msg.as_string())
+        s.quit()
+    # else:
+    # print("크롤링 잘됨.")
+
+
 
 # Cron으로 저장할때 사용
 if __name__ == "__main__":
+    # 현재 크롤링 저장
     save_data_toDB()
+
+    # 현재 시간이 해당 시간 범위(8:10~8:30, 19:10~19:30 사이)
+    now = datetime.now()
+    morning_start = now.replace(hour=8, minute=10, second=0, microsecond=0)
+    morning_end = now.replace(hour=8, minute=30, second=0, microsecond=0)
+    evening_start = now.replace(hour=19, minute=10, second=0, microsecond=0)
+    evening_end = now.replace(hour=19, minute=30, second=0, microsecond=0)
+
+    if morning_start <= now <= morning_end or evening_start <= now <= evening_end:
+        send_mail()
+
     #get_data_fromDB()
 
 

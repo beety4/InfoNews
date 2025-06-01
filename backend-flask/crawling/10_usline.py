@@ -4,37 +4,40 @@ from bs4 import BeautifulSoup
 
 def get_data():
     url = 'https://www.usline.kr/news/articleList.html?view_type=sm'
-
     response = requests.get(url)
 
-    if response.status_code == 200:
-        soup = BeautifulSoup(response.text, 'html.parser')
+    try:
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.text, 'html.parser')
 
-        news_list = soup.select('section#section-list div.view-cont')
+            news_list = soup.select('section#section-list div.view-cont')
 
-        result = []
-        for news in news_list:
-            title_tag = news.select_one('h4 a')
-            title = title_tag.text.strip()
+            result = []
+            for news in news_list:
+                title_tag = news.select_one('h4 a')
+                title = title_tag.text.strip()
 
-            # <em>사회</em><em>박병수 편집국장</em><em>2024.10.30 04:16</em>
-            date = None
-            for em in news.find_all('em'):
-                match = re.match(r'(\d{4}\.\d{2}\.\d{2}) \d{2}:\d{2}', em.text)
-                if match:
-                    date = match.group(1)
-                    break
+                # <em>사회</em><em>박병수 편집국장</em><em>2024.10.30 04:16</em>
+                date = None
+                for em in news.find_all('em'):
+                    match = re.match(r'(\d{4}\.\d{2}\.\d{2}) \d{2}:\d{2}', em.text)
+                    if match:
+                        date = match.group(1)
+                        break
 
-            link = "https://www.usline.kr" + title_tag.get('href')
+                link = "https://www.usline.kr" + title_tag.get('href')
 
-            #print(f"제목: {title}")
-            #print(f"날짜: {date}")
-            #print(f"링크: {link}")
-            #print("-" * 100)
-            dict_data = {"title": title, "link": link, "date": date}
-            result.append(dict_data)
+                # print(f"제목: {title}")
+                # print(f"날짜: {date}")
+                # print(f"링크: {link}")
+                # print("-" * 100)
+                dict_data = {"title": title, "link": link, "date": date}
+                result.append(dict_data)
 
-        return {"유스라인(Usline)": result}
-    else:
-        print(f"Failed to fetch the page, status code: {response.status_code}")
-        return {"Error": response.status_code}
+            return {"유스라인(Usline)": result}
+        else:
+            #print(f"Failed to fetch the page, status code: {response.status_code}")
+            return {"유스라인(Usline)": ["Error", response.status_code, "News Server Error"]}
+    except Exception as e:
+        return {"유스라인(Usline)": ["Error", response.status_code, e]}
+

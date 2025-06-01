@@ -62,7 +62,7 @@ def get_data():
         return {"경인일보": result}
 
     except Exception as e:
-        print(f"전체 크롤링 중 오류 발생: {e}")
-        return {"경인일보": []}
+        #print(f"전체 크롤링 중 오류 발생: {e}")
+        return {"경인일보": ["Error", 999, "News Server Error"]}
     finally:
         driver.quit()

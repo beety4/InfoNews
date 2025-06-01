@@ -32,6 +32,7 @@ function ajax_get_data() {
 	});
 }
 
+
 function ajax_get_data_from_file() {
     $.ajax({
     	url:"/newsItemfromFile",
@@ -48,7 +49,7 @@ function ajax_get_data_from_file() {
 			// 크롤링 데이터 시간 확인
             let jsonData = JSON.parse(data);
             //console.log(jsonData[1]);
-            document.getElementById("msg").innerText = jsonData[0];
+            document.getElementById("msg").innerText = "실시간 뉴스 로드 상태 확인";
 
             // 새로고침 버튼
             //document.getElementById("refresh_news").style.display = 'inline-block';
@@ -58,7 +59,7 @@ function ajax_get_data_from_file() {
 
             // 가져온 json 데이터 파싱 후 forEach문으로 table 출력
             //console.log(jsonData[1]);
-            write_news_data(jsonData[1]);
+            write_news_data(jsonData[0], jsonData[1]);
             //write_news_data(JSON.parse(jsonData[1]));
         },
         error: function(request, status, error) {
@@ -81,7 +82,7 @@ function highlightText(text) {
 }
 
 // html에 작성
-function write_news_data(result) {
+function write_news_data(error, result) {
     const container = document.getElementById("news-list");
 
     result.forEach(function(company, i) {
@@ -90,7 +91,6 @@ function write_news_data(result) {
         if(company[name].length == 0) {
             return;
         }
-        check_newsItem(name);
 
         // 테이블을 .responsive-container로 감싸기
         const tableId = `table_${i + 1}`;
@@ -134,6 +134,14 @@ function write_news_data(result) {
 
         //document.getElementById(name).style.visibility = 'visible';
     });
+
+    // 에러로 받지 못한 데이터 체크 false
+    if(error != "") {
+        for(let i=0; i<error.length; i++) {
+            let name = error[i].name.trim();
+            check_newsItem(name);
+        }
+    }
 }
 
 // 임시 카운터
@@ -174,35 +182,35 @@ function getdate() {
 
 // 뉴스 이름
 function check_newsItem(company) {
-    switch(company[0]) {
+    switch(company) {
         case "대학지성IN&OUT":
-            document.getElementById("unipress").checked = true; break;
+            document.getElementById("unipress").checked = false; break;
         case "한국대학신문(UNN)":
-            document.getElementById("unn").checked = true; break;
+            document.getElementById("unn").checked = false; break;
         case "유스라인(Usline)":
-            document.getElementById("usline").checked = true; break;
+            document.getElementById("usline").checked = false; break;
         case "대학저널":
-            document.getElementById("dhnews").checked = true; break;
+            document.getElementById("dhnews").checked = false; break;
         case "베리타스알파":
-            document.getElementById("veritas").checked = true; break;
+            document.getElementById("veritas").checked = false; break;
         case "경인일보":
-            document.getElementById("kyeongin").checked = true; break;
+            document.getElementById("kyeongin").checked = false; break;
         case "인천일보":
-            document.getElementById("incheonilbo").checked = true; break;
+            document.getElementById("incheonilbo").checked = false; break;
         case "연합뉴스":
-            document.getElementById("yna").checked = true; break;
+            document.getElementById("yna").checked = false; break;
         case "교육부보도자료":
-            document.getElementById("moe").checked = true; break;
+            document.getElementById("moe").checked = false; break;
         case "인천광역시보도자료":
-            document.getElementById("incheon").checked = true; break;
+            document.getElementById("incheon").checked = false; break;
         case "교수신문":
-            document.getElementById("kyosu").checked = true; break;
+            document.getElementById("kyosu").checked = false; break;
         case "한국전문대학교육협의회":
-            document.getElementById("kcce").checked = true; break;
+            document.getElementById("kcce").checked = false; break;
         case "조선에듀":
-            document.getElementById("chosun").checked = true; break;
+            document.getElementById("chosun").checked = false; break;
         case "네이버통합뉴스(인하공전)":
-            document.getElementById("naver").checked = true; break;
+            document.getElementById("naver").checked = false; break;
     }
 }
 

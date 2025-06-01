@@ -7,14 +7,13 @@ import multiprocessing
 from concurrent.futures import ThreadPoolExecutor, as_completed, ProcessPoolExecutor
 import naver_search as ns
 
-
+## 해당 news 정보 코드는 DB 도입 부터 db_control.py로 이전 완료 (사용 XX)
+## == 크롤링 모듈 로드 함수 3개 --> 폐기 ==
 def load_and_run_get_data(py_file):
     spec = importlib.util.spec_from_file_location("module.name", py_file)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module.get_data()  # get_data() 함수 실행 후 반환
-
-
 # 쓰레드 풀을 사용해 각 모듈의 get_data()를 동시에 실행
 def news_data_crawling():
     folder_path = 'crawling'  # crawling 폴더 경로
@@ -40,17 +39,18 @@ def news_data_crawling():
     json_data = json.dumps(data_list, ensure_ascii=False, indent=4)
     return json_data
     #return data_list
-
-
 def get_py_modules():
     directory = "crawling"
     py_files = [directory + "/" + str(f) for f in os.listdir(directory) if f.endswith('.py')]
     return py_files
 
-
-
-
 ## == 위 코드는 폐기 ==
+
+
+
+
+
+
 
 # 모듈을 동적으로 로드하고 실행하는 함수
 def load_and_run_module(module):
@@ -100,7 +100,6 @@ def module_exec():
         search = ns.search_item_with_ai(keyword)
         result.append(search)
 
-
     order_list = ["네이버통합뉴스(인하공전)", "네이버통합뉴스(인하대)", "네이버통합뉴스(항공대)", "한국전문대학교육협의회", "교육부보도자료",
                   "인천광역시보도자료", "베리타스알파", "한국대학신문(UNN)",
                   "대학저널", "유스라인(Usline)", "교수신문",
@@ -110,8 +109,6 @@ def module_exec():
         (item for item in result if next(iter(item)) in order_list),  # order_list에 없는 값 필터링
         key=lambda x: order_list.index(next(iter(x)))
     )
-
-
 
     #print(sorted_list)
     # 결과를 JSON으로 반환

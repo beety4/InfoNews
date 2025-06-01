@@ -56,18 +56,23 @@ def get_data():
         'rows': 10
     }
 
-    # AJAX 요청 보내기
-    response = requests.get(url, headers=headers, params=params)
-    data = response.json()
+    try:
+        # AJAX 요청 보내기
+        response = requests.get(url, headers=headers, params=params)
+        data = response.json()
 
-    result = []
-    # 데이터 출력
-    for content in data["CONTENT"]:
-        dict_data = {"title": content["TITLE"], "link": "https:" + content["ART_HREF"], "date": content["DATE"][:10]}
-        result.append(dict_data)
+        result = []
+        # 데이터 출력
+        for content in data["CONTENT"]:
+            dict_data = {"title": content["TITLE"], "link": "https:" + content["ART_HREF"],
+                         "date": content["DATE"][:10]}
+            result.append(dict_data)
 
-    if len(result) == 0:
-        return {"Error": response.status_code}
+        if len(result) == 0:
+            return {"조선에듀": ["Error", response.status_code, "News Server Error"]}
 
-    return {"조선에듀": result}
+        return {"조선에듀": result}
+    except Exception as e:
+        return {"조선에듀": ["Error", response.status_code, e]}
+
 

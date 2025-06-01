@@ -12,6 +12,7 @@ import json
 app = Flask(__name__)
 
 
+# 메인 화면
 @app.route('/')
 def index():
     with open('access.log', 'a', encoding='utf-8') as f:
@@ -20,11 +21,40 @@ def index():
     return render_template('index.html')
 
 
+
+
+# trend페이지, search페이지 (XXX 폐기 XXX)
 @app.route('/trend')
 def home():
     return render_template('trend.html')
+@app.route('/news')
+def news():
+    return render_template('news.html')
+@app.route('/search')
+def search():
+    return render_template('search.html')
+@app.route('/searchItem', methods=['POST'])
+def search_item():
+    search = request.form["search"]
+
+    # 네이버 API 요청
+    result = ns.search_item(search)
+    return result
+# 새로고침 시 뉴스 정보 재로딩 ( DB추가로 폐기 )
+@app.route('/newsItem', methods=['POST'])
+def news_item():
+    #indexnum = request.form["indexnum"]
+    # 크롤링 진행
+    #result = n.news_data_crawling()
+    result = n.module_exec()
+    #print(result)
+    return result
 
 
+
+
+
+# Naver 검색 빈도 추이 API Ajax
 @app.route('/queryItem', methods=['POST'])
 def query_item():
     #keywordList = ast.literal_eval(request.form["keywordList"])
@@ -39,35 +69,8 @@ def query_item():
     return result
 
 
-@app.route('/search')
-def search():
-    return render_template('search.html')
 
-@app.route('/searchItem', methods=['POST'])
-def search_item():
-    search = request.form["search"]
-
-    # 네이버 API 요청
-    result = ns.search_item(search)
-    return result
-
-
-
-@app.route('/news')
-def news():
-    return render_template('news.html')
-
-
-@app.route('/newsItem', methods=['POST'])
-def news_item():
-    #indexnum = request.form["indexnum"]
-    # 크롤링 진행
-    #result = n.news_data_crawling()
-    result = n.module_exec()
-    print(result)
-    return result
-
-# 처음 화면 접속 시 사전에 받아온 뉴스 데이터 보여줌.
+# 처음 화면 접속 시 DB로부터 받아온 뉴스 데이터 보여줌.
 @app.route('/newsItemfromFile', methods=['POST'])
 def news_item_from_db():
     #result = n.read_file_data()
@@ -76,12 +79,11 @@ def news_item_from_db():
     result = dc.get_data_fromDB()
     return jsonify(result)
 
+
+# 입학지도 iframe 내부 html
 @app.route('/map')
 def map_item():
     return render_template('2025_map.html')
-
-
-
 
 
 # 입학지도 쿠키 지정 및 로그인 검증 route
