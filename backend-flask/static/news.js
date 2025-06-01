@@ -85,14 +85,50 @@ function highlightText(text) {
 function write_news_data(error, result) {
     const container = document.getElementById("news-list");
 
+    // 문자열을 date타입으로 변경
+    function parseMMDDDate(mmddStr) {
+        const parts = mmddStr.split('.');
+        if (parts.length !== 2) {
+            console.error("Invalid MM.DD date string format received:", mmddStr);
+            return new Date(NaN);
+        }
+
+        const month = parseInt(parts[0], 10);
+        const day = parseInt(parts[1], 10);
+
+        const now = new Date();
+        let year = now.getFullYear();
+
+        if (month > (now.getMonth() + 1)) {
+            year--;
+        }
+
+        return new Date(year, month - 1, day);
+    }
+
     result.forEach(function(company, i) {
-        //let name = getnewsname(company);
-        let name = Object.keys(company);
-        if(company[name].length == 0) {
+        let name = Object.keys(company)[0];
+        let newsArticles = company[name];
+
+        if (newsArticles.length === 0) {
             return;
         }
 
-        // 테이블을 .responsive-container로 감싸기
+        // 날짜 기준으로 내림차순 정렬 (최신순)
+        newsArticles.sort((a, b) => {
+            const dateA = parseMMDDDate(a.date);
+            const dateB = parseMMDDDate(b.date);
+
+            // 파싱 실패 시 오류 처리
+            if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
+                console.error("Date parsing failed during sorting for values:", a.date, b.date);
+                return 0;
+            }
+
+            // 내림차순 정렬 (최신 날짜가 먼저 오도록)
+            return dateB.getTime() - dateA.getTime();
+        });
+
         const tableId = `table_${i + 1}`;
         let html = `
         <div id="${name}" class="responsive-container">

@@ -8,16 +8,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-flask/access.log" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/access.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-flask/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-flask/crawling/10_usline.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/crawling/10_usline.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-flask/crawling/11_kyosu.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/crawling/11_kyosu.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-flask/crawling/12_unipress.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/crawling/12_unipress.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-flask/crawling/13_chosunedu.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/crawling/13_chosunedu.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-flask/crawling/14_yna.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/crawling/14_yna.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-flask/crawling/15_kyeongin.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/crawling/15_kyeongin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-flask/crawling/16_incheonilbo.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/crawling/16_incheonilbo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-flask/crawling/7_veritas-a.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/crawling/7_veritas-a.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-flask/crawling/8_unn.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/crawling/8_unn.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-flask/crawling/9_dhnews.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend-flask/crawling/9_dhnews.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
