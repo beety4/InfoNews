@@ -47,30 +47,29 @@ def get_data():
         li_elements = soup.select("#container > div > section > div > ul > li")
 
         for i, li in enumerate(li_elements):
-            try:
-                title_tag = li.select_one('h2 > a')
-                title = title_tag.text.strip() if title_tag else "제목 없음"
+            title_tag = li.select_one('h2 > a')
+            title = title_tag.text.strip() if title_tag else "제목 없음"
 
-                raw_link = title_tag.get('href').strip() if title_tag and title_tag.get('href') else "링크 없음"
-                full_link = "https:" + raw_link
+            raw_link = title_tag.get('href').strip() if title_tag and title_tag.get('href') else "링크 없음"
+            full_link = "https:" + raw_link
 
-                date = get_article_date(full_link, html_headers)
+            date = get_article_date(full_link, html_headers)
 
-                result.append({
-                    "title": title,
-                    "link": full_link,
-                    "date": date
-                })
+            result.append({
+                "title": title,
+                "link": full_link,
+                "date": date
+            })
 
-                # print(f"제목: {title}")
-                # print(f"날짜: {date}")
-                # print(f"링크: {full_link}")
-                # print("-" * 100)
-            except Exception as e:
-                print(f"개별 아이템 처리 중 오류 발생: {e}")
-                continue
+            # print(f"제목: {title}")
+            # print(f"날짜: {date}")
+            # print(f"링크: {full_link}")
+            # print("-" * 100)
+
+        if len(result) == 0:
+            return {"조선에듀": ["Error", response.status_code, "News Server Error"]}
 
         return {"경인일보": result}
 
     except Exception as e:
-        return {"경인일보": ["Error", 999, "News Server Error"]}
+        return {"경인일보": ["Error", response.status_code, e]}
