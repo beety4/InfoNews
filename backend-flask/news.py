@@ -119,7 +119,7 @@ def module_exec():
 
 # 주기적응로 크롤링한 데이터 가져오기.
 def read_file_data():
-    with open('newsinfo.txt', 'r', encoding='utf-8') as f:
+    with open('unusage/newsinfo.txt', 'r', encoding='utf-8') as f:
         whatdate = f.readline().replace('\n', '')
         context = f.readline()
 

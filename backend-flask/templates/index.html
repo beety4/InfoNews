@@ -16,6 +16,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='mycss.css') }}"/>
 </head>
 <body class="no-sidebar is-preload">
+<script>
+    const dataFromServer = {{ data|tojson }};
+</script>
 <div id="page-wrapper">
 
     <!-- Header -->
@@ -36,7 +39,7 @@
                 <br><br>
                 <div style="text-align: center;">
                     <h1>언론사별 최신 뉴스</h1>
-                    <div id="msg">데이터를 가져오는 중입니다... 10초</div>
+                    <div id="msg">실시간 뉴스 로드 상태 확인</div>
                 </div>
 
                 <div id="news-checkbox" class="news-checkbox">
@@ -366,7 +369,6 @@
 <script type="text/javascript" src="{{ url_for('static', filename='trend.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='map.js') }}"></script>
-
 
 </body>
 </html>

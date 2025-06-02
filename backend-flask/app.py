@@ -12,13 +12,102 @@ import json
 app = Flask(__name__)
 
 
+# Debug 모드 False 일시 로깅 시스템 작동
+if not app.debug:
+    import logging
+    from logging.handlers import RotatingFileHandler
+
+    log_path = '/var/log/news.log'
+    #log_path = 'C:\\filetest\\news.log'
+
+    try:
+        if not os.path.exists(log_path):
+            with open(log_path, 'a'):
+                os.utime(log_path, None)
+
+        log_handler = RotatingFileHandler(log_path, maxBytes=10 * 1024 * 1024, backupCount=5)
+        log_handler.setLevel(logging.INFO)
+        app.logger.setLevel(logging.INFO)
+        formatter = logging.Formatter(
+            '[%(asctime)s] Access From %(message)s  ',
+            datefmt='%y.%m.%d %H:%M'
+        )
+        log_handler.setFormatter(formatter)
+        app.logger.addHandler(log_handler)
+    except Exception as e:
+        print(f"사용중인 로그 파일: {log_path}...")
+        print("현재 구동중인 OS 에 맞게 app.py를 수정하여 실행시켜주세요!")
+
+
+
+# 요청에 대한 로그 저장
+@app.after_request
+def log_response(response):
+    ip = ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+    path = request.path
+    method = request.method
+    status_code = response.status_code
+    app.logger.info(f'{ip} -> {method} {path} ({status_code})')
+    return response
+
+
+
 # 메인 화면
 @app.route('/')
 def index():
-    with open('access.log', 'a', encoding='utf-8') as f:
-        f.write(datetime.today().strftime("%Y/%m/%d %H:%M:%S") + '\n')
+    result = dc.get_data_fromDB()
+    return render_template('index.html', data=result)
 
-    return render_template('index.html')
+
+# Naver 검색 빈도 추이 API Ajax
+@app.route('/queryItem', methods=['POST'])
+def query_item():
+    #keywordList = ast.literal_eval(request.form["keywordList"])
+    universityGroup = request.form["universityGroup"]
+    startDate = request.form["startDate"]
+    endDate = request.form["endDate"]
+    timeUnit = request.form["timeUnit"]
+
+    # 네이버 API 요청
+    now_date = f"{datetime.now().strftime('%Y%m%d-%H%M%S')}.png"
+    result = nst.get_each_data(universityGroup, startDate, endDate, timeUnit, now_date)
+    return result
+
+
+# 입학지도 iframe 내부 html
+@app.route('/map')
+def map_item():
+    return render_template('2025_map.html')
+
+
+# 입학지도 쿠키 지정 및 로그인 검증 route
+@app.route('/validatePwd', methods=['POST'])
+def validate_pwd():
+    data = request.get_json()
+    password = data.get("password")
+
+    load_dotenv('env/data.env')
+    map_key = str(os.getenv('map_key'))
+
+    if password == map_key:
+        response = jsonify({"success": True})
+        # 쿠키에 'authenticated=true' 저장
+        # 365일 -> 24시간 * 60분 * 60초 
+        response.set_cookie("authenticated", "true", max_age=60 * 60 * 24* 365)  # 1년
+        return response
+    else:
+        return jsonify({"success": False})
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -49,63 +138,17 @@ def news_item():
     result = n.module_exec()
     #print(result)
     return result
-
-
-
-
-
-# Naver 검색 빈도 추이 API Ajax
-@app.route('/queryItem', methods=['POST'])
-def query_item():
-    #keywordList = ast.literal_eval(request.form["keywordList"])
-    universityGroup = request.form["universityGroup"]
-    startDate = request.form["startDate"]
-    endDate = request.form["endDate"]
-    timeUnit = request.form["timeUnit"]
-
-    # 네이버 API 요청
-    now_date = f"{datetime.now().strftime('%Y%m%d-%H%M%S')}.png"
-    result = nst.get_each_data(universityGroup, startDate, endDate, timeUnit, now_date)
-    return result
-
-
-
-# 처음 화면 접속 시 DB로부터 받아온 뉴스 데이터 보여줌.
+# 처음 화면 접속 시 DB로부터 받아온 뉴스 데이터 보여줌.(index에서 동시처리로 변경)
 @app.route('/newsItemfromFile', methods=['POST'])
 def news_item_from_db():
     #result = n.read_file_data()
     #return jsonify(result)
-
     result = dc.get_data_fromDB()
     return jsonify(result)
 
 
-# 입학지도 iframe 내부 html
-@app.route('/map')
-def map_item():
-    return render_template('2025_map.html')
 
-
-# 입학지도 쿠키 지정 및 로그인 검증 route
-@app.route('/validatePwd', methods=['POST'])
-def validate_pwd():
-    data = request.get_json()
-    password = data.get("password")
-
-    load_dotenv('env/data.env')
-    map_key = str(os.getenv('map_key'))
-
-    if password == map_key:
-        response = jsonify({"success": True})
-        # 쿠키에 'authenticated=true' 저장
-        # 365일 -> 24시간 * 60분 * 60초 
-        response.set_cookie("authenticated", "true", max_age=60 * 60 * 24* 365)  # 1년
-        return response
-    else:
-        return jsonify({"success": False})
-
-
-
-
+# 시작점. 배포 시 debug 옵션 False로 끌것!!
 if __name__ == '__main__':
-    app.run('0.0.0.0', port=8080, debug=True)
+    #app.run('0.0.0.0', port=8080, debug=True)
+    app.run('0.0.0.0', port=8080, debug=False)

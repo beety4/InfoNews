@@ -18,7 +18,7 @@ def load_and_run_get_data(py_file):
 
 # 쓰레드 풀을 사용해 각 모듈의 get_data()를 동시에 실행
 def news_data_crawling():
-    folder_path = 'crawling'  # crawling 폴더 경로
+    folder_path = '../crawling'  # crawling 폴더 경로
     data_list = []  # 최종 결과 리스트
 
     # 폴더 내 모든 파이썬 파일을 검색

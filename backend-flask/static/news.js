@@ -1,3 +1,4 @@
+/* 비동기식 새로고침 사용 X -> DB로 부터 로드
 function ajax_get_data() {
     // count view
     count_value(9);
@@ -31,7 +32,6 @@ function ajax_get_data() {
 		}
 	});
 }
-
 
 function ajax_get_data_from_file() {
     $.ajax({
@@ -70,6 +70,13 @@ function ajax_get_data_from_file() {
 		}
 	});
 }
+*/
+
+
+let jsonData = JSON.parse(dataFromServer);
+document.getElementById("news-checkbox").style.display = 'block';
+write_news_data(jsonData[0], jsonData[1]);
+
 
 // 특정 단어를 파란색으로 변경
 function highlightText(text) {
@@ -201,7 +208,7 @@ function count_value(time) {
 }
 
 
-// 현재 시간 표시
+/* 현재 시간 표시
 function getdate() {
     let today = new Date();
     let year = today.getFullYear();
@@ -215,6 +222,7 @@ function getdate() {
 
     return str;
 }
+*/
 
 // 뉴스 이름
 function check_newsItem(company) {
@@ -281,12 +289,12 @@ function toggleCheck(item) {
 }
 
 
-// 새로고침
+/* 새로고침
 $("#refresh_news").click(function() {
     document.getElementById("news-list").innerText = "";
     ajax_get_data();
 });
-
+*/
 
 
 function truncateString(str, maxLength) {

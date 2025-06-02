@@ -290,6 +290,23 @@ def send_mail():
 
 
 
+
+
+
+
+
+# 입학지도 Map코드
+def getSigunguPos(sigunguname):
+    return
+
+
+
+
+
+
+
+
+
 # Cron으로 저장할때 사용
 if __name__ == "__main__":
     # 현재 크롤링 저장
