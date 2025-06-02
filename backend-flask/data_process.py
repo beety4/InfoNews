@@ -22,7 +22,7 @@ def create_wc_img(dict_data, file_name):
 
     matplotlib.use('Agg')
     plt.figure(figsize=(14,14))
-    plt.imshow(wordcloud, interpolation="bilinear")
+    plt.imshow(wordcloud.to_array(), interpolation="bilinear")
     plt.axis("off")
     #plt.show()
 
