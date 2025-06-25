@@ -1,5 +1,5 @@
 .idea
-__pycache__
+backend-flask/__pycache__
 
 backend-flask/env/*
 

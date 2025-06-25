@@ -1,3 +1,5 @@
+from lib2to3.btm_utils import tokens
+
 import psycopg2
 import os
 from dotenv import load_dotenv
@@ -9,6 +11,7 @@ from collections import defaultdict
 from dateutil.parser import parse
 import smtplib
 from email.mime.text import MIMEText
+import sendmessage as sm
 
 
 # sourceIDX 와 뉴스 정보 매칭
@@ -239,6 +242,31 @@ def check_crawling():
 def send_mail():
     # 크롤링 검증 확인 및 메일 내용 작성
     result = check_crawling()
+
+    if result:
+        message_parts = []
+
+        # 각 실패 내역을 순회하며 요약 정보 생성
+        for i, row in enumerate(result):
+            # 각 실패 항목을 한 줄로 요약
+            summary = f"""
+                    [{i + 1}] {row["name"]}<br>
+                    - 오류: {row["message"]}<br>
+                    """.strip()
+            message_parts.append(summary)
+
+        # 모든 요약 정보를 하나의 문자열로 결합
+        body = "<br>".join(message_parts)
+
+        # 제목과 본문을 합쳐 최종 메시지 생성
+        message_to_send = f"{body}"
+
+        # 준비된 함수를 호출하여 관리자에게 알림 전송
+        sm.send_to_admin(message_to_send)
+
+
+
+    """
     if result:
         mailText = f'''
                 <html>
@@ -255,7 +283,7 @@ def send_mail():
                 '''
         # result 리스트의 데이터를 HTML 테이블로 변환
         for row in result:
-            mailText += f"""
+            mailText += f'''
                     <tr>
                        <td>{row["name"]}</td>
                        <td>{row["status"]}</td>
@@ -263,12 +291,12 @@ def send_mail():
                        <td>{str(row["last_success"]).split('.')[0]}</td>
                        <td>{row["message"]}</td>
                    </tr>
-                   """
-        mailText += """
+                   '''
+        mailText += '''
                 </table>
                 </body>
                 </html>
-                """
+                '''
 
         # 메일 정보 가져오기
         load_dotenv()
@@ -287,7 +315,7 @@ def send_mail():
         s.quit()
     # else:
     # print("크롤링 잘됨.")
-
+    """
 
 
 
@@ -321,6 +349,7 @@ if __name__ == "__main__":
 
     if morning_start <= now <= morning_end or evening_start <= now <= evening_end:
         send_mail()
+        
 
     #get_data_fromDB()
 
