@@ -10,7 +10,6 @@ import math
 
 def searchSameLatLon():
     # CSV 파일 읽기
-    # df = pd.read_csv('./applicantMap/전국고등학교위치데이터.csv', encoding='utf-8-sig')
     df = pd.read_csv('./applicantMap/최종_전국고등학교위치데이터.csv', encoding='utf-8-sig')
 
     # 중복 좌표(위도+경도) 찾기
@@ -61,10 +60,21 @@ def makeDifferentLatLon():
     df.to_csv("./applicantMap/최종_전국고등학교위치데이터.csv", index=False, encoding='utf-8-sig')
 
 
+# 최종 고등학교 위치데이터에 지역 컬럼 생성
+def addRegion():
+    # 데이터 불러오기
+    df = pd.read_csv("./applicantMap/최종_전국고등학교위치데이터.csv", encoding='utf-8-sig')
+
+    for _, row in df.iterrows():
+        df['지역명'] = df['소재지지번주소'].str.split(' ').str[0]
+
+    df.to_csv("./applicantMap/최종_전국고등학교위치데이터.csv", index=False, encoding='utf-8-sig')
+
+
 def getAddressLatLon():
     # 1. 파일 불러오기
     origin_df = pd.read_csv('./applicantMap/가공_2025 고교별 지원자 정보.csv')
-    allSchool_df = pd.read_csv('./applicantMap/최종_전국고등학교위치데이터.csv')
+    allSchool_df = pd.read_csv('./applicantMap/진짜_최종_전국고등학교위치데이터.csv')
 
     # 2. 컬럼명 정리
     allSchool_df = allSchool_df.rename(columns={
@@ -75,10 +85,13 @@ def getAddressLatLon():
     # 3. 문자열 공백 정리 (병합 오류 방지)
     origin_df['고교명'] = origin_df['고교명'].str.strip()
     allSchool_df['고교명'] = allSchool_df['고교명'].str.strip()
+    origin_df['지역명'] = origin_df['지역명'].str.strip()
+    allSchool_df['지역명'] = allSchool_df['지역명'].str.strip()
 
-    # 4. 병합 (고교명 기준, 정확한 정보 가져오기)
-    merged_df = pd.merge(origin_df, allSchool_df[['고교명', '주소지', '위도', '경도']],
-                         on='고교명', how='left', suffixes=('', '_school'))
+    # 4. 병합 ('고교명'과 '지역명'을 기준으로 병합)
+    merged_df = pd.merge(origin_df, allSchool_df[['고교명', '지역명', '주소지', '위도', '경도']],
+                         on=['고교명', '지역명'], # 복합키로 병합
+                         how='left', suffixes=('', '_school'))
 
     # 5. school 정보로 덮어쓰기 (일치할 때만 덮어씀)
     merged_df['주소지'] = merged_df['주소지_school'].combine_first(merged_df['주소지'])
@@ -89,7 +102,7 @@ def getAddressLatLon():
     merged_df.drop(columns=['주소지_school', '위도_school', '경도_school'], inplace=True)
 
     # 7. 최종 결과 저장
-    merged_df.to_csv('./applicantMap/최종_2025지원자정보.csv', index=False, encoding='utf-8-sig')
+    merged_df.to_csv('./applicantMap/진짜_최종_2025지원자정보.csv', index=False, encoding='utf-8-sig')
 
     # 8. 병합 실패한 고교명 출력
     failed = merged_df[merged_df['주소지'].isnull()]
@@ -236,11 +249,31 @@ def schoolNum():
     df.to_csv('./applicantMap/최종_2025지원자정보.csv', index=False, encoding='utf-8-sig')
 
 
+
+################################################################################################################
+# 지역명으로 그룹화해서 Json 파일 생성
+def groupedBySido():
+    df = pd.read_csv("./applicantMap/진짜_최종_2025지원자정보.csv")
+    grouped = df.groupby("지역명")
+
+    output_dir = './applicantMap/REGION'
+    os.makedirs(output_dir, exist_ok=True)
+
+    for region, group in grouped:
+        filename = "./applicantMap/REGION/" + region + ".json"
+        with open(filename, "w", encoding="utf-8") as f:
+            json.dump(group.to_dict(orient="records"), f, ensure_ascii=False, indent=4)
+
+    print("시도별 JSON 파일 생성 완료")
+
+
 if __name__ == '__main__':
-    makeDifferentLatLon()
-    searchSameLatLon()
-    getAddressLatLon()
+    # makeDifferentLatLon()
+    # searchSameLatLon()
+    # getAddressLatLon()
     # getLatLon()
     # encoding()
     # sigunguColumn()
     # schoolNum()
+    # addRegion()
+    groupedBySido()

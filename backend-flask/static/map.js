@@ -4,8 +4,8 @@ var allMarkerData = [];  // 모든 마커 데이터를 저장할 배열
 window.addEventListener("message", function (event) {
     const allowedOrigins = [
         "https://news.mojuk.kr",
-        "http://127.0.0.1:8080",  // 로컬 개발 환경 주소
-        "http://localhost:8080"
+        "http://127.0.0.1:8081",  // 로컬 개발 환경 주소
+        "http://localhost:8081"
     ];
 
     if (!allowedOrigins.includes(event.origin)) {

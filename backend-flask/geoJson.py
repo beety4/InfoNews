@@ -91,22 +91,6 @@ def sigungu():
     print("GeoJSON 파일 생성 완료")
 
 
-# 실행 필요
-def filteredBySido():
-    df = pd.read_csv("./applicantMap/최종_2025지원자정보.csv")
-    grouped = df.groupby("지역명")
-
-    output_dir = './applicantMap/REGION'
-    os.makedirs(output_dir, exist_ok=True)
-
-    for region, group in grouped:
-        filename = "./applicantMap/REGION/" + region + ".json"
-        with open(filename, "w", encoding="utf-8") as f:
-            json.dump(group.to_dict(orient="records"), f, ensure_ascii=False, indent=4)
-
-    print("시도별 GeoJSON 파일 생성 완료")
-
-
 # 실행 필요 없음 - 시군구별 파일 생성 완료
 def filteredBySigungu():
     geojson_path_sigungu = "./applicantMap/SIGUNGU.json"
@@ -213,7 +197,6 @@ def filteredBySigungu():
 
 
 def main():
-    filteredBySido()
     filteredBySigungu()
 
 
