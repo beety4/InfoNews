@@ -150,5 +150,5 @@ def news_item_from_db():
 
 # 시작점. 배포 시 debug 옵션 False로 끌것!!
 if __name__ == '__main__':
-    #app.run('0.0.0.0', port=8080, debug=True)
-    app.run('0.0.0.0', port=8080, debug=False)
+    #app.run('0.0.0.0', port=8081, debug=True)
+    app.run('0.0.0.0', port=8081, debug=False)
