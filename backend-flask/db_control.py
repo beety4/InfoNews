@@ -354,7 +354,7 @@ if __name__ == "__main__":
     night_start = now.replace(hour=22, minute=10, second=0, microsecond=0)
     night_end = now.replace(hour=22, minute=30, second=0, microsecond=0)
 
-    if morning_start <= now <= morning_end or middle_start <= now <= middle_end evening_start <= now <= evening_end or night_start <= now <= night_end:
+    if morning_start <= now <= morning_end or middle_start <= now <= middle_end or evening_start <= now <= evening_end or night_start <= now <= night_end:
         send_mail()
         
 
