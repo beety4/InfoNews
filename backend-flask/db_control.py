@@ -342,12 +342,19 @@ if __name__ == "__main__":
 
     # 현재 시간이 해당 시간 범위(8:10~8:30, 19:10~19:30 사이)
     now = datetime.now()
-    morning_start = now.replace(hour=8, minute=10, second=0, microsecond=0)
-    morning_end = now.replace(hour=8, minute=30, second=0, microsecond=0)
-    evening_start = now.replace(hour=19, minute=10, second=0, microsecond=0)
-    evening_end = now.replace(hour=19, minute=30, second=0, microsecond=0)
+    morning_start = now.replace(hour=9, minute=10, second=0, microsecond=0)
+    morning_end = now.replace(hour=9, minute=30, second=0, microsecond=0)
 
-    if morning_start <= now <= morning_end or evening_start <= now <= evening_end:
+    middle_start = now.replace(hour=13, minute=10, second=0, microsecond=0)
+    middle_end = now.replace(hour=13, minute=30, second=0, microsecond=0)
+
+    evening_start = now.replace(hour=18, minute=10, second=0, microsecond=0)
+    evening_end = now.replace(hour=18, minute=30, second=0, microsecond=0)
+
+    night_start = now.replace(hour=22, minute=10, second=0, microsecond=0)
+    night_end = now.replace(hour=22, minute=30, second=0, microsecond=0)
+
+    if morning_start <= now <= morning_end or middle_start <= now <= middle_end evening_start <= now <= evening_end or night_start <= now <= night_end:
         send_mail()
         
 

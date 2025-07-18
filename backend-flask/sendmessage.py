@@ -6,20 +6,21 @@ import mysql.connector
 from mysql.connector import Error
 
 
-load_dotenv('./env/db.env')
-db_config = {
-    'host': os.getenv('nDBDB_HOST'),
-    'user': os.getenv('nDBDB_USER'),
-    'password': os.getenv('nDBDB_PASSWORD'),
-    'database': os.getenv('nDBDB_DATABASE'),
-    'charset': 'utf8mb4',
-    'collation': 'utf8mb4_general_ci',
-    'connection_timeout': 10
-}
 
 # DB 커넥션 가져오기
 def get_db_connection():
     try:
+        load_dotenv('./env/db.env')
+        db_config = {
+            'host': os.getenv('nDBDB_HOST'),
+            'user': os.getenv('nDBDB_USER'),
+            'password': os.getenv('nDBDB_PASSWORD'),
+            'database': os.getenv('nDBDB_DATABASE'),
+            'charset': 'utf8mb4',
+            'collation': 'utf8mb4_general_ci',
+            'connection_timeout': 10
+        }
+
         conn = mysql.connector.connect(**db_config)
         return conn
     except Error as e:
