@@ -1,4 +1,4 @@
-from lib2to3.btm_utils import tokens
+#from lib2to3.btm_utils import tokens
 
 import psycopg2
 import os
