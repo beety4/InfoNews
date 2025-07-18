@@ -6,8 +6,11 @@ import pytz
 def get_data():
     # 웹사이트 URL 설정
     url = "https://www.veritas-a.com/news/articleList.html?sc_section_code=&view_type=sm"
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36'
+    }
     # 웹페이지 요청
-    response = requests.get(url)
+    response = requests.get(url, headers=headers)
 
     try:
         # 요청 성공 여부 확인

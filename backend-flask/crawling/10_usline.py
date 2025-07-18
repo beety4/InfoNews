@@ -6,34 +6,31 @@ import pytz
 
 def get_data():
     url = 'https://www.usline.kr/news/articleList.html?view_type=sm'
-    response = requests.get(url)
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36'
+    }
+    response = requests.get(url, headers=headers)
 
     try:
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, 'html.parser')
 
-            news_list = soup.select('section#section-list div.view-cont')
+            news_list = soup.select('#section-list > ul > li')
 
             result = []
             # 타임존 설정
             kst = pytz.timezone('Asia/Seoul')
             for news in news_list:
-                title_tag = news.select_one('h4 a')
+                title_tag = news.select_one('h2.altlist-subject > a')
                 title = title_tag.text.strip()
 
-                # <em>사회</em><em>박병수 편집국장</em><em>2024.10.30 04:16</em>
-                date = None
-                for em in news.find_all('em'):
-                    match = re.match(r'(\d{4}\.\d{2}\.\d{2}) \d{2}:\d{2}', em.text)
-                    if match:
-                        raw_date = match.group(0)
-                        naive_dt = datetime.strptime(raw_date, "%Y.%m.%d %H:%M")
-                        aware_dt = kst.localize(naive_dt)
-                        # date = aware_dt.strftime("%Y-%m-%d %H:%M:%S%z")
-                        # date = date[:-2] + ':' + date[-2:]
-                        break
+                link = title_tag.get('href')
 
-                link = "https://www.usline.kr" + title_tag.get('href')
+                date_info_divs = news.select('div.altlist-info > div.altlist-info-item')
+                raw_date = date_info_divs[2].text.strip()
+                full_date_str = f"{datetime.now(kst).year}-{raw_date}"  # 년도 추가
+                naive_dt = datetime.strptime(full_date_str, "%Y-%m-%d %H:%M")
+                aware_dt = kst.localize(naive_dt)
 
                 # print(f"제목: {title}")
                 # print(f"날짜: {aware_dt}")
@@ -48,4 +45,3 @@ def get_data():
             return {"유스라인(Usline)": ["Error", response.status_code, "News Server Error"]}
     except Exception as e:
         return {"유스라인(Usline)": ["Error", response.status_code, e]}
-
